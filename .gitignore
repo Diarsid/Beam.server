@@ -1,4 +1,5 @@
 /nbactions.xml
+/nb-configuration.xml
 *desktop.ini
 /target/*
 /dev_private/*
