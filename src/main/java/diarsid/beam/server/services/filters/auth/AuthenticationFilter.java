@@ -69,6 +69,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         
         // User user = ....(jwt);
         // return getAuthenticatedUser(user);
+        
         return getFAKEAuthenticatedUser();
     }
     
