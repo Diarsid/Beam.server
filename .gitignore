@@ -1,0 +1,7 @@
+/nbactions.xml
+*desktop.ini
+/target/*
+/dev_private/*
+/*directory_key*
+/beam_home_bin*
+/nbproject/
