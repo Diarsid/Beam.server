@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.registration;
+package diarsid.beam.server.services.resources.auth;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

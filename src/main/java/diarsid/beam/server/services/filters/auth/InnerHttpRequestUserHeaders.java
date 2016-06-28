@@ -10,7 +10,7 @@ package diarsid.beam.server.services.filters.auth;
  *
  * @author Diarsid
  */
-public enum UserHttpHeaders {
+public enum InnerHttpRequestUserHeaders {
     
     BEAM_USER_ID ("beam.server.user.id"),
     BEAM_USER_NAME ("beam.server.user.name"),
@@ -20,7 +20,7 @@ public enum UserHttpHeaders {
     BEAM_USER_PASSWORD ("beam.server.user.password"),
     BEAM_USER_ROLE ("beam.server.user.role");
     
-    private UserHttpHeaders(String header) {
+    private InnerHttpRequestUserHeaders(String header) {
         this.header = header;
     }
     

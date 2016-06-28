@@ -22,13 +22,13 @@ import diarsid.beam.server.entities.User;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 import static diarsid.beam.server.entities.Users.getFAKEAuthenticatedUser;
-import static diarsid.beam.server.services.filters.auth.UserHttpHeaders.BEAM_USER_ID;
-import static diarsid.beam.server.services.filters.auth.UserHttpHeaders.BEAM_USER_NAME;
-import static diarsid.beam.server.services.filters.auth.UserHttpHeaders.BEAM_USER_NICKNAME;
-import static diarsid.beam.server.services.filters.auth.UserHttpHeaders.BEAM_USER_PASSWORD;
-import static diarsid.beam.server.services.filters.auth.UserHttpHeaders.BEAM_USER_ROLE;
-import static diarsid.beam.server.services.filters.auth.UserHttpHeaders.BEAM_USER_SURNAME;
-import static diarsid.beam.server.services.registration.UserRoles.hasUserAuthority;
+import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_ID;
+import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_NAME;
+import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_NICKNAME;
+import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_PASSWORD;
+import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_ROLE;
+import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_SURNAME;
+import static diarsid.beam.server.services.resources.auth.UserRoles.hasUserAuthority;
 
 /**
  *
@@ -49,7 +49,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext request) throws IOException {        
         String path = request.getUriInfo().getPath();
-        if ( path.contains("registration") ) {
+        if ( path.contains("auth") ) {
             LOGGER.info("unprotected area - do nothing under : " + path);
         } else {
             LOGGER.info("Authentication required aza-za!!! " + path);

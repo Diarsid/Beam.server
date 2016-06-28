@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.services.registration;
+package diarsid.beam.server.services.resources.auth;
 
 import diarsid.beam.server.entities.User;
 
