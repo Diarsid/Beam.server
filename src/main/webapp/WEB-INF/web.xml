@@ -5,6 +5,14 @@
 	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	 version="3.1">
     
+    <!-- Bootstrap the root application context as usual using ContextLoaderListener -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    
     <!-- Configure ContextLoaderListener to use AnnotationConfigWebApplicationContext
     instead of the default XmlWebApplicationContext -->
     <context-param>
@@ -18,15 +26,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>diarsid.beam.server.start.BeamServerSpringAnnotationsConfig</param-value>
-    </context-param>
-    
-    <!-- Bootstrap the root application context as usual using ContextLoaderListener -->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <listener>
-          <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
+    </context-param>       
         
     <session-config>
         <session-timeout>

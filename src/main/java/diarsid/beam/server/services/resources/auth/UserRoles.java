@@ -14,10 +14,10 @@ import diarsid.beam.server.entities.User;
  */
 public enum UserRoles {
     
-    NONE (100, "none"),
-    USER (200, "user"),
-    ADMIN (300, "admin"),
-    OWNER (400, "owner");
+    NONE (100, "NONE"),
+    USER (200, "USER"),
+    ADMIN (300, "ADMIN"),
+    OWNER (400, "OWNER");
     
     private UserRoles(int weight, String role) {
         this.weight = weight;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.util.json.jaxrs.providers;
+package diarsid.beam.server.services.util.json.jaxrs.entityproviders;
 
 import java.io.IOException;
 import java.io.InputStream;

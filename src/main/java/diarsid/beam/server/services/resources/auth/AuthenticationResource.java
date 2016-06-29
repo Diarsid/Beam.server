@@ -29,7 +29,8 @@ public class AuthenticationResource {
     public void loginUserAndReturnJWT() {
         // TODO
         // login using user login and password
-        // return JWT in header
+        // return 200 OK, appropriate user headers and JWT in header "jwt"
+        // return 401 UNAUTHORIZED if nickname or login is invalid
     }
     
     @GET

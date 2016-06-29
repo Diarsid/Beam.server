@@ -21,7 +21,5 @@ public class JerseyApplicationRoot extends ResourceConfig {
     public JerseyApplicationRoot() {
         super();
         packages("diarsid.beam.server.services");
-        packages("diarsid.beam.server.services.registration");
-        packages("diarsid.beam.server.services.webpages");
     }
 }

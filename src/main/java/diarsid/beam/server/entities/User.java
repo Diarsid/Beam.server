@@ -38,7 +38,7 @@ public class User {
         this.surname = surname;
         this.nickName = nickname;
         this.email = email;
-        this.role = role;
+        this.role = role.toUpperCase();
     }
     
     // NON-authenticated User creation
@@ -48,7 +48,7 @@ public class User {
         this.surname = "";
         this.nickName = "";
         this.email = "";
-        this.role = role;
+        this.role = role.toUpperCase();
     }
         
     public String getRole() {
