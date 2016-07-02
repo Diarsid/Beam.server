@@ -26,8 +26,8 @@ public class Users {
     }
     
     
-    public static User getAuthenticatedUser(long id, String name, String surname, String nickname, String email, String role) {
-        return new User(id, name, surname, nickname, email, role);
+    public static User getAuthenticatedUser(long id, String password, String name, String surname, String nickname, String email, String role) {
+        return new User(id, password, name, surname, nickname, email, role);
     }
     
     public static User getNonAuthenticatedUser() {
@@ -35,6 +35,6 @@ public class Users {
     }
 
     public static User getFAKEAuthenticatedUser() {
-        return new User(1234567890, "John", "Doe", "Jonny", "john.doe@gmail.com", "user");
+        return new User(1234567890, "pass", "John", "Doe", "Jonny", "john.doe@gmail.com", "user");
     }    
 }

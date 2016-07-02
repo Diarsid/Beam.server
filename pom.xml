@@ -84,6 +84,13 @@
             <scope>compile</scope>
         </dependency>
         
+        <!-- JsonWebToken processing library -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+        
         <!-- All depcies required for tests and code
         coverage measurements - jUnit, mockito -->
         <dependency>

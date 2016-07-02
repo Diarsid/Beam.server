@@ -84,7 +84,7 @@ var EventListener = {
 
 module.exports = EventListener;
 }).call(this,require('_process'))
-},{"./emptyFunction":8,"_process":187}],2:[function(require,module,exports){
+},{"./emptyFunction":8,"_process":185}],2:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -361,7 +361,7 @@ function createArrayFromMixed(obj) {
 
 module.exports = createArrayFromMixed;
 }).call(this,require('_process'))
-},{"./invariant":16,"_process":187}],7:[function(require,module,exports){
+},{"./invariant":16,"_process":185}],7:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -447,7 +447,7 @@ function createNodesFromMarkup(markup, handleScript) {
 
 module.exports = createNodesFromMarkup;
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":2,"./createArrayFromMixed":6,"./getMarkupWrap":12,"./invariant":16,"_process":187}],8:[function(require,module,exports){
+},{"./ExecutionEnvironment":2,"./createArrayFromMixed":6,"./getMarkupWrap":12,"./invariant":16,"_process":185}],8:[function(require,module,exports){
 "use strict";
 
 /**
@@ -508,7 +508,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":187}],10:[function(require,module,exports){
+},{"_process":185}],10:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -667,7 +667,7 @@ function getMarkupWrap(nodeName) {
 
 module.exports = getMarkupWrap;
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":2,"./invariant":16,"_process":187}],13:[function(require,module,exports){
+},{"./ExecutionEnvironment":2,"./invariant":16,"_process":185}],13:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -830,7 +830,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":187}],17:[function(require,module,exports){
+},{"_process":185}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -928,7 +928,7 @@ var keyMirror = function keyMirror(obj) {
 
 module.exports = keyMirror;
 }).call(this,require('_process'))
-},{"./invariant":16,"_process":187}],20:[function(require,module,exports){
+},{"./invariant":16,"_process":185}],20:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1227,7 +1227,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":8,"_process":187}],27:[function(require,module,exports){
+},{"./emptyFunction":8,"_process":185}],27:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.0.0
  * https://jquery.com/
@@ -12127,7 +12127,7 @@ var CSSPropertyOperations = {
 
 module.exports = CSSPropertyOperations;
 }).call(this,require('_process'))
-},{"./CSSProperty":32,"./ReactInstrumentation":99,"./dangerousStyleValue":142,"_process":187,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/camelizeStyleName":4,"fbjs/lib/hyphenateStyleName":15,"fbjs/lib/memoizeStringOnly":22,"fbjs/lib/warning":26}],34:[function(require,module,exports){
+},{"./CSSProperty":32,"./ReactInstrumentation":99,"./dangerousStyleValue":142,"_process":185,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/camelizeStyleName":4,"fbjs/lib/hyphenateStyleName":15,"fbjs/lib/memoizeStringOnly":22,"fbjs/lib/warning":26}],34:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -12235,7 +12235,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 
 module.exports = CallbackQueue;
 }).call(this,require('_process'))
-},{"./PooledClass":54,"_process":187,"fbjs/lib/invariant":16,"object-assign":28}],35:[function(require,module,exports){
+},{"./PooledClass":54,"_process":185,"fbjs/lib/invariant":16,"object-assign":28}],35:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -12758,7 +12758,7 @@ var DOMChildrenOperations = {
 
 module.exports = DOMChildrenOperations;
 }).call(this,require('_process'))
-},{"./DOMLazyTree":37,"./Danger":41,"./ReactDOMComponentTree":70,"./ReactInstrumentation":99,"./ReactMultiChildUpdateTypes":104,"./createMicrosoftUnsafeLocalFunction":141,"./setInnerHTML":162,"./setTextContent":163,"_process":187}],37:[function(require,module,exports){
+},{"./DOMLazyTree":37,"./Danger":41,"./ReactDOMComponentTree":70,"./ReactInstrumentation":99,"./ReactMultiChildUpdateTypes":104,"./createMicrosoftUnsafeLocalFunction":141,"./setInnerHTML":162,"./setTextContent":163,"_process":185}],37:[function(require,module,exports){
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -13113,7 +13113,7 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],40:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],40:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -13338,7 +13338,7 @@ var DOMPropertyOperations = {
 
 module.exports = DOMPropertyOperations;
 }).call(this,require('_process'))
-},{"./DOMProperty":39,"./ReactDOMComponentTree":70,"./ReactDOMInstrumentation":78,"./ReactInstrumentation":99,"./quoteAttributeValueForBrowser":160,"_process":187,"fbjs/lib/warning":26}],41:[function(require,module,exports){
+},{"./DOMProperty":39,"./ReactDOMComponentTree":70,"./ReactDOMInstrumentation":78,"./ReactInstrumentation":99,"./quoteAttributeValueForBrowser":160,"_process":185,"fbjs/lib/warning":26}],41:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -13485,7 +13485,7 @@ var Danger = {
 
 module.exports = Danger;
 }).call(this,require('_process'))
-},{"./DOMLazyTree":37,"_process":187,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/createNodesFromMarkup":7,"fbjs/lib/emptyFunction":8,"fbjs/lib/getMarkupWrap":12,"fbjs/lib/invariant":16}],42:[function(require,module,exports){
+},{"./DOMLazyTree":37,"_process":185,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/createNodesFromMarkup":7,"fbjs/lib/emptyFunction":8,"fbjs/lib/getMarkupWrap":12,"fbjs/lib/invariant":16}],42:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -14006,7 +14006,7 @@ var EventPluginHub = {
 
 module.exports = EventPluginHub;
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":47,"./EventPluginUtils":48,"./ReactErrorUtils":92,"./accumulateInto":138,"./forEachAccumulated":146,"_process":187,"fbjs/lib/invariant":16}],47:[function(require,module,exports){
+},{"./EventPluginRegistry":47,"./EventPluginUtils":48,"./ReactErrorUtils":92,"./accumulateInto":138,"./forEachAccumulated":146,"_process":185,"fbjs/lib/invariant":16}],47:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -14250,7 +14250,7 @@ var EventPluginRegistry = {
 
 module.exports = EventPluginRegistry;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],48:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],48:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -14480,7 +14480,7 @@ var EventPluginUtils = {
 
 module.exports = EventPluginUtils;
 }).call(this,require('_process'))
-},{"./EventConstants":45,"./ReactErrorUtils":92,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],49:[function(require,module,exports){
+},{"./EventConstants":45,"./ReactErrorUtils":92,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],49:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -14620,7 +14620,7 @@ var EventPropagators = {
 
 module.exports = EventPropagators;
 }).call(this,require('_process'))
-},{"./EventConstants":45,"./EventPluginHub":46,"./EventPluginUtils":48,"./accumulateInto":138,"./forEachAccumulated":146,"_process":187,"fbjs/lib/warning":26}],50:[function(require,module,exports){
+},{"./EventConstants":45,"./EventPluginHub":46,"./EventPluginUtils":48,"./accumulateInto":138,"./forEachAccumulated":146,"_process":185,"fbjs/lib/warning":26}],50:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -15121,7 +15121,7 @@ var LinkedValueUtils = {
 
 module.exports = LinkedValueUtils;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocations":111,"./ReactPropTypes":112,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],54:[function(require,module,exports){
+},{"./ReactPropTypeLocations":111,"./ReactPropTypes":112,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],54:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -15243,7 +15243,7 @@ var PooledClass = {
 
 module.exports = PooledClass;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],55:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],55:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -15333,7 +15333,7 @@ var React = {
 
 module.exports = React;
 }).call(this,require('_process'))
-},{"./ReactChildren":58,"./ReactClass":59,"./ReactComponent":60,"./ReactDOMFactories":74,"./ReactElement":89,"./ReactElementValidator":90,"./ReactPropTypes":112,"./ReactVersion":119,"./onlyChild":159,"_process":187,"fbjs/lib/warning":26,"object-assign":28}],56:[function(require,module,exports){
+},{"./ReactChildren":58,"./ReactClass":59,"./ReactComponent":60,"./ReactDOMFactories":74,"./ReactElement":89,"./ReactElementValidator":90,"./ReactPropTypes":112,"./ReactVersion":119,"./onlyChild":159,"_process":185,"fbjs/lib/warning":26,"object-assign":28}],56:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -15779,7 +15779,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":52,"./ReactReconciler":114,"./instantiateReactComponent":156,"./shouldUpdateReactComponent":164,"./traverseAllChildren":165,"_process":187,"fbjs/lib/warning":26}],58:[function(require,module,exports){
+},{"./KeyEscapeUtils":52,"./ReactReconciler":114,"./instantiateReactComponent":156,"./shouldUpdateReactComponent":164,"./traverseAllChildren":165,"_process":185,"fbjs/lib/warning":26}],58:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -16698,7 +16698,7 @@ var ReactClass = {
 
 module.exports = ReactClass;
 }).call(this,require('_process'))
-},{"./ReactComponent":60,"./ReactElement":89,"./ReactNoopUpdateQueue":108,"./ReactPropTypeLocationNames":110,"./ReactPropTypeLocations":111,"_process":187,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/keyMirror":19,"fbjs/lib/keyOf":20,"fbjs/lib/warning":26,"object-assign":28}],60:[function(require,module,exports){
+},{"./ReactComponent":60,"./ReactElement":89,"./ReactNoopUpdateQueue":108,"./ReactPropTypeLocationNames":110,"./ReactPropTypeLocations":111,"_process":185,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/keyMirror":19,"fbjs/lib/keyOf":20,"fbjs/lib/warning":26,"object-assign":28}],60:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -16822,7 +16822,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactComponent;
 }).call(this,require('_process'))
-},{"./ReactInstrumentation":99,"./ReactNoopUpdateQueue":108,"./canDefineProperty":140,"_process":187,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],61:[function(require,module,exports){
+},{"./ReactInstrumentation":99,"./ReactNoopUpdateQueue":108,"./canDefineProperty":140,"_process":185,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],61:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -16916,7 +16916,7 @@ var ReactComponentEnvironment = {
 
 module.exports = ReactComponentEnvironment;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],63:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],63:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2016-present, Facebook, Inc.
@@ -17064,7 +17064,7 @@ var ReactComponentTreeDevtool = {
 
 module.exports = ReactComponentTreeDevtool;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],64:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],64:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -17990,7 +17990,7 @@ var ReactCompositeComponent = {
 
 module.exports = ReactCompositeComponent;
 }).call(this,require('_process'))
-},{"./ReactComponentEnvironment":62,"./ReactCurrentOwner":65,"./ReactElement":89,"./ReactErrorUtils":92,"./ReactInstanceMap":98,"./ReactInstrumentation":99,"./ReactNodeTypes":107,"./ReactPropTypeLocationNames":110,"./ReactPropTypeLocations":111,"./ReactReconciler":114,"./ReactUpdateQueue":117,"./shouldUpdateReactComponent":164,"_process":187,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],65:[function(require,module,exports){
+},{"./ReactComponentEnvironment":62,"./ReactCurrentOwner":65,"./ReactElement":89,"./ReactErrorUtils":92,"./ReactInstanceMap":98,"./ReactInstrumentation":99,"./ReactNodeTypes":107,"./ReactPropTypeLocationNames":110,"./ReactPropTypeLocations":111,"./ReactReconciler":114,"./ReactUpdateQueue":117,"./shouldUpdateReactComponent":164,"_process":185,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],65:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18126,7 +18126,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = React;
 }).call(this,require('_process'))
-},{"./ReactDOMComponentTree":70,"./ReactDefaultInjection":88,"./ReactMount":102,"./ReactReconciler":114,"./ReactUpdates":118,"./ReactVersion":119,"./findDOMNode":144,"./getNativeComponentFromComposite":152,"./renderSubtreeIntoContainer":161,"_process":187,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/warning":26}],67:[function(require,module,exports){
+},{"./ReactDOMComponentTree":70,"./ReactDefaultInjection":88,"./ReactMount":102,"./ReactReconciler":114,"./ReactUpdates":118,"./ReactVersion":119,"./findDOMNode":144,"./getNativeComponentFromComposite":152,"./renderSubtreeIntoContainer":161,"_process":185,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/warning":26}],67:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -19103,7 +19103,7 @@ _assign(ReactDOMComponent.prototype, ReactDOMComponent.Mixin, ReactMultiChild.Mi
 
 module.exports = ReactDOMComponent;
 }).call(this,require('_process'))
-},{"./AutoFocusUtils":30,"./CSSPropertyOperations":33,"./DOMLazyTree":37,"./DOMNamespaces":38,"./DOMProperty":39,"./DOMPropertyOperations":40,"./EventConstants":45,"./EventPluginHub":46,"./EventPluginRegistry":47,"./ReactBrowserEventEmitter":56,"./ReactComponentBrowserEnvironment":61,"./ReactDOMButton":67,"./ReactDOMComponentFlags":69,"./ReactDOMComponentTree":70,"./ReactDOMInput":77,"./ReactDOMOption":79,"./ReactDOMSelect":80,"./ReactDOMTextarea":83,"./ReactInstrumentation":99,"./ReactMultiChild":103,"./ReactServerRenderingTransaction":116,"./escapeTextContentForBrowser":143,"./isEventSupported":157,"./validateDOMNesting":166,"_process":187,"fbjs/lib/emptyFunction":8,"fbjs/lib/invariant":16,"fbjs/lib/keyOf":20,"fbjs/lib/shallowEqual":25,"fbjs/lib/warning":26,"object-assign":28}],69:[function(require,module,exports){
+},{"./AutoFocusUtils":30,"./CSSPropertyOperations":33,"./DOMLazyTree":37,"./DOMNamespaces":38,"./DOMProperty":39,"./DOMPropertyOperations":40,"./EventConstants":45,"./EventPluginHub":46,"./EventPluginRegistry":47,"./ReactBrowserEventEmitter":56,"./ReactComponentBrowserEnvironment":61,"./ReactDOMButton":67,"./ReactDOMComponentFlags":69,"./ReactDOMComponentTree":70,"./ReactDOMInput":77,"./ReactDOMOption":79,"./ReactDOMSelect":80,"./ReactDOMTextarea":83,"./ReactInstrumentation":99,"./ReactMultiChild":103,"./ReactServerRenderingTransaction":116,"./escapeTextContentForBrowser":143,"./isEventSupported":157,"./validateDOMNesting":166,"_process":185,"fbjs/lib/emptyFunction":8,"fbjs/lib/invariant":16,"fbjs/lib/keyOf":20,"fbjs/lib/shallowEqual":25,"fbjs/lib/warning":26,"object-assign":28}],69:[function(require,module,exports){
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -19311,7 +19311,7 @@ var ReactDOMComponentTree = {
 
 module.exports = ReactDOMComponentTree;
 }).call(this,require('_process'))
-},{"./DOMProperty":39,"./ReactDOMComponentFlags":69,"_process":187,"fbjs/lib/invariant":16}],71:[function(require,module,exports){
+},{"./DOMProperty":39,"./ReactDOMComponentFlags":69,"_process":185,"fbjs/lib/invariant":16}],71:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -19347,7 +19347,7 @@ function ReactDOMContainerInfo(topLevelWrapper, node) {
 
 module.exports = ReactDOMContainerInfo;
 }).call(this,require('_process'))
-},{"./validateDOMNesting":166,"_process":187}],72:[function(require,module,exports){
+},{"./validateDOMNesting":166,"_process":185}],72:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -19411,7 +19411,7 @@ ReactDOMDebugTool.addDevtool(ReactDOMUnknownPropertyDevtool);
 
 module.exports = ReactDOMDebugTool;
 }).call(this,require('_process'))
-},{"./ReactDOMUnknownPropertyDevtool":85,"_process":187,"fbjs/lib/warning":26}],73:[function(require,module,exports){
+},{"./ReactDOMUnknownPropertyDevtool":85,"_process":185,"fbjs/lib/warning":26}],73:[function(require,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -19651,7 +19651,7 @@ var ReactDOMFactories = mapObject({
 
 module.exports = ReactDOMFactories;
 }).call(this,require('_process'))
-},{"./ReactElement":89,"./ReactElementValidator":90,"_process":187,"fbjs/lib/mapObject":21}],75:[function(require,module,exports){
+},{"./ReactElement":89,"./ReactElementValidator":90,"_process":185,"fbjs/lib/mapObject":21}],75:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -19914,7 +19914,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMInput;
 }).call(this,require('_process'))
-},{"./DOMPropertyOperations":40,"./DisabledInputUtils":43,"./LinkedValueUtils":53,"./ReactDOMComponentTree":70,"./ReactUpdates":118,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],78:[function(require,module,exports){
+},{"./DOMPropertyOperations":40,"./DisabledInputUtils":43,"./LinkedValueUtils":53,"./ReactDOMComponentTree":70,"./ReactUpdates":118,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],78:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -20043,7 +20043,7 @@ var ReactDOMOption = {
 
 module.exports = ReactDOMOption;
 }).call(this,require('_process'))
-},{"./ReactChildren":58,"./ReactDOMComponentTree":70,"./ReactDOMSelect":80,"_process":187,"fbjs/lib/warning":26,"object-assign":28}],80:[function(require,module,exports){
+},{"./ReactChildren":58,"./ReactDOMComponentTree":70,"./ReactDOMSelect":80,"_process":185,"fbjs/lib/warning":26,"object-assign":28}],80:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -20259,7 +20259,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMSelect;
 }).call(this,require('_process'))
-},{"./DisabledInputUtils":43,"./LinkedValueUtils":53,"./ReactDOMComponentTree":70,"./ReactUpdates":118,"_process":187,"fbjs/lib/warning":26,"object-assign":28}],81:[function(require,module,exports){
+},{"./DisabledInputUtils":43,"./LinkedValueUtils":53,"./ReactDOMComponentTree":70,"./ReactUpdates":118,"_process":185,"fbjs/lib/warning":26,"object-assign":28}],81:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -20645,7 +20645,7 @@ _assign(ReactDOMTextComponent.prototype, {
 
 module.exports = ReactDOMTextComponent;
 }).call(this,require('_process'))
-},{"./DOMChildrenOperations":36,"./DOMLazyTree":37,"./ReactDOMComponentTree":70,"./ReactInstrumentation":99,"./escapeTextContentForBrowser":143,"./validateDOMNesting":166,"_process":187,"fbjs/lib/invariant":16,"object-assign":28}],83:[function(require,module,exports){
+},{"./DOMChildrenOperations":36,"./DOMLazyTree":37,"./ReactDOMComponentTree":70,"./ReactInstrumentation":99,"./escapeTextContentForBrowser":143,"./validateDOMNesting":166,"_process":185,"fbjs/lib/invariant":16,"object-assign":28}],83:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -20790,7 +20790,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMTextarea;
 }).call(this,require('_process'))
-},{"./DOMPropertyOperations":40,"./DisabledInputUtils":43,"./LinkedValueUtils":53,"./ReactDOMComponentTree":70,"./ReactUpdates":118,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],84:[function(require,module,exports){
+},{"./DOMPropertyOperations":40,"./DisabledInputUtils":43,"./LinkedValueUtils":53,"./ReactDOMComponentTree":70,"./ReactUpdates":118,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],84:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -20927,7 +20927,7 @@ module.exports = {
   traverseEnterLeave: traverseEnterLeave
 };
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],85:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],85:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -20994,7 +20994,7 @@ var ReactDOMUnknownPropertyDevtool = {
 
 module.exports = ReactDOMUnknownPropertyDevtool;
 }).call(this,require('_process'))
-},{"./DOMProperty":39,"./EventPluginRegistry":47,"_process":187,"fbjs/lib/warning":26}],86:[function(require,module,exports){
+},{"./DOMProperty":39,"./EventPluginRegistry":47,"_process":185,"fbjs/lib/warning":26}],86:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2016-present, Facebook, Inc.
@@ -21247,7 +21247,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactDebugTool;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeDevtool":63,"./ReactInvalidSetStateWarningDevTool":100,"./ReactNativeOperationHistoryDevtool":106,"_process":187,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/performanceNow":24,"fbjs/lib/warning":26}],87:[function(require,module,exports){
+},{"./ReactComponentTreeDevtool":63,"./ReactInvalidSetStateWarningDevTool":100,"./ReactNativeOperationHistoryDevtool":106,"_process":185,"fbjs/lib/ExecutionEnvironment":2,"fbjs/lib/performanceNow":24,"fbjs/lib/warning":26}],87:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -21717,7 +21717,7 @@ ReactElement.isValidElement = function (object) {
 
 module.exports = ReactElement;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":65,"./canDefineProperty":140,"_process":187,"fbjs/lib/warning":26,"object-assign":28}],90:[function(require,module,exports){
+},{"./ReactCurrentOwner":65,"./canDefineProperty":140,"_process":185,"fbjs/lib/warning":26,"object-assign":28}],90:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -22001,7 +22001,7 @@ var ReactElementValidator = {
 
 module.exports = ReactElementValidator;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":65,"./ReactElement":89,"./ReactPropTypeLocationNames":110,"./ReactPropTypeLocations":111,"./canDefineProperty":140,"./getIteratorFn":151,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],91:[function(require,module,exports){
+},{"./ReactCurrentOwner":65,"./ReactElement":89,"./ReactPropTypeLocationNames":110,"./ReactPropTypeLocations":111,"./canDefineProperty":140,"./getIteratorFn":151,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],91:[function(require,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -22111,7 +22111,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactErrorUtils;
 }).call(this,require('_process'))
-},{"_process":187}],93:[function(require,module,exports){
+},{"_process":185}],93:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -22592,7 +22592,7 @@ var ReactInvalidSetStateWarningDevTool = {
 
 module.exports = ReactInvalidSetStateWarningDevTool;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/warning":26}],101:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/warning":26}],101:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23139,7 +23139,7 @@ var ReactMount = {
 
 module.exports = ReactMount;
 }).call(this,require('_process'))
-},{"./DOMLazyTree":37,"./DOMProperty":39,"./ReactBrowserEventEmitter":56,"./ReactCurrentOwner":65,"./ReactDOMComponentTree":70,"./ReactDOMContainerInfo":71,"./ReactDOMFeatureFlags":75,"./ReactElement":89,"./ReactFeatureFlags":95,"./ReactInstrumentation":99,"./ReactMarkupChecksum":101,"./ReactReconciler":114,"./ReactUpdateQueue":117,"./ReactUpdates":118,"./instantiateReactComponent":156,"./setInnerHTML":162,"./shouldUpdateReactComponent":164,"_process":187,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],103:[function(require,module,exports){
+},{"./DOMLazyTree":37,"./DOMProperty":39,"./ReactBrowserEventEmitter":56,"./ReactCurrentOwner":65,"./ReactDOMComponentTree":70,"./ReactDOMContainerInfo":71,"./ReactDOMFeatureFlags":75,"./ReactElement":89,"./ReactFeatureFlags":95,"./ReactInstrumentation":99,"./ReactMarkupChecksum":101,"./ReactReconciler":114,"./ReactUpdateQueue":117,"./ReactUpdates":118,"./instantiateReactComponent":156,"./setInnerHTML":162,"./shouldUpdateReactComponent":164,"_process":185,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],103:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -23565,7 +23565,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 }).call(this,require('_process'))
-},{"./ReactChildReconciler":57,"./ReactComponentEnvironment":62,"./ReactCurrentOwner":65,"./ReactInstrumentation":99,"./ReactMultiChildUpdateTypes":104,"./ReactReconciler":114,"./flattenChildren":145,"_process":187,"fbjs/lib/emptyFunction":8,"fbjs/lib/invariant":16}],104:[function(require,module,exports){
+},{"./ReactChildReconciler":57,"./ReactComponentEnvironment":62,"./ReactCurrentOwner":65,"./ReactInstrumentation":99,"./ReactMultiChildUpdateTypes":104,"./ReactReconciler":114,"./flattenChildren":145,"_process":185,"fbjs/lib/emptyFunction":8,"fbjs/lib/invariant":16}],104:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23696,7 +23696,7 @@ var ReactNativeComponent = {
 
 module.exports = ReactNativeComponent;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16,"object-assign":28}],106:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16,"object-assign":28}],106:[function(require,module,exports){
 /**
  * Copyright 2016-present, Facebook, Inc.
  * All rights reserved.
@@ -23774,7 +23774,7 @@ var ReactNodeTypes = {
 
 module.exports = ReactNodeTypes;
 }).call(this,require('_process'))
-},{"./ReactElement":89,"_process":187,"fbjs/lib/invariant":16}],108:[function(require,module,exports){
+},{"./ReactElement":89,"_process":185,"fbjs/lib/invariant":16}],108:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -23872,7 +23872,7 @@ var ReactNoopUpdateQueue = {
 
 module.exports = ReactNoopUpdateQueue;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/warning":26}],109:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/warning":26}],109:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -23967,7 +23967,7 @@ var ReactOwner = {
 
 module.exports = ReactOwner;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],110:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],110:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -23994,7 +23994,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactPropTypeLocationNames;
 }).call(this,require('_process'))
-},{"_process":187}],111:[function(require,module,exports){
+},{"_process":185}],111:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24735,7 +24735,7 @@ var ReactReconciler = {
 
 module.exports = ReactReconciler;
 }).call(this,require('_process'))
-},{"./ReactInstrumentation":99,"./ReactRef":115,"_process":187,"fbjs/lib/invariant":16}],115:[function(require,module,exports){
+},{"./ReactInstrumentation":99,"./ReactRef":115,"_process":185,"fbjs/lib/invariant":16}],115:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -25106,7 +25106,7 @@ var ReactUpdateQueue = {
 
 module.exports = ReactUpdateQueue;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":65,"./ReactInstanceMap":98,"./ReactUpdates":118,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],118:[function(require,module,exports){
+},{"./ReactCurrentOwner":65,"./ReactInstanceMap":98,"./ReactUpdates":118,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],118:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -25368,7 +25368,7 @@ var ReactUpdates = {
 
 module.exports = ReactUpdates;
 }).call(this,require('_process'))
-},{"./CallbackQueue":34,"./PooledClass":54,"./ReactFeatureFlags":95,"./ReactInstrumentation":99,"./ReactReconciler":114,"./Transaction":136,"_process":187,"fbjs/lib/invariant":16,"object-assign":28}],119:[function(require,module,exports){
+},{"./CallbackQueue":34,"./PooledClass":54,"./ReactFeatureFlags":95,"./ReactInstrumentation":99,"./ReactReconciler":114,"./Transaction":136,"_process":185,"fbjs/lib/invariant":16,"object-assign":28}],119:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -26511,7 +26511,7 @@ var SimpleEventPlugin = {
 
 module.exports = SimpleEventPlugin;
 }).call(this,require('_process'))
-},{"./EventConstants":45,"./EventPropagators":49,"./ReactDOMComponentTree":70,"./SyntheticAnimationEvent":123,"./SyntheticClipboardEvent":124,"./SyntheticDragEvent":126,"./SyntheticEvent":127,"./SyntheticFocusEvent":128,"./SyntheticKeyboardEvent":130,"./SyntheticMouseEvent":131,"./SyntheticTouchEvent":132,"./SyntheticTransitionEvent":133,"./SyntheticUIEvent":134,"./SyntheticWheelEvent":135,"./getEventCharCode":147,"_process":187,"fbjs/lib/EventListener":1,"fbjs/lib/emptyFunction":8,"fbjs/lib/invariant":16,"fbjs/lib/keyOf":20}],123:[function(require,module,exports){
+},{"./EventConstants":45,"./EventPropagators":49,"./ReactDOMComponentTree":70,"./SyntheticAnimationEvent":123,"./SyntheticClipboardEvent":124,"./SyntheticDragEvent":126,"./SyntheticEvent":127,"./SyntheticFocusEvent":128,"./SyntheticKeyboardEvent":130,"./SyntheticMouseEvent":131,"./SyntheticTouchEvent":132,"./SyntheticTransitionEvent":133,"./SyntheticUIEvent":134,"./SyntheticWheelEvent":135,"./getEventCharCode":147,"_process":185,"fbjs/lib/EventListener":1,"fbjs/lib/emptyFunction":8,"fbjs/lib/invariant":16,"fbjs/lib/keyOf":20}],123:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -26928,7 +26928,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
   }
 }
 }).call(this,require('_process'))
-},{"./PooledClass":54,"_process":187,"fbjs/lib/emptyFunction":8,"fbjs/lib/warning":26,"object-assign":28}],128:[function(require,module,exports){
+},{"./PooledClass":54,"_process":185,"fbjs/lib/emptyFunction":8,"fbjs/lib/warning":26,"object-assign":28}],128:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -27596,7 +27596,7 @@ var Transaction = {
 
 module.exports = Transaction;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],137:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],137:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -27686,7 +27686,7 @@ function accumulateInto(current, next) {
 
 module.exports = accumulateInto;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/invariant":16}],139:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/invariant":16}],139:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -27757,7 +27757,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = canDefineProperty;
 }).call(this,require('_process'))
-},{"_process":187}],141:[function(require,module,exports){
+},{"_process":185}],141:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -27870,7 +27870,7 @@ function dangerousStyleValue(name, value, component) {
 
 module.exports = dangerousStyleValue;
 }).call(this,require('_process'))
-},{"./CSSProperty":32,"_process":187,"fbjs/lib/warning":26}],143:[function(require,module,exports){
+},{"./CSSProperty":32,"_process":185,"fbjs/lib/warning":26}],143:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -27970,7 +27970,7 @@ function findDOMNode(componentOrElement) {
 
 module.exports = findDOMNode;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":65,"./ReactDOMComponentTree":70,"./ReactInstanceMap":98,"./getNativeComponentFromComposite":152,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],145:[function(require,module,exports){
+},{"./ReactCurrentOwner":65,"./ReactDOMComponentTree":70,"./ReactInstanceMap":98,"./getNativeComponentFromComposite":152,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],145:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -28022,7 +28022,7 @@ function flattenChildren(children) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":52,"./traverseAllChildren":165,"_process":187,"fbjs/lib/warning":26}],146:[function(require,module,exports){
+},{"./KeyEscapeUtils":52,"./traverseAllChildren":165,"_process":185,"fbjs/lib/warning":26}],146:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -28717,7 +28717,7 @@ function instantiateReactComponent(node) {
 
 module.exports = instantiateReactComponent;
 }).call(this,require('_process'))
-},{"./ReactCompositeComponent":64,"./ReactEmptyComponent":91,"./ReactInstrumentation":99,"./ReactNativeComponent":105,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],157:[function(require,module,exports){
+},{"./ReactCompositeComponent":64,"./ReactEmptyComponent":91,"./ReactInstrumentation":99,"./ReactNativeComponent":105,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26,"object-assign":28}],157:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -28859,7 +28859,7 @@ function onlyChild(children) {
 
 module.exports = onlyChild;
 }).call(this,require('_process'))
-},{"./ReactElement":89,"_process":187,"fbjs/lib/invariant":16}],160:[function(require,module,exports){
+},{"./ReactElement":89,"_process":185,"fbjs/lib/invariant":16}],160:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -29231,7 +29231,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 
 module.exports = traverseAllChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":52,"./ReactCurrentOwner":65,"./ReactElement":89,"./getIteratorFn":151,"_process":187,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],166:[function(require,module,exports){
+},{"./KeyEscapeUtils":52,"./ReactCurrentOwner":65,"./ReactElement":89,"./getIteratorFn":151,"_process":185,"fbjs/lib/invariant":16,"fbjs/lib/warning":26}],166:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -29603,7 +29603,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = validateDOMNesting;
 }).call(this,require('_process'))
-},{"_process":187,"fbjs/lib/emptyFunction":8,"fbjs/lib/warning":26,"object-assign":28}],167:[function(require,module,exports){
+},{"_process":185,"fbjs/lib/emptyFunction":8,"fbjs/lib/warning":26,"object-assign":28}],167:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/React');
@@ -29614,9 +29614,11 @@ function obtainServerRootUrl() {
     if (rootUrl.endsWith("/")) {
         rootUrl = rootUrl.substring(0, rootUrl.length - 1);
     }
+    console.log('[RESOURCES HOLDER] root url: ' + rootUrl);
+    return rootUrl;
 }
 
-var serverRootUrl = obtainServerRootUrl();
+var serverRootUrl = obtainServerRootUrl() + "/services";
 
 var appRestResourcesHolder = {
 
@@ -29624,7 +29626,7 @@ var appRestResourcesHolder = {
 
     jwtValidation: {
         url: serverRootUrl + "/auth/tokens/validation",
-        method: "GET",
+        method: "POST",
         jwtValid: 200,
         jwtValidButExpired: 302,
         jwtInvalid: 401
@@ -29632,16 +29634,26 @@ var appRestResourcesHolder = {
 
     registration: {
         url: serverRootUrl + "/auth/users/registration",
-        method: "GET",
+        method: "POST",
         success: 200,
-        failed: 401
+        unauthorized: 401
+    },
+
+    nickNames: {
+        url: function (nickName) {
+            return serverRootUrl + "/auth/users/nicknames/" + nickName;
+        },
+        method: "GET",
+        found: 302,
+        notFound: 404
     },
 
     login: {
         url: serverRootUrl + "/auth/users/login",
-        method: "GET",
+        method: "POST",
         success: 200,
-        failed: 401
+        unauthorized: 401,
+        badRequest: 400
     }
 
 };
@@ -29649,50 +29661,206 @@ var appRestResourcesHolder = {
 module.exports = appRestResourcesHolder;
 
 },{}],169:[function(require,module,exports){
-var appStorageKeys = {
+var appRootPages = {
+    loginPage: "login",
+    mainPage: "main",
+    registrationPage: "reg",
+    errorPage: "error"
+};
+
+module.exports = appRootPages;
+
+},{}],170:[function(require,module,exports){
+var appStorage = {
 
     JWTKey: "beam.server.ui.jwt",
     userRoleKey: "beam.server.ui.user.role",
-    userNameKey: "beam.server.ui.user.name",
-    userNickNameKey: "beam.server.ui.user.nick"
+    userIdKey: "beam.server.ui.user.id",
+    userNickNameKey: "beam.server.ui.user.nick",
+
+    hasAuthInfo: function () {
+        return localStorage.getItem(this.JWTKey) != null && localStorage.getItem(this.userRoleKey) != null && localStorage.getItem(this.userIdKey) != null && localStorage.getItem(this.userNickNameKey) != null;
+    }
 };
 
-module.exports = appStorageKeys;
+module.exports = appStorage;
 
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 var inlineStyles = {
 
+    getInputStyle: function (isInputValid) {
+        if (isInputValid) {
+            return this.inputValidStyle;
+        } else {
+            return this.inputInvalidStyle;
+        }
+    },
+
+    getRegistrationButtonStyle: function (isRegistrationAllowed) {
+        if (isRegistrationAllowed) {
+            return this.registrationButtonActiveStyle;
+        } else {
+            return this.registrationButtonInactiveStyle;
+        }
+    },
+
+    registrationButtonInactiveStyle: {
+        color: '#D5D5D5',
+        height: '30px',
+        width: '90px',
+        boxSizing: 'border-box',
+        opacity: '0.85',
+        fontFamily: 'Verdana',
+        fontSize: '15px',
+        borderRadius: '6px',
+        border: '1px solid lightgrey',
+        backgroundColor: '#fafafa',
+        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        margin: '0 15px 0 0'
+    },
+
+    registrationButtonActiveStyle: {
+        color: '#1C1C1C',
+        height: '30px',
+        width: '90px',
+        boxSizing: 'border-box',
+        opacity: '0.85',
+        fontFamily: 'Verdana',
+        fontSize: '15px',
+        borderRadius: '6px',
+        border: '1px solid lightgrey',
+        backgroundColor: '#fafafa',
+        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        margin: '0 15px 0 0'
+    },
+
     loginButtonInactiveStyle: {
-        // TODO
+        color: '#D5D5D5',
+        height: '30px',
+        width: '90px',
+        boxSizing: 'border-box',
+        opacity: '0.85',
+        fontFamily: 'Verdana',
+        fontSize: '15px',
+        borderRadius: '6px',
+        border: '1px solid lightgrey',
+        backgroundColor: '#fafafa',
+        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        margin: '0 15px 0 0'
     },
 
     loginButtonActiveStyle: {
-        // TODO
+        color: '#1C1C1C',
+        height: '30px',
+        width: '90px',
+        boxSizing: 'border-box',
+        opacity: '0.85',
+        fontFamily: 'Verdana',
+        fontSize: '15px',
+        borderRadius: '6px',
+        border: '1px solid lightgrey',
+        backgroundColor: '#fafafa',
+        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        margin: '0 15px 0 0'
     },
 
     inputValidStyle: {
-        // TODO
+        backgroundColor: 'white',
+        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey'
     },
 
     inputInvalidStyle: {
-        // TODO
+        backgroundColor: '#FFF8F6',
+        boxShadow: 'inset 0px 0px 5px 0px #FFD7CE',
+        WebkitBoxShadow: 'inset 0px 0px 5px 0px #FFD7CE ',
+        MozBoxShadow: 'inset 0px 0px 5px 0px #FFD7CE ',
+        OBoxShadow: 'inset 0px 0px 5px 0px #FFD7CE '
     }
 };
 
 module.exports = inlineStyles;
 
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
+var $ = require('jquery');
+
+var appRestResourcesHolder = require('./app-rest-resources-holder.js');
+
+var minimumNameLength = 2;
+var minimumPasswordLength = 7;
+var minimumEmailLength = 3;
+
 var inputValidator = {
 
+    checkIfNickNameIsFree: function (nickName, isFreeCallback, isNotFreeCallback) {
+        $.ajax({
+            method: appRestResourcesHolder.nickNames.method,
+            url: appRestResourcesHolder.nickNames.url(nickName),
+            statusCode: {
+                302: function () {
+                    // nickName found among nicknames that are already registered
+                    // it is not free
+                    console.log('[INPUT VALIDATOR] nick is not free');
+                    isNotFreeCallback();
+                },
+                404: function () {
+                    // nickName not found among nicknames that are already registered
+                    // it is free
+                    console.log('[INPUT VALIDATOR] nick is free');
+                    isFreeCallback();
+                }
+            }
+        });
+    },
+
     validateNickName: function (nickName) {
-        if (nickName.length < 2) {
+        if (nickName.length < minimumNameLength) {
+            return false;
+        }
+        return true;
+    },
+
+    validateName: function (newName) {
+        if (newName.length < minimumNameLength) {
+            return false;
+        }
+        return true;
+    },
+
+    validateEmail: function (email) {
+        if (!email.includes('@')) {
+            return false;
+        } else if (email.length < minimumEmailLength) {
             return false;
         }
         return true;
     },
 
     validatePassword: function (password) {
-        if (password.length < 7) {
+        if (password.length < minimumPasswordLength) {
+            return false;
+        }
+        return true;
+    },
+
+    validatePasswords: function (pass1, pass2) {
+        if (pass1 != pass2) {
+            return false;
+        } else if (pass1.length < minimumPasswordLength) {
             return false;
         }
         return true;
@@ -29701,69 +29869,84 @@ var inputValidator = {
 
 module.exports = inputValidator;
 
-},{}],172:[function(require,module,exports){
-var React = require('react');
+},{"./app-rest-resources-holder.js":168,"jquery":27}],173:[function(require,module,exports){
+
+var jwtUtil = {
+
+    decodeJwtClaims: function (jwt) {
+        var parts = jwt.split(".");
+        if (parts.length == 3) {
+            var claims = JSON.parse(atob(parts[1]));
+            console.log('[JWT UTIL] obtained claims: ' + claims);
+            return claims;
+        } else {
+            var i = 0;
+            for (; i < parts.length; i++) {
+                console.log('[JWT UTIL] part ' + i + ": " + parts[i]);
+            }
+            throw "JWT is not a valid JWT as it contains more than 3 parts, separated by '.' char.";
+        }
+    }
+};
+
+module.exports = jwtUtil;
+
+},{}],174:[function(require,module,exports){
+var React = require("react");
 var ReactDOM = require('react-dom');
+var $ = require('jquery');
 
-var appStorageKeys = require('./app-storage-keys.js');
-var LoginPage = require('./react-components/root-pages/login-page.js');
+var SpaRootPage = require('./spa-root-page.js');
 
-function logoutAndRenderLoginPage() {
-    localStorage.removeItem(appStorageKeys.JWTKey);
-    localStorage.removeItem(appStorageKeys.userRoleKey);
-    localStorage.removeItem(appStorageKeys.userNameKey);
-    localStorage.removeItem(appStorageKeys.userNickNameKey);
-    ReactDOM.render(React.createElement(LoginPage, null), document.getElementById('content'));
+var appRestResourcesHolder = require('./app-rest-resources-holder.js');
+var appStorage = require('./app-storage.js');
+var appRootPages = require('./app-root-pages.js');
+
+function renderApplication(initialPage) {
+    console.log('[MAIN] render app...');
+    ReactDOM.render(React.createElement(SpaRootPage, { initial: initialPage }), document.getElementById('content'));
 }
 
-module.exports = logoutAndRenderLoginPage;
-
-},{"./app-storage-keys.js":169,"./react-components/root-pages/login-page.js":180,"react":167,"react-dom":29}],173:[function(require,module,exports){
-var appRestResourcesHolder = require('./app-rest-resources-holder.js');
-var appStorageKeys = require('./app-storage-keys.js');
-
-// Top-level React render function
-var renderLoginPage = require('./render-login-page.js');
-var renderMainPage = require('./render-main-page.js');
-var renderRegistrationPage = require('./render-registration-page.js');
-var renderErrorPage = require('./render-error-page.js');
-var logoutAndRenderLoginPage = require('./logout-and-render-login-page.js');
-
-function renderInitialPage() {
-    if (localStorage.getItem(appStorageKeys.JWTKey) == null) {
-        renderLoginPage();
+function startApplication() {
+    console.log('[MAIN] start app...');
+    if (localStorage.getItem(appStorage.JWTKey) == null) {
+        renderApplication(appRootPages.loginPage);
     } else {
         $.ajax({
             method: appRestResourcesHolder.jwtValidation.method,
             url: appRestResourcesHolder.jwtValidation.url,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem(appStorageKeys.JWTKey));
-            }
-        }).always(function (data, statusText, xhr) {
-            var responseStatusCode = xhr.status;
-            console.log('[MAIN] verify JWT, response status code: ' + responseStatusCode);
-            if (responseStatusCode == appRestResourcesHolder.jwtValidation.jwtValid) {
-                renderMainPage();
-            } else if (responseStatusCode == appRestResourcesHolder.jwtValidation.jwtValidButExpired) {
-                logoutAndRenderLoginPage();
-            } else if (responseStatusCode == appRestResourcesHolder.jwtValidation.jwtInvalid) {
-                renderRegistrationPage();
-            } else {
-                console.error('[MAIN] JWT verification failed.');
-                var error = {
-                    title: "Json Web Token verification failure.",
-                    description: "Error during Json Web Token verification attempt. Response status code" + " is neither 200 (JWT is valid), nor 302 (JWT is valid, but has expired), nor 401 " + "(JWT is invalid).",
-                    source: xhr
-                };
-                renderErrorPage(error);
+                xhr.setRequestHeader('Authentication', 'Bearer ' + localStorage.getItem(appStorage.JWTKey));
+            },
+            statusCode: {
+                200: function () {
+                    console.log('[MAIN] define initial page: ' + appRootPages.mainPage);
+                    renderApplication(appRootPages.mainPage);
+                },
+                302: function () {
+                    localStorage.removeItem(appStorage.JWTKey);
+                    localStorage.removeItem(appStorage.userRoleKey);
+                    localStorage.removeItem(appStorage.userIdKey);
+                    localStorage.removeItem(appStorage.userNickNameKey);
+                    console.log('[MAIN] define initial page: ' + appRootPages.loginPage);
+                    renderApplication(appRootPages.loginPage);
+                },
+                401: function () {
+                    localStorage.removeItem(appStorage.JWTKey);
+                    localStorage.removeItem(appStorage.userRoleKey);
+                    localStorage.removeItem(appStorage.userIdKey);
+                    localStorage.removeItem(appStorage.userNickNameKey);
+                    console.log('[MAIN] define initial page: ' + appRootPages.registrationPage);
+                    renderApplication(appRootPages.registrationPage);
+                }
             }
         });
     }
 }
 
-renderInitialPage();
+startApplication();
 
-},{"./app-rest-resources-holder.js":168,"./app-storage-keys.js":169,"./logout-and-render-login-page.js":172,"./render-error-page.js":183,"./render-login-page.js":184,"./render-main-page.js":185,"./render-registration-page.js":186}],174:[function(require,module,exports){
+},{"./app-rest-resources-holder.js":168,"./app-root-pages.js":169,"./app-storage.js":170,"./spa-root-page.js":184,"jquery":27,"react":167,"react-dom":29}],175:[function(require,module,exports){
 var React = require('react');
 
 var LoginFailureMessage = React.createClass({
@@ -29784,7 +29967,7 @@ var LoginFailureMessage = React.createClass({
 
 module.exports = LoginFailureMessage;
 
-},{"react":167}],175:[function(require,module,exports){
+},{"react":167}],176:[function(require,module,exports){
 var React = require('react');
 
 var inlineStyles = require('../../../inline-styles.js');
@@ -29832,19 +30015,11 @@ var LoginForm = React.createClass({
     },
 
     getNickNameInputStyle: function () {
-        if (inputValidator.validateNickName(this.state.nickName)) {
-            return inlineStyles.inputValidStyle;
-        } else {
-            return inlineStyles.inputInvalidStyle;
-        }
+        return inlineStyles.getInputStyle(inputValidator.validateNickName(this.state.nickName));
     },
 
     getPasswordInputStyle: function () {
-        if (inputValidator.validatePassword(this.state.password)) {
-            return inlineStyles.inputValidStyle;
-        } else {
-            return inlineStyles.inputInvalidStyle;
-        }
+        return inlineStyles.getInputStyle(inputValidator.validatePassword(this.state.password));
     },
 
     render: function () {
@@ -29901,22 +30076,399 @@ var LoginForm = React.createClass({
 
 module.exports = LoginForm;
 
-},{"../../../inline-styles.js":170,"../../../input-validator.js":171,"react":167}],176:[function(require,module,exports){
-/**
- * Created by Diarsid on 28.06.2016.
- */
+},{"../../../inline-styles.js":171,"../../../input-validator.js":172,"react":167}],177:[function(require,module,exports){
+var React = require("react");
 
-},{}],177:[function(require,module,exports){
-/**
- * Created by Diarsid on 28.06.2016.
- */
+var RegistrationFailureMessage = React.createClass({
+    displayName: "RegistrationFailureMessage",
 
-},{}],178:[function(require,module,exports){
-/**
- * Created by Diarsid on 28.06.2016.
- */
 
-},{}],179:[function(require,module,exports){
+    render: function () {
+        if (this.props.showMessage) {
+            return React.createElement(
+                "div",
+                { className: "registration-failure-message" },
+                this.props.failureText
+            );
+        } else {
+            return null;
+        }
+    }
+});
+
+module.exports = RegistrationFailureMessage;
+
+},{"react":167}],178:[function(require,module,exports){
+var React = require("react");
+
+var RegistrationInputHint = require('./registration-input-hint.js');
+
+var inlineStyles = require('../../../inline-styles.js');
+var inputValidator = require('../../../input-validator.js');
+
+var RegistrationForm = React.createClass({
+    displayName: 'RegistrationForm',
+
+
+    getInitialState: function () {
+        return {
+            nickName: "",
+            name: "",
+            surname: "",
+            email: "",
+            password: "",
+            confirmedPassword: "",
+
+            nickNameIsFree: true,
+            nickNameValid: false,
+            nameValid: false,
+            surnameValid: false,
+            emailValid: false,
+            passwordValid: false,
+            confirmedPasswordValid: false,
+
+            nickNameInvalidMessage: " < enter nick name",
+            nameInvalidMessage: " < enter name",
+            surnameInvalidMessage: " < enter surname",
+            emailInvalidMessage: " < enter email",
+            passwordInvalidMessage: " < enter password",
+            confirmedPasswordInvalidMessage: " < confirm password"
+        };
+    },
+
+    register: function () {
+        if (this.isRegistrationAllowed()) {
+            this.props.registerAction(this.state.nickName, this.state.name, this.state.surname, this.state.email, this.state.password);
+        }
+    },
+
+    getNickNameInputStyle: function () {
+        return inlineStyles.getInputStyle(this.state.nickNameIsFree && this.state.nickNameValid);
+    },
+
+    getNameInputStyle: function () {
+        return inlineStyles.getInputStyle(this.state.nameValid);
+    },
+
+    getSurnameInputStyle: function () {
+        return inlineStyles.getInputStyle(this.state.surnameValid);
+    },
+
+    getEmailInputStyle: function () {
+        return inlineStyles.getInputStyle(this.state.emailValid);
+    },
+
+    getEnterPasswordInputStyle: function () {
+        return inlineStyles.getInputStyle(this.state.passwordValid);
+    },
+
+    getConfirmedPasswordInputStyle: function () {
+        return inlineStyles.getInputStyle(this.state.confirmedPasswordValid);
+    },
+
+    isRegistrationAllowed: function () {
+        return this.state.nickNameIsFree && this.state.nickNameValid && this.state.nameValid && this.state.surnameValid && this.state.emailValid && this.state.passwordValid && this.state.confirmedPasswordValid;
+    },
+
+    getRegistrationButtonStyle: function () {
+        return inlineStyles.getRegistrationButtonStyle(this.isRegistrationAllowed());
+    },
+
+    nickNameFreeCallback: function () {
+        console.log('[REG FORM] nick free');
+        this.setState({
+            nickNameIsFree: true,
+            nickNameValid: true,
+            nickNameInvalidMessage: ""
+        });
+    },
+
+    nickNameNotFreeCallback: function () {
+        console.log('[REG FORM] nick not free');
+        this.setState({
+            nickNameIsFree: false,
+            nickNameValid: true,
+            nickNameInvalidMessage: " < this nick name is not free"
+        });
+    },
+
+    nickNameChanged: function (event) {
+        var newNickName = event.target.value;
+
+        if (inputValidator.validateNickName(newNickName)) {
+            inputValidator.checkIfNickNameIsFree(newNickName, this.nickNameFreeCallback, this.nickNameNotFreeCallback);
+            this.setState({
+                nickName: newNickName
+            });
+        } else {
+            this.setState({
+                nickName: newNickName,
+                nickNameIsFree: true,
+                nickNameValid: false,
+                nickNameInvalidMessage: " < this nick name is invalid"
+            });
+        }
+    },
+
+    nameChanged: function (event) {
+        var newName = event.target.value;
+        if (inputValidator.validateName(newName)) {
+            this.setState({
+                name: newName,
+                nameValid: true,
+                nameInvalidMessage: ""
+            });
+        } else {
+            this.setState({
+                name: newName,
+                nameValid: false,
+                nameInvalidMessage: " < name must be longer than 1 character"
+            });
+        }
+    },
+
+    surnameChanged: function (event) {
+        var newSurname = event.target.value;
+        if (inputValidator.validateName(newSurname)) {
+            this.setState({
+                surname: newSurname,
+                surnameValid: true,
+                surnameInvalidMessage: ""
+            });
+        } else {
+            this.setState({
+                surname: newSurname,
+                surnameValid: false,
+                surnameInvalidMessage: " < surname must be longer than 1 character"
+            });
+        }
+    },
+
+    emailChanged: function (event) {
+        var newEmail = event.target.value;
+        if (inputValidator.validateEmail(newEmail)) {
+            this.setState({
+                email: newEmail,
+                emailValid: true,
+                emailInvalidMessage: ""
+            });
+        } else {
+            this.setState({
+                email: newEmail,
+                emailValid: false,
+                emailInvalidMessage: " < email must be of the right format"
+            });
+        }
+    },
+
+    passwordChanged: function (event) {
+        var newPassword = event.target.value;
+        if (inputValidator.validatePassword(newPassword)) {
+            if (inputValidator.validatePasswords(newPassword, this.state.confirmedPassword)) {
+                this.setState({
+                    password: newPassword,
+                    passwordValid: true,
+                    confirmedPasswordValid: true,
+                    passwordInvalidMessage: "",
+                    confirmedPasswordInvalidMessage: ""
+                });
+            } else {
+                this.setState({
+                    password: newPassword,
+                    passwordValid: true,
+                    confirmedPasswordValid: false,
+                    passwordInvalidMessage: "",
+                    confirmedPasswordInvalidMessage: " < passwords do not match"
+                });
+            }
+        } else {
+            if (inputValidator.validatePasswords(newPassword, this.state.confirmedPassword)) {
+                this.setState({
+                    password: newPassword,
+                    passwordValid: false,
+                    confirmedPasswordValid: true,
+                    passwordInvalidMessage: " < password must be longer than 6 chars",
+                    confirmedPasswordInvalidMessage: ""
+                });
+            } else {
+                this.setState({
+                    password: newPassword,
+                    passwordValid: false,
+                    confirmedPasswordValid: false,
+                    passwordInvalidMessage: " < password must be longer than 6 chars",
+                    confirmedPasswordInvalidMessage: " < passwords do not match"
+                });
+            }
+        }
+    },
+
+    confirmedPasswordChanged: function (event) {
+        var newConfirmedPassword = event.target.value;
+        if (inputValidator.validatePasswords(this.state.password, newConfirmedPassword)) {
+            this.setState({
+                confirmedPassword: newConfirmedPassword,
+                confirmedPasswordValid: true,
+                confirmedPasswordInvalidMessage: ""
+            });
+        } else {
+            this.setState({
+                confirmedPassword: newConfirmedPassword,
+                confirmedPasswordValid: false,
+                confirmedPasswordInvalidMessage: " < passwords do not match"
+            });
+        }
+    },
+
+    render: function () {
+        var nickNameInputStyle = this.getNickNameInputStyle();
+        var nameInputStyle = this.getNameInputStyle();
+        var surnameInputStyle = this.getSurnameInputStyle();
+        var emailInputStyle = this.getEmailInputStyle();
+        var passwordInputStyle = this.getEnterPasswordInputStyle();
+        var confirmedPasswordInputStyle = this.getConfirmedPasswordInputStyle();
+        var registrationButtonStyle = this.getRegistrationButtonStyle();
+        return React.createElement(
+            'div',
+            { className: 'registration-form' },
+            React.createElement(
+                'form',
+                null,
+                React.createElement(
+                    'fieldset',
+                    null,
+                    React.createElement(
+                        'label',
+                        { 'class': 'registration-form-label' },
+                        'Nickname:'
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('input', { type: 'text',
+                        className: 'registration-form-input',
+                        placeholder: 'nick_name',
+                        style: nickNameInputStyle,
+                        value: this.state.nickName,
+                        onChange: this.nickNameChanged }),
+                    React.createElement(RegistrationInputHint, {
+                        showHint: !this.state.nickNameValid | !this.state.nickNameIsFree,
+                        message: this.state.nickNameInvalidMessage }),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'label',
+                        { 'class': 'registration-form-label' },
+                        'Name:'
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('input', { type: 'text',
+                        className: 'registration-form-input',
+                        placeholder: 'name',
+                        style: nameInputStyle,
+                        value: this.state.name,
+                        onChange: this.nameChanged }),
+                    React.createElement(RegistrationInputHint, {
+                        showHint: !this.state.nameValid,
+                        message: this.state.nameInvalidMessage }),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'label',
+                        { 'class': 'registration-form-label' },
+                        'Surname:'
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('input', { type: 'text',
+                        className: 'registration-form-input',
+                        placeholder: 'surname',
+                        style: surnameInputStyle,
+                        value: this.state.surname,
+                        onChange: this.surnameChanged }),
+                    React.createElement(RegistrationInputHint, {
+                        showHint: !this.state.surnameValid,
+                        message: this.state.surnameInvalidMessage }),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'label',
+                        { 'class': 'registration-form-label' },
+                        'Email:'
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('input', { type: 'text',
+                        className: 'registration-form-input',
+                        placeholder: '...@...',
+                        style: emailInputStyle,
+                        value: this.state.email,
+                        onChange: this.emailChanged }),
+                    React.createElement(RegistrationInputHint, {
+                        showHint: !this.state.emailValid,
+                        message: this.state.emailInvalidMessage }),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'label',
+                        { className: 'registration-form-label' },
+                        'Enter password:'
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('input', { type: 'password',
+                        className: 'registration-form-input',
+                        style: passwordInputStyle,
+                        value: this.state.password,
+                        onChange: this.passwordChanged }),
+                    React.createElement(RegistrationInputHint, {
+                        showHint: !this.state.passwordValid,
+                        message: this.state.passwordInvalidMessage }),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'label',
+                        { className: 'registration-form-label' },
+                        'Confirm password:'
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('input', { type: 'password',
+                        className: 'registration-form-input',
+                        style: confirmedPasswordInputStyle,
+                        value: this.state.confirmedPassword,
+                        onChange: this.confirmedPasswordChanged }),
+                    React.createElement(RegistrationInputHint, {
+                        showHint: !this.state.confirmedPasswordValid,
+                        message: this.state.confirmedPasswordInvalidMessage }),
+                    React.createElement('br', null)
+                )
+            ),
+            React.createElement(
+                'button',
+                { type: 'button',
+                    className: 'registration-button',
+                    style: registrationButtonStyle,
+                    onClick: this.register },
+                'OK'
+            )
+        );
+    }
+});
+
+module.exports = RegistrationForm;
+
+},{"../../../inline-styles.js":171,"../../../input-validator.js":172,"./registration-input-hint.js":179,"react":167}],179:[function(require,module,exports){
+var React = require("react");
+
+var RegistrationInputHint = React.createClass({
+    displayName: "RegistrationInputHint",
+
+
+    render: function () {
+        if (this.props.showHint) {
+            return React.createElement(
+                "label",
+                { "class": "registration-form-input-hint" },
+                this.props.message
+            );
+        } else {
+            return null;
+        }
+    }
+});
+
+module.exports = RegistrationInputHint;
+
+},{"react":167}],180:[function(require,module,exports){
 var React = require("react");
 
 var ErrorPage = React.createClass({
@@ -29928,19 +30480,33 @@ var ErrorPage = React.createClass({
             { className: "error-page" },
             "Error page",
             React.createElement(
-                "div",
-                null,
-                this.props.error.title
+                "button",
+                { type: "button",
+                    className: "go-to-registration-button",
+                    onClick: this.props.renderRegPage },
+                "Registration"
+            ),
+            React.createElement(
+                "button",
+                { type: "button",
+                    className: "go-to-login-button",
+                    onClick: this.props.renderLoginPage },
+                "Login"
             ),
             React.createElement(
                 "div",
                 null,
-                this.props.error.description
+                this.props.title
             ),
             React.createElement(
                 "div",
                 null,
-                this.props.error.source.toString()
+                this.props.description
+            ),
+            React.createElement(
+                "div",
+                null,
+                this.props.source
             )
         );
     }
@@ -29948,48 +30514,17 @@ var ErrorPage = React.createClass({
 
 module.exports = ErrorPage;
 
-},{"react":167}],180:[function(require,module,exports){
+},{"react":167}],181:[function(require,module,exports){
 var React = require('react');
 var $ = require('jquery');
 
-var appStorageKeys = require('../../app-storage-keys.js');
+var appStorage = require('../../app-storage.js');
 var appRestResourcesHolder = require('../../app-rest-resources-holder.js');
-
-var renderErrorPage = require('../../render-error-page.js');
-var renderMainPage = require('../../render-main-page.js');
+var jwtUtil = require('../../jwt-util.js');
 
 // React login page react-components
 var LoginForm = require('../pages-inner-components/login/login-form.js');
 var LoginFailureMessage = require('../pages-inner-components/login/login-failure-message.js');
-
-function processAjaxLoginRequest(data, statusText, xhr) {
-    var statusCode = xhr.status;
-    if (statusCode == appRestResourcesHolder.login.success) {
-        console.log("[LOGIN PAGE] login successful.");
-        var userName = xhr.getResponseHeader(appStorageKeys.userNameKey);
-        var userNickName = xhr.getResponseHeader(appStorageKeys.userNickNameKey);
-        var userRole = xhr.getResponseHeader(appStorageKeys.userRoleKey);
-        var jwt = xhr.getResponseHeader("jwt");
-        localStorage.setItem(appStorageKeys.userNameKey, userName);
-        localStorage.setItem(appStorageKeys.userNickNameKey, userNickName);
-        localStorage.setItem(appStorageKeys.userRoleKey, userRole);
-        localStorage.setItem(appStorageKeys.JWTKey, jwt);
-        renderMainPage();
-    } else if (statusCode == appRestResourcesHolder.login.failed) {
-        console.log("[LOGIN PAGE] login failed, access denied.");
-        this.setState({
-            showLoginFailedMessage: true
-        });
-    } else {
-        console.log("[LOGIN PAGE] error during login request.");
-        var error = {
-            title: "Login error",
-            description: "Error occurred during a login attempt. " + "The Ajax response status code is neither 200 nor 401. ",
-            source: xhr
-        };
-        renderErrorPage(error);
-    }
-}
 
 var LoginPage = React.createClass({
     displayName: 'LoginPage',
@@ -29997,16 +30532,18 @@ var LoginPage = React.createClass({
 
     getInitialState: function () {
         return {
-            showLoginFailedMessage: false
+            showLoginFailedMessage: false,
+            failureText: ""
         };
     },
 
     tryToLogin: function (nickName, password) {
+        var self = this;
         console.log('[LOGIN PAGE] try to login with: ' + nickName + ":" + password);
-        localStorage.removeItem(appStorageKeys.JWTKey);
-        localStorage.removeItem(appStorageKeys.userRoleKey);
-        localStorage.removeItem(appStorageKeys.userNameKey);
-        localStorage.removeItem(appStorageKeys.userNickNameKey);
+        localStorage.removeItem(appStorage.JWTKey);
+        localStorage.removeItem(appStorage.userRoleKey);
+        localStorage.removeItem(appStorage.userIdKey);
+        localStorage.removeItem(appStorage.userNickNameKey);
         var loginData = {
             "password": password,
             "nickName": nickName
@@ -30015,8 +30552,37 @@ var LoginPage = React.createClass({
             url: appRestResourcesHolder.login.url,
             method: appRestResourcesHolder.login.method,
             data: JSON.stringify(loginData),
-            cache: false
-        }).always(processAjaxLoginRequest);
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            statusCode: {
+                200: function (xhr) {
+                    console.log("[LOGIN PAGE] login successful.");
+                    console.log(xhr);
+                    var jwtString = xhr.getResponseHeader("jwt");
+                    var claims = jwtUtil.decodeJwtClaims(jwtString);
+                    localStorage.setItem(appStorage.userIdKey, claims.id);
+                    localStorage.setItem(appStorage.userNickNameKey, claims.nickName);
+                    localStorage.setItem(appStorage.userRoleKey, claims.role);
+                    localStorage.setItem(appStorage.JWTKey, jwtString);
+                    self.props.renderMainPage();
+                },
+                401: function (xhr, statusText, errorThrown) {
+                    console.log("[LOGIN PAGE] login failed, UNAUTHORIZED.");
+                    self.setState({
+                        showLoginFailedMessage: true,
+                        failureText: "Login data not accepted by server. It seems, nickname or password is invaild."
+                    });
+                },
+                400: function (xhr, statusText, errorThrown) {
+                    console.log("[LOGIN PAGE] login failed, BAD_REQUEST.");
+                    self.setState({
+                        showLoginFailedMessage: true,
+                        failureText: "Login data is malformed."
+                    });
+                }
+            }
+        });
     },
 
     render: function () {
@@ -30024,16 +30590,26 @@ var LoginPage = React.createClass({
             'div',
             { className: 'login-page' },
             'Login page',
+            React.createElement(
+                'button',
+                { type: 'button',
+                    className: 'go-to-registration-button',
+                    onClick: this.props.renderRegPage },
+                'Registration'
+            ),
             React.createElement(LoginForm, { loginAction: this.tryToLogin }),
-            React.createElement(LoginFailureMessage, { showMessage: this.state.showLoginFailedMessage })
+            React.createElement(LoginFailureMessage, { showMessage: this.state.showLoginFailedMessage,
+                messageText: this.state.failureText })
         );
     }
 });
 
 module.exports = LoginPage;
 
-},{"../../app-rest-resources-holder.js":168,"../../app-storage-keys.js":169,"../../render-error-page.js":183,"../../render-main-page.js":185,"../pages-inner-components/login/login-failure-message.js":174,"../pages-inner-components/login/login-form.js":175,"jquery":27,"react":167}],181:[function(require,module,exports){
+},{"../../app-rest-resources-holder.js":168,"../../app-storage.js":170,"../../jwt-util.js":173,"../pages-inner-components/login/login-failure-message.js":175,"../pages-inner-components/login/login-form.js":176,"jquery":27,"react":167}],182:[function(require,module,exports){
 var React = require("react");
+
+var appStorage = require('../../app-storage.js');
 
 var MainPage = React.createClass({
     displayName: "MainPage",
@@ -30042,34 +30618,60 @@ var MainPage = React.createClass({
         return React.createElement(
             "div",
             { className: "main-page" },
-            "Main page"
+            React.createElement(
+                "button",
+                { type: "button",
+                    className: "logout-button",
+                    onClick: this.props.logout },
+                "Logout"
+            ),
+            React.createElement(
+                "div",
+                null,
+                "Welcome, ",
+                localStorage.getItem(appStorage.userNickNameKey)
+            ),
+            React.createElement(
+                "div",
+                null,
+                "Main page"
+            )
         );
     }
 });
 
 module.exports = MainPage;
 
-},{"react":167}],182:[function(require,module,exports){
+},{"../../app-storage.js":170,"react":167}],183:[function(require,module,exports){
 var React = require("react");
+var $ = require('jquery');
 
-var appStorageKeys = require('../../app-storage-keys.js');
+// Application scripts
+var appRestResourcesHolder = require('../../app-rest-resources-holder.js');
+var appStorage = require('../../app-storage.js');
+var jwtUtil = require('../../jwt-util.js');
 
+// Registration react components
 var RegistrationForm = require('../pages-inner-components/registration/registration-form.js');
-var RegistrationWarningMessage = require('../pages-inner-components/registration/registration-warning-message.js');
 var RegistrationFailureMessage = require('../pages-inner-components/registration/registration-failure-message.js');
-
-var renderMainPage = require('../../render-main-page.js');
-var renderErrorPage = require('../../render-error-page.js');
 
 var RegistrationPage = React.createClass({
     displayName: 'RegistrationPage',
 
 
-    tryToRegister: function (name, surname, password, nickName, email) {
-        localStorage.removeItem(appStorageKeys.JWTKey);
-        localStorage.removeItem(appStorageKeys.userRoleKey);
-        localStorage.removeItem(appStorageKeys.userNameKey);
-        localStorage.removeItem(appStorageKeys.userNickNameKey);
+    getInitialState: function () {
+        return {
+            showFailure: false,
+            failureText: ""
+        };
+    },
+
+    tryToRegister: function (nickName, name, surname, email, password) {
+        var self = this;
+        localStorage.removeItem(appStorage.JWTKey);
+        localStorage.removeItem(appStorage.userRoleKey);
+        localStorage.removeItem(appStorage.userIdKey);
+        localStorage.removeItem(appStorage.userNickNameKey);
         var user = {
             "name": name,
             "surname": surname,
@@ -30081,27 +30683,27 @@ var RegistrationPage = React.createClass({
             url: appRestResourcesHolder.registration.url,
             method: appRestResourcesHolder.registration.method,
             data: JSON.stringify(user),
-            cache: false
-        }).always(function (data, statusText, xhr) {
-            var statusCode = xhr.status;
-            if (statusCode == 200) {
-                var userName = xhr.getResponseHeader(appStorageKeys.userNameKey);
-                var userNickName = xhr.getResponseHeader(appStorageKeys.userNickNameKey);
-                var userRole = xhr.getResponseHeader(appStorageKeys.userRoleKey);
-                var jwt = xhr.getResponseHeader("jwt");
-                localStorage.setItem(appStorageKeys.userNameKey, userName);
-                localStorage.setItem(appStorageKeys.userNickNameKey, userNickName);
-                localStorage.setItem(appStorageKeys.userRoleKey, userRole);
-                localStorage.setItem(appStorageKeys.JWTKey, jwt);
-                renderMainPage();
-            } else {
-                console.log("[APP] error during registration request.");
-                var error = {
-                    title: "Registration error",
-                    description: "Error occurred during registration attempt. Ajax response status code is not 200.",
-                    source: xhr
-                };
-                renderErrorPage(error);
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            statusCode: {
+                200: function (xhr) {
+                    console.log('[REG PAGE] fucken xhr obj: ');
+                    console.log(xhr);
+                    var jwtString = xhr.getResponseHeader("jwt");
+                    var claims = jwtUtil.decodeJwtClaims(jwtString);
+                    localStorage.setItem(appStorage.userIdKey, claims.id);
+                    localStorage.setItem(appStorage.userNickNameKey, claims.nickName);
+                    localStorage.setItem(appStorage.userRoleKey, claims.role);
+                    localStorage.setItem(appStorage.JWTKey, jwtString);
+                    self.props.renderMainPage();
+                },
+                401: function (xhr, statusText, errorThrown) {
+                    self.setState({
+                        showFailure: true,
+                        failureText: "Registration failed due to malformed data."
+                    });
+                }
             }
         });
     },
@@ -30110,62 +30712,136 @@ var RegistrationPage = React.createClass({
         return React.createElement(
             'div',
             { className: 'registration-page' },
-            'Registration page'
+            'Registration page',
+            React.createElement(
+                'button',
+                { type: 'button',
+                    className: 'login-button-on-registration-page',
+                    onClick: this.props.renderLoginPage },
+                'Login'
+            ),
+            React.createElement(RegistrationForm, { registerAction: this.tryToRegister }),
+            React.createElement(RegistrationFailureMessage, {
+                showMessage: this.state.showFailure,
+                failureText: this.state.failureText })
         );
     }
 });
 
 module.exports = RegistrationPage;
 
-},{"../../app-storage-keys.js":169,"../../render-error-page.js":183,"../../render-main-page.js":185,"../pages-inner-components/registration/registration-failure-message.js":176,"../pages-inner-components/registration/registration-form.js":177,"../pages-inner-components/registration/registration-warning-message.js":178,"react":167}],183:[function(require,module,exports){
-var React = require('react');
-var ReactDOM = require('react-dom');
-
-var ErrorPage = require('./react-components/root-pages/error-page.js');
-
-function renderErrorPage(error) {
-    ReactDOM.render(React.createElement(ErrorPage, { error: error }), document.getElementById('content'));
-}
-
-module.exports = renderErrorPage;
-
-},{"./react-components/root-pages/error-page.js":179,"react":167,"react-dom":29}],184:[function(require,module,exports){
-var React = require('react');
+},{"../../app-rest-resources-holder.js":168,"../../app-storage.js":170,"../../jwt-util.js":173,"../pages-inner-components/registration/registration-failure-message.js":177,"../pages-inner-components/registration/registration-form.js":178,"jquery":27,"react":167}],184:[function(require,module,exports){
+var React = require("react");
 var ReactDOM = require('react-dom');
 
 var LoginPage = require('./react-components/root-pages/login-page.js');
-
-function renderLoginPage() {
-    ReactDOM.render(React.createElement(LoginPage, null), document.getElementById('content'));
-}
-
-module.exports = renderLoginPage;
-
-},{"./react-components/root-pages/login-page.js":180,"react":167,"react-dom":29}],185:[function(require,module,exports){
-var React = require('react');
-var ReactDOM = require('react-dom');
-
 var MainPage = require('./react-components/root-pages/main-page.js');
-
-function renderMainPage() {
-    ReactDOM.render(React.createElement(MainPage, null), document.getElementById('content'));
-}
-
-module.exports = renderMainPage;
-
-},{"./react-components/root-pages/main-page.js":181,"react":167,"react-dom":29}],186:[function(require,module,exports){
-var React = require('react');
-var ReactDOM = require('react-dom');
-
 var RegistrationPage = require('./react-components/root-pages/registration-page.js');
+var ErrorPage = require('./react-components/root-pages/error-page.js');
 
-function renderRegistrationPage() {
-    ReactDOM.render(React.createElement(RegistrationPage, null), document.getElementById('content'));
-}
+var appStorage = require('./app-storage.js');
+var appRootPages = require('./app-root-pages.js');
 
-module.exports = renderRegistrationPage;
+var SpaRootPage = React.createClass({
+    displayName: 'SpaRootPage',
 
-},{"./react-components/root-pages/registration-page.js":182,"react":167,"react-dom":29}],187:[function(require,module,exports){
+
+    getInitialState: function () {
+        var initialPage = this.props.initial;
+        console.log('[SPA ROOT] initial page: ' + initialPage);
+        return {
+            currentPage: initialPage
+        };
+    },
+
+    renderLoginPage: function () {
+        this.setState({
+            currentPage: appRootPages.loginPage
+        });
+    },
+
+    renderMainPage: function () {
+        console.log('[SPA ROOT] render main page');
+        var isAuthOk = appStorage.hasAuthInfo();
+        if (isAuthOk) {
+            console.log('[SPA ROOT] auth ok');
+            this.setState({
+                currentPage: appRootPages.mainPage
+            });
+        } else {
+            console.log('[SPA ROOT] auth fail');
+            this.setState({
+                currentPage: appRootPages.errorPage
+            });
+        }
+    },
+
+    renderRegistrationPage: function () {
+        this.setState({
+            currentPage: appRootPages.registrationPage
+        });
+    },
+
+    logoutAndRenderLoginPage: function () {
+        localStorage.removeItem(appStorage.JWTKey);
+        localStorage.removeItem(appStorage.userRoleKey);
+        localStorage.removeItem(appStorage.userIdKey);
+        localStorage.removeItem(appStorage.userNickNameKey);
+        this.setState({
+            currentPage: appRootPages.loginPage
+        });
+    },
+
+    render: function () {
+        var pageToRender;
+        switch (this.state.currentPage) {
+            case appRootPages.loginPage:
+                pageToRender = React.createElement(
+                    'div',
+                    { className: 'spa-root-page' },
+                    React.createElement(LoginPage, {
+                        renderRegPage: this.renderRegistrationPage,
+                        renderMainPage: this.renderMainPage })
+                );
+                break;
+            case appRootPages.mainPage:
+                pageToRender = React.createElement(
+                    'div',
+                    { className: 'spa-root-page' },
+                    React.createElement(MainPage, {
+                        logout: this.logoutAndRenderLoginPage })
+                );
+                break;
+            case appRootPages.registrationPage:
+                pageToRender = React.createElement(
+                    'div',
+                    { className: 'spa-root-page' },
+                    React.createElement(RegistrationPage, {
+                        renderLoginPage: this.renderLoginPage,
+                        renderMainPage: this.renderMainPage })
+                );
+                break;
+            default:
+                pageToRender = React.createElement(
+                    'div',
+                    { className: 'spa-root-page' },
+                    React.createElement(ErrorPage, {
+                        renderRegPage: this.renderRegistrationPage,
+                        renderLoginPage: this.renderLoginPage,
+                        title: 'Error',
+                        description: 'fail to define which page to be rendered',
+                        source: '' })
+                );
+                break;
+        }
+        console.log('[SPA ROOT] currentPage ' + this.state.currentPage);
+        return pageToRender;
+    }
+});
+
+module.exports = SpaRootPage;
+
+},{"./app-root-pages.js":169,"./app-storage.js":170,"./react-components/root-pages/error-page.js":180,"./react-components/root-pages/login-page.js":181,"./react-components/root-pages/main-page.js":182,"./react-components/root-pages/registration-page.js":183,"react":167,"react-dom":29}],185:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -30258,4 +30934,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[173]);
+},{}]},{},[174]);

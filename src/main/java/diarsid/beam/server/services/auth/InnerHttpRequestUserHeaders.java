@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.filters.auth;
+package diarsid.beam.server.services.auth;
 
 /**
  *
@@ -13,11 +13,7 @@ package diarsid.beam.server.services.filters.auth;
 public enum InnerHttpRequestUserHeaders {
     
     BEAM_USER_ID ("beam.server.user.id"),
-    BEAM_USER_NAME ("beam.server.user.name"),
-    BEAM_USER_SURNAME ("beam.server.user.surname"),
     BEAM_USER_NICKNAME ("beam.server.user.nickname"),
-    BEAM_USER_EMAIL ("beam.server.user.email"),
-    BEAM_USER_PASSWORD ("beam.server.user.password"),
     BEAM_USER_ROLE ("beam.server.user.role");
     
     private InnerHttpRequestUserHeaders(String header) {

@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import diarsid.beam.server.entities.ObjectData;
 
@@ -38,5 +39,9 @@ public class GsonJsonConverter {
     
     public static ObjectData objectivizeObjectData(InputStream source) throws IOException {
         return GSON.fromJson(new InputStreamReader(source), ObjectData.class);
+    }
+    
+    public static JsonObject objectivize(String json) {
+        return GSON.fromJson(json, JsonObject.class);
     }
 }

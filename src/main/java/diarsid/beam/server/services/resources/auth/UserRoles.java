@@ -6,6 +6,7 @@
 package diarsid.beam.server.services.resources.auth;
 
 import diarsid.beam.server.entities.User;
+import diarsid.beam.server.services.auth.UserJwtInfo;
 
 
 /**
@@ -32,18 +33,30 @@ public enum UserRoles {
     }
     
     public static boolean hasUserAuthority(User user) {
-        return hasAuthorityOfRole(user, USER);
+        return hasAuthorityOfRole(user.getRole(), USER);
     }
     
     public static boolean hasAdminAuthority(User user) {
-        return hasAuthorityOfRole(user, ADMIN);
+        return hasAuthorityOfRole(user.getRole(), ADMIN);
     }
     
     public static boolean hasOwnerAuthority(User user) {
-        return hasAuthorityOfRole(user, OWNER);
+        return hasAuthorityOfRole(user.getRole(), OWNER);
+    }
+    
+    public static boolean hasUserAuthority(UserJwtInfo user) {
+        return hasAuthorityOfRole(user.getRole(), USER);
+    }
+    
+    public static boolean hasAdminAuthority(UserJwtInfo user) {
+        return hasAuthorityOfRole(user.getRole(), ADMIN);
+    }
+    
+    public static boolean hasOwnerAuthority(UserJwtInfo user) {
+        return hasAuthorityOfRole(user.getRole(), OWNER);
     }
 
-    private static boolean hasAuthorityOfRole(User user, UserRoles role) {
-        return valueOf(user.getRole()).weight >= role.weight;
-    }    
+    private static boolean hasAuthorityOfRole(String userRole, UserRoles askedRole) {
+        return valueOf(userRole.toUpperCase()).weight >= askedRole.weight;
+    }     
 }

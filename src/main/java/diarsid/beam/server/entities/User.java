@@ -24,6 +24,7 @@ public class User {
     // default null constructor.
     public User() {
         this.id = 0;
+        this.password = "";
         this.name = "";
         this.surname = "";
         this.nickName = "";
@@ -32,8 +33,16 @@ public class User {
     }
     
     // authenticated User creation
-    User(long id, String name, String surname, String nickname, String email, String role) {
+    public User(
+            long id, 
+            String password, 
+            String name, 
+            String surname, 
+            String nickname, 
+            String email, 
+            String role) {
         this.id = id;
+        this.password = password;
         this.name = name;
         this.surname = surname;
         this.nickName = nickname;
@@ -44,6 +53,7 @@ public class User {
     // NON-authenticated User creation
     User(String role) {
         this.id = 0;
+        this.password = "";
         this.name = "";
         this.surname = "";
         this.nickName = "";

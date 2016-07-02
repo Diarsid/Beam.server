@@ -16,24 +16,25 @@ import javax.ws.rs.ext.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.entities.User;
+import diarsid.beam.server.services.auth.JwtValidationResult;
+import diarsid.beam.server.services.auth.JwtValidator;
+import diarsid.beam.server.services.auth.UserJwtInfo;
 
+import static javax.ws.rs.core.Response.Status.FOUND;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import static diarsid.beam.server.entities.Users.getFAKEAuthenticatedUser;
-import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_ID;
-import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_NAME;
-import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_NICKNAME;
-import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_PASSWORD;
-import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_ROLE;
-import static diarsid.beam.server.services.filters.auth.InnerHttpRequestUserHeaders.BEAM_USER_SURNAME;
-import static diarsid.beam.server.services.resources.auth.UserRoles.hasUserAuthority;
+import static diarsid.beam.server.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ID;
+import static diarsid.beam.server.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_NICKNAME;
+import static diarsid.beam.server.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ROLE;
 
 /**
  *
  * @author Diarsid
  */
+
+@Component
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
     
@@ -42,7 +43,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
     }
     
-    public AuthenticationFilter() {
+    private final JwtValidator validator;
+    
+    public AuthenticationFilter(JwtValidator validator) {
+        this.validator = validator;
         LOGGER.info("created.");
     }
     
@@ -50,36 +54,37 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext request) throws IOException {        
         String path = request.getUriInfo().getPath();
         if ( path.contains("auth") ) {
-            LOGGER.info("unprotected area - do nothing under : " + path);
+            LOGGER.info("unprotected area: " + path);
         } else {
-            LOGGER.info("Authentication required aza-za!!! " + path);
-            User user = this.getUserFromRequestJWT(request);
-            if ( hasUserAuthority(user) ) {
-                this.addUserFieldsIntoHttpRequestHeader(request, user);                
+            LOGGER.info("auth: required for: " + path);
+            JwtValidationResult result = this.validator.validateRequest(request);
+            if ( result.isJwtPresent() ) {
+                if ( result.isJwtSignVerified() ) {
+                    if ( result.isJwtNotExpired() ) {
+                        this.addUserFieldsIntoHttpRequestHeader(request, result.getUserInfo());
+                        LOGGER.info("auth: OK <"
+                                + "id:"+result.getUserInfo().getId() + 
+                                ", role:"+result.getUserInfo().getRole() + 
+                                ", nick:"+result.getUserInfo().getNickName() + ">");
+                    } else {
+                        request.abortWith(Response.status(FOUND).build());
+                        LOGGER.info("auth: JWT expired. Access denied.");
+                    }
+                } else {
+                    LOGGER.info("auth: JWT signature verification failure. Access denied.");
+                    request.abortWith(Response.status(UNAUTHORIZED).build());
+                }
             } else {
+                LOGGER.info("auth: JWT not found. Access denied.");
                 request.abortWith(Response.status(UNAUTHORIZED).build());
             }
         }        
     }
     
-    private User getUserFromRequestJWT(ContainerRequestContext request) {
-        // TODO
-        // 1. parse JSON Web Token
-        // 2. retrieve User from data base by info from token
-        
-        // User user = ....(jwt);
-        // return getAuthenticatedUser(user);
-        
-        return getFAKEAuthenticatedUser();
-    }
-    
-    private void addUserFieldsIntoHttpRequestHeader(ContainerRequestContext request, User user) {
+    private void addUserFieldsIntoHttpRequestHeader(ContainerRequestContext request, UserJwtInfo user) {
         MultivaluedMap<String, String> headers = request.getHeaders();
-        headers.putSingle(BEAM_USER_ID.getHeader(), user.getIdString());
-        headers.putSingle(BEAM_USER_NAME.getHeader(), user.getName());
-        headers.putSingle(BEAM_USER_SURNAME.getHeader(), user.getSurname());
+        headers.putSingle(BEAM_USER_ID.getHeader(), user.getId());
         headers.putSingle(BEAM_USER_NICKNAME.getHeader(), user.getNickName());
         headers.putSingle(BEAM_USER_ROLE.getHeader(), user.getRole());
-        headers.putSingle(BEAM_USER_PASSWORD.getHeader(), user.getPassword());
     }
 }

@@ -55,6 +55,4 @@ class ObjectDataJAXRSReader implements MessageBodyReader<ObjectData> {
         
         return objectivizeObjectData(entityStream);
     }
-    
-    
 }
