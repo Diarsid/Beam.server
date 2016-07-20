@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.filters.auth;
+package diarsid.beam.server.services.filters;
 
 import java.io.IOException;
 
@@ -38,44 +38,44 @@ import static diarsid.beam.server.services.auth.InnerHttpRequestUserHeaders.BEAM
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
     
-    private final static Logger LOGGER;
+    private final static Logger logger;
     static {
-        LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
+        logger = LoggerFactory.getLogger(AuthenticationFilter.class);
     }
     
     private final JwtValidator validator;
     
     public AuthenticationFilter(JwtValidator validator) {
         this.validator = validator;
-        LOGGER.info("created.");
+        logger.info("created.");
     }
     
     @Override
     public void filter(ContainerRequestContext request) throws IOException {        
         String path = request.getUriInfo().getPath();
         if ( path.contains("auth") ) {
-            LOGGER.info("unprotected area: " + path);
+            logger.info("unprotected area: " + path);
         } else {
-            LOGGER.info("auth: required for: " + path);
+            logger.info("auth: required for: " + path);
             JwtValidationResult result = this.validator.validateRequest(request);
             if ( result.isJwtPresent() ) {
                 if ( result.isJwtSignVerified() ) {
                     if ( result.isJwtNotExpired() ) {
                         this.addUserFieldsIntoHttpRequestHeader(request, result.getUserInfo());
-                        LOGGER.info("auth: OK <"
+                        logger.info("auth: OK <"
                                 + "id:"+result.getUserInfo().getId() + 
                                 ", role:"+result.getUserInfo().getRole() + 
                                 ", nick:"+result.getUserInfo().getNickName() + ">");
                     } else {
                         request.abortWith(Response.status(FOUND).build());
-                        LOGGER.info("auth: JWT expired. Access denied.");
+                        logger.info("auth: JWT expired. Access denied.");
                     }
                 } else {
-                    LOGGER.info("auth: JWT signature verification failure. Access denied.");
+                    logger.info("auth: JWT signature verification failure. Access denied.");
                     request.abortWith(Response.status(UNAUTHORIZED).build());
                 }
             } else {
-                LOGGER.info("auth: JWT not found. Access denied.");
+                logger.info("auth: JWT not found. Access denied.");
                 request.abortWith(Response.status(UNAUTHORIZED).build());
             }
         }        

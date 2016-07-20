@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.services.resources.auth;
+package diarsid.beam.server.services.auth;
 
-import diarsid.beam.server.entities.User;
+import diarsid.beam.server.data.entities.jpa.PersistableUser;
 import diarsid.beam.server.services.auth.UserJwtInfo;
 
 
@@ -32,15 +32,15 @@ public enum UserRoles {
         return this.role;
     }
     
-    public static boolean hasUserAuthority(User user) {
+    public static boolean hasUserAuthority(PersistableUser user) {
         return hasAuthorityOfRole(user.getRole(), USER);
     }
     
-    public static boolean hasAdminAuthority(User user) {
+    public static boolean hasAdminAuthority(PersistableUser user) {
         return hasAuthorityOfRole(user.getRole(), ADMIN);
     }
     
-    public static boolean hasOwnerAuthority(User user) {
+    public static boolean hasOwnerAuthority(PersistableUser user) {
         return hasAuthorityOfRole(user.getRole(), OWNER);
     }
     

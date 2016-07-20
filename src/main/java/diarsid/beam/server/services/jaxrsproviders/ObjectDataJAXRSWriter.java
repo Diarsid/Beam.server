@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.util.json.jaxrs.entityproviders;
+package diarsid.beam.server.services.jaxrsproviders;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import diarsid.beam.server.entities.ObjectData;
+import diarsid.beam.server.data.entities.ObjectData;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.entities;
+package diarsid.beam.server.data.entities;
 
 /**
  *
@@ -23,18 +23,5 @@ public class Users {
     }
     
     private Users() {
-    }
-    
-    
-    public static User getAuthenticatedUser(long id, String password, String name, String surname, String nickname, String email, String role) {
-        return new User(id, password, name, surname, nickname, email, role);
-    }
-    
-    public static User getNonAuthenticatedUser() {
-        return new User("none");
-    }
-
-    public static User getFAKEAuthenticatedUser() {
-        return new User(1234567890, "pass", "John", "Doe", "Jonny", "john.doe@gmail.com", "user");
     }    
 }

@@ -29654,6 +29654,12 @@ var appRestResourcesHolder = {
         success: 200,
         unauthorized: 401,
         badRequest: 400
+    },
+
+    objects: {
+        url: serverRootUrl + "/objects/object",
+        method: "GET",
+        success: 200
     }
 
 };
@@ -30608,33 +30614,84 @@ module.exports = LoginPage;
 
 },{"../../app-rest-resources-holder.js":168,"../../app-storage.js":170,"../../jwt-util.js":173,"../pages-inner-components/login/login-failure-message.js":175,"../pages-inner-components/login/login-form.js":176,"jquery":27,"react":167}],182:[function(require,module,exports){
 var React = require("react");
+var $ = require('jquery');
 
 var appStorage = require('../../app-storage.js');
+var appRestResourcesHolder = require('../../app-rest-resources-holder.js');
+var jwtUtil = require('../../jwt-util.js');
 
 var MainPage = React.createClass({
-    displayName: "MainPage",
+    displayName: 'MainPage',
+
+
+    getInitialState: function () {
+        return {
+            object: null
+        };
+    },
+
+    getNewObject: function () {
+        var self = this;
+        $.ajax({
+            method: appRestResourcesHolder.objects.method,
+            url: appRestResourcesHolder.objects.url,
+            cache: false,
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authentication', 'Bearer ' + localStorage.getItem(appStorage.JWTKey));
+            },
+            statusCode: {
+                200: function (data, xhr) {
+                    console.log('[MAIN PAGE] load new object...');
+                    console.log(data);
+                    console.log(xhr);
+                    self.setState({
+                        object: data
+                    });
+                }
+            }
+        });
+    },
 
     render: function () {
+        var data;
+        if (this.state.object != null) {
+            data = this.state.object.data + ", " + this.state.object.value + ", " + this.state.object.status;
+        } else {
+            data = "no object";
+        }
         return React.createElement(
-            "div",
-            { className: "main-page" },
+            'div',
+            { className: 'main-page' },
             React.createElement(
-                "button",
-                { type: "button",
-                    className: "logout-button",
+                'button',
+                { type: 'button',
+                    className: 'logout-button',
                     onClick: this.props.logout },
-                "Logout"
+                'Logout'
             ),
             React.createElement(
-                "div",
+                'div',
                 null,
-                "Welcome, ",
-                localStorage.getItem(appStorage.userNickNameKey)
+                'Welcome, ',
+                localStorage.getItem(appStorage.userNickNameKey),
+                React.createElement(
+                    'button',
+                    { type: 'button',
+                        className: 'get-object-button',
+                        onClick: this.getNewObject },
+                    'Object'
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    data
+                )
             ),
             React.createElement(
-                "div",
+                'div',
                 null,
-                "Main page"
+                'Main page'
             )
         );
     }
@@ -30642,7 +30699,7 @@ var MainPage = React.createClass({
 
 module.exports = MainPage;
 
-},{"../../app-storage.js":170,"react":167}],183:[function(require,module,exports){
+},{"../../app-rest-resources-holder.js":168,"../../app-storage.js":170,"../../jwt-util.js":173,"jquery":27,"react":167}],183:[function(require,module,exports){
 var React = require("react");
 var $ = require('jquery');
 

@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import diarsid.beam.server.entities.ObjectData;
+import diarsid.beam.server.data.entities.ObjectData;
 
 /**
  *

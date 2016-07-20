@@ -13,7 +13,9 @@ import java.io.InputStreamReader;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import diarsid.beam.server.entities.ObjectData;
+import diarsid.beam.server.data.entities.ObjectData;
+import diarsid.beam.server.data.entities.UserLoginData;
+import diarsid.beam.server.data.entities.UserRegistrationData;
 
 /**
  *
@@ -39,6 +41,16 @@ public class GsonJsonConverter {
     
     public static ObjectData objectivizeObjectData(InputStream source) throws IOException {
         return GSON.fromJson(new InputStreamReader(source), ObjectData.class);
+    }
+    
+    public static UserRegistrationData objectivizeUserRegistrationData(InputStream source) 
+            throws IOException {
+        return GSON.fromJson(new InputStreamReader(source), UserRegistrationData.class);
+    }
+    
+    public static UserLoginData objectivizeUserLoginData(InputStream source) 
+            throws IOException {
+        return GSON.fromJson(new InputStreamReader(source), UserLoginData.class);
     }
     
     public static JsonObject objectivize(String json) {

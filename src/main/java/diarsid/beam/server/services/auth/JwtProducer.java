@@ -16,8 +16,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import diarsid.beam.server.data.KeyIdPair;
-import diarsid.beam.server.data.MockKeyStorage;
+import diarsid.beam.server.data.KeysManager;
+import diarsid.beam.server.data.entities.KeyIdPair;
 
 import static diarsid.beam.server.services.auth.JwtBeamServerClaims.EXPIRATION;
 import static diarsid.beam.server.services.auth.JwtBeamServerClaims.ISSUED_AT;
@@ -40,22 +40,22 @@ public class JwtProducer {
         JWT_RESPONSE_HEADER = "jwt";
     }
     
-    private final MockKeyStorage keyStorage;
+    private final KeysManager keysManager;
     
-    public JwtProducer(MockKeyStorage keyStorage) {
-        this.keyStorage = keyStorage;
+    public JwtProducer(KeysManager keysManager) {
+        this.keysManager = keysManager;
         LOGGER.info("created.");
     }
     
-    public String createJwt(String id, String nickName, String role) {
+    public String createJwt(int id, String nickName, String role) {
         LOGGER.info("JWT creation...");
-        KeyIdPair pair = this.keyStorage.getRandomKeyIdPair();
+        KeyIdPair pair = this.keysManager.getRandomKeyIdPair();
         Claims claims = Jwts.claims();
         long now = this.getMillisOfNow();
         long expiration = this.plusOneHourFrom(now);
         claims.put(EXPIRATION.header(), String.valueOf(expiration));
         claims.put(ISSUED_AT.header(), String.valueOf(now));
-        claims.put(USER_ID.header(), id);
+        claims.put(USER_ID.header(), String.valueOf(id));
         claims.put(NICK_NAME.header(), nickName);
         claims.put(ROLE.header(), role.toLowerCase());        
         

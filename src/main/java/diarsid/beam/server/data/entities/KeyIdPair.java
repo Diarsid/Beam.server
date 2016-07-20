@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.data;
+package diarsid.beam.server.data.entities;
 
 import java.security.Key;
 import java.util.Objects;
@@ -59,5 +59,4 @@ public class KeyIdPair {
         }
         return true;
     }
-    
 }

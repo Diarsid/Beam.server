@@ -22,7 +22,7 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.SigningKeyResolver;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
 
-import diarsid.beam.server.data.MockKeyStorage;
+import diarsid.beam.server.data.KeysManager;
 
 import static diarsid.beam.server.services.auth.JwtBeamServerClaims.EXPIRATION;
 import static diarsid.beam.server.services.auth.JwtBeamServerClaims.NICK_NAME;
@@ -52,11 +52,11 @@ public class JwtValidator {
         JWT_ISSUER = "Beam.server";
     }
         
-    private final MockKeyStorage keyStorage;
+    private final KeysManager keysManager;
     private final SigningKeyResolver keyResolver;
     
-    public JwtValidator(MockKeyStorage mockKeyStorage) {
-        this.keyStorage = mockKeyStorage;
+    public JwtValidator(KeysManager keysManager) {
+        this.keysManager = keysManager;
         this.keyResolver = new SigningKeyResolverAdapter() {
             private final Logger anonymousKeyResolverLogger;
             {
@@ -66,7 +66,7 @@ public class JwtValidator {
             @Override
             public Key resolveSigningKey(JwsHeader header, Claims claims) {
                 this.anonymousKeyResolverLogger.info("resolved with keyId: " + header.getKeyId());
-                return keyStorage.getKeyById(header.getKeyId());
+                return keysManager.getKeyById(header.getKeyId());
             }
         };                
         LOGGER.info("created");
@@ -115,7 +115,7 @@ public class JwtValidator {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (SignatureException e) {
-            LOGGER.info("JWT validation fails with exception:", e);
+            LOGGER.info("JWT validation failed. Do not trust to this JWT.");
         }
         return claims;
     }
@@ -135,16 +135,19 @@ public class JwtValidator {
             return jwtSignFailed();                
         }
     }
+    
+    private boolean jwtNotExpired(Claims claims) {
+        return (new Date(
+                        Long.valueOf(this.extractClaim(claims, EXPIRATION))))
+                .after(
+                        new Date());
+    }
 
     private UserJwtInfo extractUserInfoFromClaims(Claims claims) {
         return new UserJwtInfo(
                 this.extractClaim(claims, USER_ID),
                 this.extractClaim(claims, NICK_NAME),
                 this.extractClaim(claims, ROLE));
-    }
-    
-    private boolean jwtNotExpired(Claims claims) {
-        return (new Date(Long.valueOf(this.extractClaim(claims, EXPIRATION)))).after(new Date());
     }
     
     private String extractClaim(Claims claims, JwtBeamServerClaims claimHeader) {

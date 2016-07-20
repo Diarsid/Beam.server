@@ -4,19 +4,23 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.entities;
+package diarsid.beam.server.services.resources;
+
+import javax.ws.rs.Path;
+
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Diarsid
  */
-public class WebPage {
+
+@Component
+@Path("/validation")
+public class ValidationResource {
     
-    private long id;
-    private String name;
-    private String url;
-    
-    
-    public WebPage() {
+    public ValidationResource() {
     }
+    
+    
 }

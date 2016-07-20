@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.util.json.jaxrs.entityproviders;
+package diarsid.beam.server.services.jaxrsproviders;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,11 +18,11 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import diarsid.beam.server.entities.ObjectData;
+import diarsid.beam.server.data.entities.UserLoginData;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import static diarsid.beam.server.util.GsonJsonConverter.objectivizeObjectData;
+import static diarsid.beam.server.util.GsonJsonConverter.objectivizeUserLoginData;
 
 /**
  *
@@ -31,21 +31,21 @@ import static diarsid.beam.server.util.GsonJsonConverter.objectivizeObjectData;
 
 @Provider
 @Consumes(APPLICATION_JSON)
-class ObjectDataJAXRSReader implements MessageBodyReader<ObjectData> {
+public class UserLoginDataReader implements MessageBodyReader<UserLoginData>{
     
-    ObjectDataJAXRSReader() {
+    public UserLoginDataReader() {
     }
-
+    
     @Override
     public boolean isReadable(
             Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         
-        return type.equals(ObjectData.class);
+        return type.equals(UserLoginData.class);
     }
 
     @Override
-    public ObjectData readFrom(
-            Class<ObjectData> type, 
+    public UserLoginData readFrom(
+            Class<UserLoginData> type, 
             Type genericType, 
             Annotation[] annotations, 
             MediaType mediaType, 
@@ -53,6 +53,6 @@ class ObjectDataJAXRSReader implements MessageBodyReader<ObjectData> {
             InputStream entityStream)
             throws IOException, WebApplicationException {
         
-        return objectivizeObjectData(entityStream);
+        return objectivizeUserLoginData(entityStream);
     }
 }
