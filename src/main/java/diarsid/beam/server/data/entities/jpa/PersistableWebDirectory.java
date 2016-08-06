@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,6 +21,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import diarsid.beam.server.data.entities.OrderableWebItem;
+import diarsid.beam.server.data.entities.OrderableWebItemCollection;
+
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -31,33 +38,36 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "dirs")
-public class PersistableWebDirectory implements Serializable {
+public class PersistableWebDirectory 
+        implements Serializable, 
+                   OrderableWebItem, 
+                   OrderableWebItemCollection {
     
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "dir_id")
     private int id;
     
-    @ManyToOne
+    @ManyToOne(cascade = {DETACH, MERGE, PERSIST, REFRESH})
     @JoinColumn(name = "user_id")
     private PersistableUser user;
     
     @Column(name = "dir_name")
-    private String dirName;
+    private String name;
     
     @Column(name = "dir_order")
-    private int dirOrder;
+    private int order;
     
     @Column(name = "dir_place")
-    private String dirPlace;
+    private String place;
     
     @OneToMany(
             mappedBy = "dir",
             fetch = FetchType.EAGER, 
-            cascade = CascadeType.ALL,
+            cascade = ALL,
             orphanRemoval = true)
     @OrderBy("page_order")
-    private List<PersistableWebPage> dirPages;
+    private List<PersistableWebPage> pages;
     
     public PersistableWebDirectory() {
     }
@@ -71,52 +81,61 @@ public class PersistableWebDirectory implements Serializable {
     }
 
     public PersistableUser getUser() {
-        return user;
+        return this.user;
     }
 
     public void setUser(PersistableUser user) {
         this.user = user;
     }
 
-    public String getDirName() {
-        return dirName;
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public int getOrder() {
+        return order;
+    }
+    
+    @Override
+    public List<? extends OrderableWebItem> getItems() {
+        return (List<? extends OrderableWebItem>) this.pages;
     }
 
-    public void setDirName(String dirName) {
-        this.dirName = dirName;
+    public String getPlace() {
+        return place;
     }
 
-    public int getDirOrder() {
-        return dirOrder;
+    public List<PersistableWebPage> getPages() {
+        return pages;
     }
 
-    public void setDirOrder(int dirOrder) {
-        this.dirOrder = dirOrder;
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void setOrder(int order) {
+        this.order = order;
     }
 
-    public String getDirPlace() {
-        return dirPlace;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public void setDirPlace(String dirPlace) {
-        this.dirPlace = dirPlace;
-    }
-
-    public List<PersistableWebPage> getDirPages() {
-        return dirPages;
-    }
-
-    public void setDirPages(List<PersistableWebPage> dirPages) {
-        this.dirPages = dirPages;
+    public void setPages(List<PersistableWebPage> pages) {
+        this.pages = pages;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 59 * hash + Objects.hashCode(this.user);
-        hash = 59 * hash + Objects.hashCode(this.dirName);
-        hash = 59 * hash + this.dirOrder;
-        hash = 59 * hash + Objects.hashCode(this.dirPlace);
+        hash = 59 * hash + Objects.hashCode(this.name);
+        hash = 59 * hash + this.order;
+        hash = 59 * hash + Objects.hashCode(this.place);
         return hash;
     }
 
@@ -132,13 +151,13 @@ public class PersistableWebDirectory implements Serializable {
             return false;
         }
         final PersistableWebDirectory other = ( PersistableWebDirectory ) obj;
-        if ( this.dirOrder != other.dirOrder ) {
+        if ( this.order != other.order ) {
             return false;
         }
-        if ( !Objects.equals(this.dirName, other.dirName) ) {
+        if ( !Objects.equals(this.name, other.name) ) {
             return false;
         }
-        if ( !Objects.equals(this.dirPlace, other.dirPlace) ) {
+        if ( !Objects.equals(this.place, other.place) ) {
             return false;
         }
         if ( !Objects.equals(this.user, other.user) ) {

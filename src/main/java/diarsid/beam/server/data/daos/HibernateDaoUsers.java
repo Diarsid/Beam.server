@@ -9,12 +9,13 @@ package diarsid.beam.server.data.daos;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import diarsid.beam.server.data.entities.UserLoginData;
+import diarsid.beam.server.web.services.UserLoginData;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 
 @Repository

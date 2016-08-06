@@ -5,7 +5,7 @@
  */
 package diarsid.beam.server.data.daos;
 
-import diarsid.beam.server.data.entities.UserLoginData;
+import diarsid.beam.server.web.services.UserLoginData;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 
 /**

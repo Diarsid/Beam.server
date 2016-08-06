@@ -15,7 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import diarsid.beam.server.data.entities.UserRegistrationData;
+import diarsid.beam.server.web.services.UserRegistrationData;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

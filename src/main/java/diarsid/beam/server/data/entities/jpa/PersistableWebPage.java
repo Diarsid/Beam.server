@@ -17,6 +17,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import diarsid.beam.server.data.entities.OrderableWebItem;
+
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -26,7 +32,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "pages")
-public class PersistableWebPage implements Serializable {
+public class PersistableWebPage 
+        implements Serializable, 
+                   OrderableWebItem {
     
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -40,9 +48,9 @@ public class PersistableWebPage implements Serializable {
     private String name;
     
     @Column(name = "page_order")
-    private int pageOrder;
+    private int order;
          
-    @ManyToOne
+    @ManyToOne(cascade = {DETACH, MERGE, PERSIST, REFRESH})
     @JoinColumn(
             name = "dir_id"
 //            , 
@@ -72,24 +80,28 @@ public class PersistableWebPage implements Serializable {
     
     public String getUrl() {
         return this.url;
-    }
+    }    
     
+    @Override
     public String getName() {
         return this.name;
     }
     
-    public int getPageOrder() {
-        return this.pageOrder;
+    @Override
+    public int getOrder() {
+        return this.order;
     }
         
-    public void setPageOrder(int newOrder) {
-        this.pageOrder = newOrder;
+    @Override
+    public void setOrder(int newOrder) {
+        this.order = newOrder;
     }
     
     public void setUrl(String url) {
         this.url = url;
     }
     
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -99,7 +111,7 @@ public class PersistableWebPage implements Serializable {
         int hash = 3;
         hash = 67 * hash + Objects.hashCode(this.url);
         hash = 67 * hash + Objects.hashCode(this.name);
-        hash = 67 * hash + this.pageOrder;
+        hash = 67 * hash + this.order;
         hash = 67 * hash + Objects.hashCode(this.dir);
         return hash;
     }
@@ -116,7 +128,7 @@ public class PersistableWebPage implements Serializable {
             return false;
         }
         final PersistableWebPage other = ( PersistableWebPage ) obj;
-        if ( this.pageOrder != other.pageOrder ) {
+        if ( this.order != other.order ) {
             return false;
         }
         if ( ! Objects.equals(this.url, other.url) ) {

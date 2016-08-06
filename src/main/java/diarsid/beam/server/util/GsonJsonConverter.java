@@ -14,8 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import diarsid.beam.server.data.entities.ObjectData;
-import diarsid.beam.server.data.entities.UserLoginData;
-import diarsid.beam.server.data.entities.UserRegistrationData;
+import diarsid.beam.server.web.services.UserLoginData;
+import diarsid.beam.server.web.services.UserRegistrationData;
 
 /**
  *
