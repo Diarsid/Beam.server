@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Diarsid
  */
-public interface OrderableWebItemCollection {
+public interface OrderableWebObjectsCollection {
     
-    List<? extends OrderableWebItem> getItems();
+    List<? extends OrderableWebObject> getObjects();
 }

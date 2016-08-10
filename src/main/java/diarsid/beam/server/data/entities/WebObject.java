@@ -9,7 +9,7 @@ package diarsid.beam.server.data.entities;
  *
  * @author Diarsid
  */
-public interface WebItem {
+public interface WebObject {
     
     String getName();
     

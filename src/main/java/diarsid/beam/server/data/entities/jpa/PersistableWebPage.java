@@ -17,13 +17,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import diarsid.beam.server.data.entities.OrderableWebItem;
-
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import diarsid.beam.server.data.entities.OrderableWebObject;
 
 /**
  *
@@ -34,7 +34,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "pages")
 public class PersistableWebPage 
         implements Serializable, 
-                   OrderableWebItem {
+                   OrderableWebObject {
     
     @Id
     @GeneratedValue(strategy = IDENTITY)

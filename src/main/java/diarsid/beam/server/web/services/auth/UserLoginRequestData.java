@@ -4,18 +4,18 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.web.services;
+package diarsid.beam.server.web.services.auth;
 
 /**
  *
  * @author Diarsid
  */
-public class UserLoginData {
+public class UserLoginRequestData {
     
     private final String nickName;
     private final String password;
     
-    public UserLoginData(String nick, String pass) {
+    public UserLoginRequestData(String nick, String pass) {
         this.nickName = nick;
         this.password = pass;
     }

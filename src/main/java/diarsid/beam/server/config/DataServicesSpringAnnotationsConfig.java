@@ -22,17 +22,17 @@ import diarsid.beam.server.data.daos.HibernateDaoUsers;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryUsers;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDirectories;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebPages;
-import diarsid.beam.server.data.entities.WebItemsOrderer;
+import diarsid.beam.server.data.services.webobjects.WebObjectsOrderer;
 import diarsid.beam.server.data.services.keys.KeysService;
 import diarsid.beam.server.data.services.keys.KeysServiceWorker;
-import diarsid.beam.server.data.services.webitmes.UserWebContentService;
-import diarsid.beam.server.data.services.webitmes.UserWebContentServiceValidationWrapper;
-import diarsid.beam.server.data.services.webitmes.UserWebContentServiceWorker;
-import diarsid.beam.server.data.services.webitmes.UserWebItemsDataOperator;
-import diarsid.beam.server.data.services.webitmes.UserWebItemsDataOperatorWorker;
-import diarsid.beam.server.data.services.webitmes.WebItemInputValidator;
-import diarsid.beam.server.util.NameIncrementor;
+import diarsid.beam.server.data.services.webobjects.UserWebObjectsServiceValidationWrapper;
+import diarsid.beam.server.data.services.webobjects.UserWebObjectsServiceWorker;
+import diarsid.beam.server.data.services.webobjects.UserWebObjectsDataOperatorWorker;
+import diarsid.beam.server.data.services.webobjects.WebObjectsPropertiesValidator;
+import diarsid.beam.server.data.services.webobjects.WebObjectsNamesIncrementor;
 import diarsid.beam.server.util.RandomStringGenerator;
+import diarsid.beam.server.data.services.webobjects.UserWebObjectsService;
+import diarsid.beam.server.data.services.webobjects.UserWebObjectsDataOperator;
 
 /**
  *
@@ -75,38 +75,38 @@ public class DataServicesSpringAnnotationsConfig {
     }
     
     @Bean
-    public UserWebContentService webContentService(
-            WebItemInputValidator webItemInputValidator,
-            WebItemsOrderer webItemsOrderer,
-            NameIncrementor nameIncrementor,
-            UserWebItemsDataOperator userWebItemsDataOperator) {
-        UserWebContentService unvalidatedServiceWorker = new UserWebContentServiceWorker(
+    public UserWebObjectsService webContentService(
+            WebObjectsPropertiesValidator webItemInputValidator,
+            WebObjectsOrderer webItemsOrderer,
+            WebObjectsNamesIncrementor nameIncrementor,
+            UserWebObjectsDataOperator userWebItemsDataOperator) {
+        UserWebObjectsService unvalidatedServiceWorker = new UserWebObjectsServiceWorker(
                 userWebItemsDataOperator, webItemsOrderer, nameIncrementor);
-        UserWebContentService validatedService = new UserWebContentServiceValidationWrapper(
+        UserWebObjectsService validatedService = new UserWebObjectsServiceValidationWrapper(
                 unvalidatedServiceWorker, webItemInputValidator);
         return validatedService;
     }
     
     @Bean
-    public UserWebItemsDataOperator userWebItemsDataOperator(
+    public UserWebObjectsDataOperator userWebItemsDataOperator(
             RepositoryWebDirectories dirsRepo, 
             RepositoryUsers usersRepo, 
             RepositoryWebPages webPagesRepo) {
-        return new UserWebItemsDataOperatorWorker(usersRepo, dirsRepo, webPagesRepo);
+        return new UserWebObjectsDataOperatorWorker(usersRepo, dirsRepo, webPagesRepo);
     }
     
     @Bean
-    public WebItemsOrderer webItemsOrderer() {
-        return new WebItemsOrderer();
+    public WebObjectsOrderer webItemsOrderer() {
+        return new WebObjectsOrderer();
     }
     
     @Bean
-    public WebItemInputValidator webItemInputValidator() {
-        return new WebItemInputValidator();
+    public WebObjectsPropertiesValidator webItemInputValidator() {
+        return new WebObjectsPropertiesValidator();
     }
     
     @Bean
-    public NameIncrementor nameIncrementor() {
-        return new NameIncrementor();
+    public WebObjectsNamesIncrementor nameIncrementor() {
+        return new WebObjectsNamesIncrementor();
     }
 }

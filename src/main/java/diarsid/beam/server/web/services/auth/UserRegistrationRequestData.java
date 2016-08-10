@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.web.services;
+package diarsid.beam.server.web.services.auth;
 
 /**
  *
  * @author Diarsid
  */
-public class UserRegistrationData {
+public class UserRegistrationRequestData {
     
     private final String name;
     private final String surname;    
@@ -18,7 +18,7 @@ public class UserRegistrationData {
     private final String password;
     private final String email;
     
-    public UserRegistrationData(
+    public UserRegistrationRequestData(
             String name, String surname, String nick, String email, String pass) {
         this.nickName = nick;
         this.password = pass;

@@ -21,15 +21,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import diarsid.beam.server.data.entities.OrderableWebItem;
-import diarsid.beam.server.data.entities.OrderableWebItemCollection;
-
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import diarsid.beam.server.data.entities.OrderableWebObject;
+import diarsid.beam.server.data.entities.OrderableWebObjectsCollection;
 
 /**
  *
@@ -40,8 +40,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "dirs")
 public class PersistableWebDirectory 
         implements Serializable, 
-                   OrderableWebItem, 
-                   OrderableWebItemCollection {
+                   OrderableWebObject, 
+                   OrderableWebObjectsCollection {
     
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -99,8 +99,8 @@ public class PersistableWebDirectory
     }
     
     @Override
-    public List<? extends OrderableWebItem> getItems() {
-        return (List<? extends OrderableWebItem>) this.pages;
+    public List<? extends OrderableWebObject> getObjects() {
+        return (List<? extends OrderableWebObject>) this.pages;
     }
 
     public String getPlace() {

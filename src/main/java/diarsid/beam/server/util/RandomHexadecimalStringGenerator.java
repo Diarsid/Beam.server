@@ -27,9 +27,9 @@ public class RandomHexadecimalStringGenerator implements RandomStringGenerator {
     
     @Override
     public String randomString(int length) {
-        String random = this.newRandomHexadecimalString();
-        if ( random.length() > length ) {
-            return random.substring(0, length);
+        String randomString = this.newRandomHexadecimalString();
+        if ( randomString.length() > length ) {
+            return randomString.substring(0, length);
         } else {
             return this.cyclicGenerationFor(length);
         }

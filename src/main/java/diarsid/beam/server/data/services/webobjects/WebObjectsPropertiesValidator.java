@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.data.services.webitmes;
+package diarsid.beam.server.data.services.webobjects;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.data.services.webitmes.exceptions.InvalidWebItemNameException;
-import diarsid.beam.server.data.services.webitmes.exceptions.InvalidWebItemUrlException;
+import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectNameException;
+import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectUrlException;
 
 /**
  *
@@ -19,7 +19,7 @@ import diarsid.beam.server.data.services.webitmes.exceptions.InvalidWebItemUrlEx
  */
 
 @Component
-public class WebItemInputValidator {
+public class WebObjectsPropertiesValidator {
     
     private final static String ACCEPTABLE_WEB_ITEM_NAME_REGEXP;
     private final static UrlValidator URL_VALIDATOR;
@@ -28,7 +28,7 @@ public class WebItemInputValidator {
         URL_VALIDATOR = new UrlValidator();
     }
     
-    public WebItemInputValidator() {
+    public WebObjectsPropertiesValidator() {
     }
     
     public boolean isWebItemNameValid(String webItemName) {
@@ -38,7 +38,7 @@ public class WebItemInputValidator {
     public void validateWebItemNames(String... webItemNames) {
         for (String name : webItemNames) {
             if ( ! name.matches(ACCEPTABLE_WEB_ITEM_NAME_REGEXP) ) {
-                throw new InvalidWebItemNameException("WebItem name " + name + " is invalid.");
+                throw new InvalidWebObjectNameException("WebItem name " + name + " is invalid.");
             }
         }
     }
@@ -49,7 +49,7 @@ public class WebItemInputValidator {
     
     public void validateUrl(String url) {
         if ( ! URL_VALIDATOR.isValid(url) ) {
-            throw new InvalidWebItemUrlException("WebItem URL " + url + " is invalid.");
+            throw new InvalidWebObjectUrlException("WebItem URL " + url + " is invalid.");
         }
     }
 }

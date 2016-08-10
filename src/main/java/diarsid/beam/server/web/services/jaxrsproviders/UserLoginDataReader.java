@@ -18,7 +18,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import diarsid.beam.server.web.services.UserLoginData;
+import diarsid.beam.server.web.services.auth.UserLoginRequestData;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -31,7 +31,7 @@ import static diarsid.beam.server.util.GsonJsonConverter.objectivizeUserLoginDat
 
 @Provider
 @Consumes(APPLICATION_JSON)
-public class UserLoginDataReader implements MessageBodyReader<UserLoginData>{
+public class UserLoginDataReader implements MessageBodyReader<UserLoginRequestData>{
     
     public UserLoginDataReader() {
     }
@@ -40,12 +40,12 @@ public class UserLoginDataReader implements MessageBodyReader<UserLoginData>{
     public boolean isReadable(
             Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         
-        return type.equals(UserLoginData.class);
+        return type.equals(UserLoginRequestData.class);
     }
 
     @Override
-    public UserLoginData readFrom(
-            Class<UserLoginData> type, 
+    public UserLoginRequestData readFrom(
+            Class<UserLoginRequestData> type, 
             Type genericType, 
             Annotation[] annotations, 
             MediaType mediaType, 

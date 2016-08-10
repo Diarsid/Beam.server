@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.data.services.webitmes;
+package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
-import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryUsers;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDirectories;
@@ -23,13 +23,15 @@ import diarsid.beam.server.data.services.BadDataRequestArgumentsException;
  *
  * @author Diarsid
  */
-public class UserWebItemsDataOperatorWorker implements UserWebItemsDataOperator {
+
+@Component
+public class UserWebObjectsDataOperatorWorker implements UserWebObjectsDataOperator {
     
     private final RepositoryUsers users;
     private final RepositoryWebDirectories directories;
     private final RepositoryWebPages webPages;
     
-    public UserWebItemsDataOperatorWorker(
+    public UserWebObjectsDataOperatorWorker(
             RepositoryUsers usersRepo,
             RepositoryWebDirectories dirsRepo,
             RepositoryWebPages webPagesRepo) {
@@ -58,12 +60,8 @@ public class UserWebItemsDataOperatorWorker implements UserWebItemsDataOperator 
     
     @Override
     public int countWebDirectoriesInPlace(WebPlacement place, int userId) {
-        PersistableWebDirectory exampleDir = new PersistableWebDirectory();
         PersistableUser user = this.users.findOne(userId);
-        exampleDir.setUser(user);
-        exampleDir.setPlace(place.name());
-        Example<PersistableWebDirectory> example = Example.of(exampleDir);
-        return (int) this.directories.count(example);        
+        return this.directories.countByUserAndPlace(place.name(), user.getId());
     }
     
     @Override
@@ -77,9 +75,8 @@ public class UserWebItemsDataOperatorWorker implements UserWebItemsDataOperator 
         PersistableWebPage movedPage = pages.stream()
                 .filter(page -> page.getName().equals(pageName))
                 .findFirst()
-                .orElseThrow(() -> {
-                    return new BadDataRequestArgumentsException(
-                            "Cannot find WebPage " + pageName + " in specified WebDirectory.");});
+                .orElseThrow(() -> new BadDataRequestArgumentsException(
+                            "Cannot find WebPage " + pageName + " in specified WebDirectory."));
         return movedPage;
     }
 
@@ -87,7 +84,7 @@ public class UserWebItemsDataOperatorWorker implements UserWebItemsDataOperator 
     public PersistableWebDirectory findWebDirectoryNotNull(
             String dirName, WebPlacement place, int userId) {
         PersistableWebDirectory dir =
-                this.directories.getByNameAndPlaceAndUserId(dirName, place.name(), userId);
+                this.directories.findByNameAndPlaceAndUserId(dirName, place.name(), userId);
         if ( dir == null ) {
             throw new BadDataRequestArgumentsException(
                     "Cannot find WebDirectory " + dirName + " in " 
@@ -131,8 +128,8 @@ public class UserWebItemsDataOperatorWorker implements UserWebItemsDataOperator 
         return dirs.stream()
                 .filter(dir -> dir.getName().equals(dirName))
                 .findFirst()
-                .orElseThrow(() -> {return new BadDataRequestArgumentsException(
-                        "Cannot find WebDirectory " + dirName + " in this place.");});
+                .orElseThrow(() -> new BadDataRequestArgumentsException(
+                        "Cannot find WebDirectory " + dirName + " in this place."));
     }
     
     @Override
@@ -146,28 +143,11 @@ public class UserWebItemsDataOperatorWorker implements UserWebItemsDataOperator 
     public PersistableWebDirectory saveModifiedDirectory(PersistableWebDirectory dir) {
         return this.directories.saveAndFlush(dir);
     }
-    
-    @Override
-    public List<PersistableWebPage> saveModifiedPages(List<PersistableWebPage> pages) {
-        List<PersistableWebPage> saved = this.webPages.save(pages);
-        this.webPages.flush();
-        return saved;
-    }
-    
-    @Override
-    public PersistableWebPage saveModifiedPage(PersistableWebPage page) {
-        return this.webPages.saveAndFlush(page);
-    }
-    
+           
     @Override
     public boolean deleteDirectory(PersistableWebDirectory dir) {
         this.directories.delete(dir);
-        return this.directories.exists(dir.getId());
-    }
-    
-    @Override
-    public boolean deletePage(PersistableWebPage page) {
-        this.webPages.delete(page);
-        return this.webPages.exists(page.getPageId());
+        this.directories.flush();
+        return ( ! this.directories.exists(dir.getId()));
     }
 }

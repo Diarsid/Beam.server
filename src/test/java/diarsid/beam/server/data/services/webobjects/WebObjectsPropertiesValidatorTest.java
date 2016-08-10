@@ -4,13 +4,15 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.data.services.webitmes;
+package diarsid.beam.server.data.services.webobjects;
+
+import diarsid.beam.server.data.services.webobjects.WebObjectsPropertiesValidator;
 
 import org.junit.Test;
 import org.junit.Test.None;
 
-import diarsid.beam.server.data.services.webitmes.exceptions.InvalidWebItemNameException;
-import diarsid.beam.server.data.services.webitmes.exceptions.InvalidWebItemUrlException;
+import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectNameException;
+import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectUrlException;
 
 import static org.junit.Assert.*;
 
@@ -18,16 +20,16 @@ import static org.junit.Assert.*;
  *
  * @author Diarsid
  */
-public class WebItemInputValidatorTest {
+public class WebObjectsPropertiesValidatorTest {
     
-    private final WebItemInputValidator validator;
+    private final WebObjectsPropertiesValidator validator;
 
-    public WebItemInputValidatorTest() {
-        this.validator = new WebItemInputValidator();
+    public WebObjectsPropertiesValidatorTest() {
+        this.validator = new WebObjectsPropertiesValidator();
     }
 
     /**
-     * Test of isWebItemNameValid method, of class WebItemInputValidator.
+     * Test of isWebItemNameValid method, of class WebObjectsPropertiesValidator.
      */
     @Test
     public void testIsWebItemNameValid_valid() {
@@ -48,7 +50,7 @@ public class WebItemInputValidatorTest {
     }
 
     /**
-     * Test of validateWebItemNames method, of class WebItemInputValidator.
+     * Test of validateWebItemNames method, of class WebObjectsPropertiesValidator.
      */
     @Test(expected = None.class)
     public void testValidateWebItemNames_noneThrown() {
@@ -57,7 +59,7 @@ public class WebItemInputValidatorTest {
         validator.validateWebItemNames(validName1, validName2);
     }
     
-    @Test(expected = InvalidWebItemNameException.class)
+    @Test(expected = InvalidWebObjectNameException.class)
     public void testValidateWebItemNames_exceptionThrown() {
         String validName1 = "my * $ name_with [1]";
         String validName2 = " > -name () ; &";
@@ -65,7 +67,7 @@ public class WebItemInputValidatorTest {
     }
 
     /**
-     * Test of isUrlValid method, of class WebItemInputValidator.
+     * Test of isUrlValid method, of class WebObjectsPropertiesValidator.
      */
     @Test
     public void testIsUrlValid_valid() {
@@ -86,7 +88,7 @@ public class WebItemInputValidatorTest {
     }
 
     /**
-     * Test of validateUrl method, of class WebItemInputValidator.
+     * Test of validateUrl method, of class WebObjectsPropertiesValidator.
      */
     @Test(expected = None.class)
     public void testValidateUrl_noneThrown() {
@@ -94,7 +96,7 @@ public class WebItemInputValidatorTest {
         validator.validateUrl(validUrl);
     }
     
-    @Test(expected = InvalidWebItemUrlException.class)
+    @Test(expected = InvalidWebObjectUrlException.class)
     public void testValidateUrl_exceptionThrown() {
         String invalidUrl = "https://www.goo gle.com.ua/";
         validator.validateUrl(invalidUrl);

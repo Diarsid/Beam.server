@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.data.services.webitmes;
+package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
  *
  * @author Diarsid
  */
-public interface UserWebItemsDataOperator {
+public interface UserWebObjectsDataOperator {
 
     PersistableUser findUserNotNull(int userId);
     
@@ -43,12 +43,6 @@ public interface UserWebItemsDataOperator {
     List<PersistableWebDirectory> saveModifiedDirectories(List<PersistableWebDirectory> dirs);
     
     PersistableWebDirectory saveModifiedDirectory(PersistableWebDirectory dir);
-    
-    List<PersistableWebPage> saveModifiedPages(List<PersistableWebPage> pages);
-    
-    PersistableWebPage saveModifiedPage(PersistableWebPage page);
-    
+        
     boolean deleteDirectory(PersistableWebDirectory dir);
-    
-    boolean deletePage(PersistableWebPage page);
 }

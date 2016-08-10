@@ -4,34 +4,34 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.util;
+package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
-import diarsid.beam.server.data.entities.WebItem;
+import diarsid.beam.server.data.entities.WebObject;
 
 /**
  *
  * @author Diarsid
  */
-public class NameIncrementor {
+public class WebObjectsNamesIncrementor {
     
-    private final static String REPLACABLE = "s";
+    private static final String REPLACABLE = "s";
     
     static {
     }
     
     private final ThreadLocal<Format> format;
     
-    public NameIncrementor() {
-        this.format = ThreadLocal.withInitial(() -> {return Format.SPACE_AND_PARENTHESIS;});
+    public WebObjectsNamesIncrementor() {
+        this.format = ThreadLocal.withInitial(() -> Format.SPACE_AND_PARENTHESIS);
     }
     
     public void setIncrementFormat(Format format) {
         this.format.set(format);
     }
     
-    public String incrementName(List<? extends WebItem> items, String nameToIncrement) {
+    public String incrementName(List<? extends WebObject> items, String nameToIncrement) {
         int nameIncrementCounter = 1;
         String incrementedName = nameToIncrement;
         while ( this.itemsContainName(items, incrementedName)) {
@@ -41,7 +41,7 @@ public class NameIncrementor {
         return incrementedName;
     }
     
-    private boolean itemsContainName(List<? extends WebItem> items, String name) {
+    private boolean itemsContainName(List<? extends WebObject> items, String name) {
         return items.stream()
                 .filter(item -> item.getName().equals(name))
                 .findFirst()
@@ -49,7 +49,7 @@ public class NameIncrementor {
     }
     
     private String incrementFormat(int incrementValue) {
-        return this.format.get().format.replace(REPLACABLE, Integer.toString(incrementValue));
+        return this.format.get().stringFormat.replace(REPLACABLE, Integer.toString(incrementValue));
     }
     
     public enum Format {
@@ -59,10 +59,10 @@ public class NameIncrementor {
         SPACE_AND_BRACKETS (" [" + REPLACABLE + "]"),
         UNDERSCORE_AND_BRACKETS ("_[" + REPLACABLE + "]");
         
-        private final String format;
+        private final String stringFormat;
         
         private Format(String format) {
-            this.format = format;
+            this.stringFormat = format;
         }
     }
 }

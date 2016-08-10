@@ -14,8 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import diarsid.beam.server.data.entities.ObjectData;
-import diarsid.beam.server.web.services.UserLoginData;
-import diarsid.beam.server.web.services.UserRegistrationData;
+import diarsid.beam.server.web.services.auth.UserLoginRequestData;
+import diarsid.beam.server.web.services.auth.UserRegistrationRequestData;
 
 /**
  *
@@ -43,14 +43,14 @@ public class GsonJsonConverter {
         return GSON.fromJson(new InputStreamReader(source), ObjectData.class);
     }
     
-    public static UserRegistrationData objectivizeUserRegistrationData(InputStream source) 
+    public static UserRegistrationRequestData objectivizeUserRegistrationData(InputStream source) 
             throws IOException {
-        return GSON.fromJson(new InputStreamReader(source), UserRegistrationData.class);
+        return GSON.fromJson(new InputStreamReader(source), UserRegistrationRequestData.class);
     }
     
-    public static UserLoginData objectivizeUserLoginData(InputStream source) 
+    public static UserLoginRequestData objectivizeUserLoginData(InputStream source) 
             throws IOException {
-        return GSON.fromJson(new InputStreamReader(source), UserLoginData.class);
+        return GSON.fromJson(new InputStreamReader(source), UserLoginRequestData.class);
     }
     
     public static JsonObject objectivize(String json) {

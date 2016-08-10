@@ -11,5 +11,9 @@ package diarsid.beam.server.data.entities;
  */
 public enum WebPlacement {
     PANEL,
-    BOOKMARKS
+    BOOKMARKS;
+    
+    public static WebPlacement valueOfIgnoreCase(String name) {
+        return valueOf(name.toUpperCase());
+    }
 }

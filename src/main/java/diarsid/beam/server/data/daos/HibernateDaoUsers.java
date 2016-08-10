@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import diarsid.beam.server.web.services.UserLoginData;
+import diarsid.beam.server.web.services.auth.UserLoginRequestData;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 
 @Repository
@@ -35,7 +35,7 @@ public class HibernateDaoUsers implements DaoUsers {
 
     @Override
     @Transactional
-    public PersistableUser getUserByNickAndPass(UserLoginData loginData) {
+    public PersistableUser getUserByNickAndPass(UserLoginRequestData loginData) {
         return (PersistableUser) this.sessionFactory.getCurrentSession()
                 .createQuery(
                         "SELECT user " +

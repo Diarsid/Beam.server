@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.data.services.webitmes;
+package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
@@ -12,13 +12,13 @@ import diarsid.beam.server.data.entities.WebPlacement;
 import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
 
 
-public class UserWebContentServiceValidationWrapper implements UserWebContentService {
+public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsService {
     
-    private final UserWebContentService unvalidatedService;
-    private final WebItemInputValidator validator;
+    private final UserWebObjectsService unvalidatedService;
+    private final WebObjectsPropertiesValidator validator;
     
-    public UserWebContentServiceValidationWrapper(
-            UserWebContentService service, WebItemInputValidator validator) {
+    public UserWebObjectsServiceValidationWrapper(
+            UserWebObjectsService service, WebObjectsPropertiesValidator validator) {
         this.unvalidatedService = service;
         this.validator = validator;
     }
@@ -138,13 +138,8 @@ public class UserWebContentServiceValidationWrapper implements UserWebContentSer
     }
 
     @Override
-    public List<PersistableWebDirectory> getUserPanelWebDirectories(int userId) {
-        return this.unvalidatedService.getUserPanelWebDirectories(userId);
-    }
-
-    @Override
-    public List<PersistableWebDirectory> getUserBookmarksWebDirectories(int userId) {
-        return this.unvalidatedService.getUserBookmarksWebDirectories(userId);
+    public List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, WebPlacement place) {
+        return this.unvalidatedService.getUserWebDirectoriesInPlace(userId, place);
     }
 
     @Override
@@ -155,7 +150,7 @@ public class UserWebContentServiceValidationWrapper implements UserWebContentSer
     }
 
     @Override
-    public List<PersistableWebDirectory> getAllUserWebDirectories(int userId) {
-        return this.unvalidatedService.getAllUserWebDirectories(userId);
+    public List<PersistableWebDirectory> getUserAllWebDirectories(int userId) {
+        return this.unvalidatedService.getUserAllWebDirectories(userId);
     }
 }

@@ -18,7 +18,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import diarsid.beam.server.web.services.UserRegistrationData;
+import diarsid.beam.server.web.services.auth.UserRegistrationRequestData;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -31,7 +31,7 @@ import static diarsid.beam.server.util.GsonJsonConverter.objectivizeUserRegistra
 
 @Provider
 @Consumes(APPLICATION_JSON)
-public class UserRegistrationDataReader implements MessageBodyReader<UserRegistrationData>{
+public class UserRegistrationDataReader implements MessageBodyReader<UserRegistrationRequestData>{
     
     public UserRegistrationDataReader() {
     }
@@ -40,12 +40,12 @@ public class UserRegistrationDataReader implements MessageBodyReader<UserRegistr
     public boolean isReadable(
             Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         
-        return type.equals(UserRegistrationData.class);
+        return type.equals(UserRegistrationRequestData.class);
     }
 
     @Override
-    public UserRegistrationData readFrom(
-            Class<UserRegistrationData> type, 
+    public UserRegistrationRequestData readFrom(
+            Class<UserRegistrationRequestData> type, 
             Type genericType, 
             Annotation[] annotations, 
             MediaType mediaType, 

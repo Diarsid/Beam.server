@@ -28,7 +28,18 @@ public interface RepositoryWebDirectories
     
     List<PersistableWebDirectory> getByPlaceAndUserIdOrderByOrder(String place, int userId);
     
-    PersistableWebDirectory getByNameAndPlaceAndUserId(String name, String place, int userId);
+    PersistableWebDirectory findByNameAndPlaceAndUserId(String name, String place, int userId);
+    
+    @Query(
+            "SELECT COUNT(dir.name) " +
+            "FROM PersistableWebDirectory AS dir " +
+            "WHERE " +
+                "( dir.place = :place ) " +
+                    "AND " +
+                "( dir.user.id = :userId )")
+    int countByUserAndPlace(
+            @Param("place") String place,
+            @Param("userId") int userId);
     
     @Modifying
     @Query(

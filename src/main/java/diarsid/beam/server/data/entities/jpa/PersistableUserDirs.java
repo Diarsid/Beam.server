@@ -19,10 +19,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import diarsid.beam.server.data.entities.OrderableWebItem;
-import diarsid.beam.server.data.entities.OrderableWebItemCollection;
-
 import static javax.persistence.GenerationType.IDENTITY;
+
+import diarsid.beam.server.data.entities.OrderableWebObject;
+import diarsid.beam.server.data.entities.OrderableWebObjectsCollection;
 
 
 /**
@@ -34,7 +34,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "users")
 public class PersistableUserDirs 
         implements Serializable, 
-                   OrderableWebItemCollection {    
+                   OrderableWebObjectsCollection {    
         
     @Id
     @GeneratedValue(strategy=IDENTITY)
@@ -102,8 +102,8 @@ public class PersistableUserDirs
     }
     
     @Override
-    public List<? extends OrderableWebItem> getItems() {
-        return (List<? extends OrderableWebItem>) this.dirs;
+    public List<? extends OrderableWebObject> getObjects() {
+        return (List<? extends OrderableWebObject>) this.dirs;
     }
 
     public void setId(long id) {

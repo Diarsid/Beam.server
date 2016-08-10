@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.data.daos.DaoUsers;
-import diarsid.beam.server.web.services.UserLoginData;
-import diarsid.beam.server.web.services.UserRegistrationData;
+import diarsid.beam.server.web.services.auth.UserLoginRequestData;
+import diarsid.beam.server.web.services.auth.UserRegistrationRequestData;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 import diarsid.beam.server.web.services.auth.JwtProducer;
 import diarsid.beam.server.web.services.auth.JwtValidationResult;
@@ -66,7 +66,7 @@ public class AuthenticationResource {
     @POST
     @Path("/users/login")
     @Consumes(APPLICATION_JSON)
-    public Response loginUserAndReturnJWT(UserLoginData login) {
+    public Response loginUserAndReturnJWT(UserLoginRequestData login) {
         logger.info("login data: " + login.getNickName() + " "+ login.getPassword());            
         PersistableUser user = this.daoUsers.getUserByNickAndPass(login);
         if ( user != null ) {
@@ -86,7 +86,7 @@ public class AuthenticationResource {
     @POST
     @Path("/users/registration")
     @Consumes(APPLICATION_JSON)
-    public Response registerUserAndReturnJWT(UserRegistrationData registration) {
+    public Response registerUserAndReturnJWT(UserRegistrationRequestData registration) {
         String role = "user";
         PersistableUser user = new PersistableUser(registration, role);
         this.daoUsers.addUser(user);
@@ -95,7 +95,7 @@ public class AuthenticationResource {
         return Response.ok().header(JWT_RESPONSE_HEADER, jwt).build();                
     }
 
-    private void logRegistration(UserRegistrationData registration) {
+    private void logRegistration(UserRegistrationRequestData registration) {
         String password = registration.getPassword();
         String name = registration.getName();
         String surname = registration.getSurname();

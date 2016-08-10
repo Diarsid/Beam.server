@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.data.services.webitmes;
+package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
  * @author Diarsid
  */
 
-public interface UserWebContentService {
+public interface UserWebObjectsService {
     
     boolean reorderUserWebDirectory(
             int userId, WebPlacement place, String dirName, int newOrder);
@@ -66,11 +66,9 @@ public interface UserWebContentService {
     boolean createUserWebDirectory(
             int userId, WebPlacement place, String dirName);
     
-    List<PersistableWebDirectory> getUserPanelWebDirectories(int userId);
-    
-    List<PersistableWebDirectory> getUserBookmarksWebDirectories(int userId);
+    List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, WebPlacement place);
     
     PersistableWebDirectory getUserWebDirectory(int userId, WebPlacement place, String dirName) ;
     
-    List<PersistableWebDirectory> getAllUserWebDirectories(int userId);
+    List<PersistableWebDirectory> getUserAllWebDirectories(int userId);
 }

@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.1.6.RELEASE</version>
+            <version>4.2.6.RELEASE</version>
         </dependency>
         
         <!-- Spring Data JPA -->
@@ -143,7 +143,20 @@
 
         
         <!-- All depcies required for tests and code
-        coverage measurements - jUnit, mockito -->
+        coverage measurements - jUnit, mockito, Spring test -->
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.2.6.RELEASE</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.176</version>
+        </dependency>
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -195,6 +208,16 @@
             </plugin>
             
             <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <failOnMissingWebXml>true</failOnMissingWebXml>
+                    <packagingExcludes>WEB-INF/lib/*h2*.jar</packagingExcludes>
+                    <packagingExcludes>WEB-INF/lib/*asm*.jar</packagingExcludes>
+                </configuration>
+              </plugin>
+            
+            <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
@@ -215,16 +238,7 @@
                     </filesets>
                 </configuration>
             </plugin>  
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            
+                        
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -249,6 +263,29 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <plugin>  
+                <groupId>org.codehaus.mojo</groupId>  
+                <artifactId>cobertura-maven-plugin</artifactId>  
+                <version>2.6</version>  
+                <dependencies>  
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>5.0.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm-util</artifactId>
+                        <version>5.0.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm-commons</artifactId>
+                        <version>5.0.3</version>
+                    </dependency>  
+                </dependencies>  
             </plugin>
             
         </plugins>

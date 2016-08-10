@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.data.services.webitmes.exceptions;
+package diarsid.beam.server.data.services.webobjects.exceptions;
 
 /**
  *
  * @author Diarsid
  */
-public class InvalidWebItemUrlException extends RuntimeException {
+public class InvalidWebObjectUrlException extends RuntimeException {
 
     /**
      * Creates a new instance of <code>BadUrlException</code> without detail message.
      */
-    public InvalidWebItemUrlException() {
+    public InvalidWebObjectUrlException() {
     }
 
     /**
@@ -22,7 +22,7 @@ public class InvalidWebItemUrlException extends RuntimeException {
      *
      * @param msg the detail message.
      */
-    public InvalidWebItemUrlException(String msg) {
+    public InvalidWebObjectUrlException(String msg) {
         super(msg);
     }
 }

@@ -6,47 +6,62 @@
 
 package diarsid.beam.server.data.entities;
 
+import diarsid.beam.server.data.services.webobjects.WebObjectsOrderer;
+
 import java.util.List;
 
 import org.junit.Test;
 
 import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
-import static diarsid.beam.server.tests.util.Util.produceOrderableWebItems;
+import static java.util.Collections.sort;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
+import static util.Util.produceOrderableWebItems;
+
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
 
 
 /**
  *
  * @author Diarsid
  */
-public class WebItemsOrdererTest {
-    
-    private final WebItemsOrderer orderer;
 
-    public WebItemsOrdererTest() {
-        orderer = new WebItemsOrderer();
+public class WebObjectsOrdererTest {
+    
+    private final WebObjectsOrderer orderer;
+
+    public WebObjectsOrdererTest() {
+        orderer = new WebObjectsOrderer();
     }
 
     /**
-     * Test of reorderWebItemsAccordingToNewOrder method, of class WebItemsOrderer.
+     * Test of reorderWebItemsAccordingToNewOrder method, of class WebObjectsOrderer.
      */
     @Test
     public void testReorderWebItemsAccordingToNewOrder_straightOrder() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itemOldOrder = 2;
         int itemNewOrder = 4;
         
         expected.get(2).setOrder(4);
         expected.get(3).setOrder(2);
         expected.get(4).setOrder(3);
+        sort(expected);
         
         orderer.reorderWebItemsAccordingToNewOrder(tested, itemOldOrder, itemNewOrder);
         assertEquals(expected, tested);
@@ -55,9 +70,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderWebItemsAccordingToNewOrder_straightOrder_wrongHighBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itemOldOrder = 2;
         int itemNewOrder = 1000;
         
@@ -65,6 +80,7 @@ public class WebItemsOrdererTest {
         expected.get(3).setOrder(2);
         expected.get(4).setOrder(3);
         expected.get(5).setOrder(4);
+        sort(expected);
         
         orderer.reorderWebItemsAccordingToNewOrder(tested, itemOldOrder, itemNewOrder);
         assertEquals(expected, tested);
@@ -73,9 +89,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderWebItemsAccordingToNewOrder_straightOrder_wrongLowBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itemOldOrder = -1;
         int itemNewOrder = 4;
         
@@ -84,6 +100,7 @@ public class WebItemsOrdererTest {
         expected.get(2).setOrder(1);
         expected.get(3).setOrder(2);
         expected.get(4).setOrder(3);
+        sort(expected);
         
         orderer.reorderWebItemsAccordingToNewOrder(tested, itemOldOrder, itemNewOrder);
         assertEquals(expected, tested);
@@ -92,15 +109,16 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderWebItemsAccordingToNewOrder_reverseOrder() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itemOldOrder = 4;
         int itemNewOrder = 2;
         
         expected.get(4).setOrder(2);
         expected.get(2).setOrder(3);
         expected.get(3).setOrder(4);
+        sort(expected);
         
         orderer.reorderWebItemsAccordingToNewOrder(tested, itemOldOrder, itemNewOrder);
         assertEquals(expected, tested);
@@ -109,9 +127,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderWebItemsAccordingToNewOrder_reverseOrder_wrongHighBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itemOldOrder = 200;
         int itemNewOrder = 2;
         
@@ -119,6 +137,7 @@ public class WebItemsOrdererTest {
         expected.get(2).setOrder(3);
         expected.get(3).setOrder(4);
         expected.get(4).setOrder(5);
+        sort(expected);
         
         orderer.reorderWebItemsAccordingToNewOrder(tested, itemOldOrder, itemNewOrder);
         assertEquals(expected, tested);
@@ -127,9 +146,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderWebItemsAccordingToNewOrder_reverseOrder_wrongLowBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itemOldOrder = 4;
         int itemNewOrder = -1;
         
@@ -138,6 +157,7 @@ public class WebItemsOrdererTest {
         expected.get(1).setOrder(2);
         expected.get(2).setOrder(3);
         expected.get(3).setOrder(4);
+        sort(expected);
         
         orderer.reorderWebItemsAccordingToNewOrder(tested, itemOldOrder, itemNewOrder);
         assertEquals(expected, tested);
@@ -145,13 +165,13 @@ public class WebItemsOrdererTest {
     }
 
     /**
-     * Test of reorderToExtractWebItemLater method, of class WebItemsOrderer.
+     * Test of reorderToExtractWebItemLater method, of class WebObjectsOrderer.
      */
     @Test
     public void testReorderToExtractWebItemLater() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int removedItemOrder = 3;
                 
         expected.get(4).setOrder(3);
@@ -165,9 +185,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderToExtractWebItemLater_wrongLowBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int removedItemOrder = -1;
                 
         expected.get(1).setOrder(0);
@@ -184,9 +204,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderToExtractWebItemLater_wrongHighBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int removedItemOrder = 1000;
         
         orderer.reorderToExtractWebItemLater(tested, removedItemOrder);
@@ -196,13 +216,13 @@ public class WebItemsOrdererTest {
     }
 
     /**
-     * Test of reorderToInsertWebItemLater method, of class WebItemsOrderer.
+     * Test of reorderToInsertWebItemLater method, of class WebObjectsOrderer.
      */
     @Test
     public void testReorderToInsertWebItemLater() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itermOrderToInsert = 3;
         PersistableWebPage insertedItemTested = new PersistableWebPage();
         PersistableWebPage insertedItemExpected = new PersistableWebPage();
@@ -221,9 +241,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderToInsertWebItemLater_wrongLowBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itermOrderToInsert = -2;
         PersistableWebPage insertedItemTested = new PersistableWebPage();
         PersistableWebPage insertedItemExpected = new PersistableWebPage();
@@ -245,9 +265,9 @@ public class WebItemsOrdererTest {
     
     @Test
     public void testReorderToInsertWebItemLater_wrongHighBoundary() {
-        List<OrderableWebItem> tested = produceOrderableWebItems();
-        List<OrderableWebItem> notModified = produceOrderableWebItems();
-        List<OrderableWebItem> expected = produceOrderableWebItems();
+        List<OrderableWebObject> tested = produceOrderableWebItems();
+        List<OrderableWebObject> notModified = produceOrderableWebItems();
+        List<OrderableWebObject> expected = produceOrderableWebItems();
         int itermOrderToInsert = 1000;
         PersistableWebPage insertedItemTested = new PersistableWebPage();
         PersistableWebPage insertedItemExpected = new PersistableWebPage();

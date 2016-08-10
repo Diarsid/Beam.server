@@ -4,21 +4,28 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.data.entities;
+package diarsid.beam.server.data.services.webobjects;
+
+import diarsid.beam.server.data.entities.OrderableWebObject;
 
 import java.util.List;
+
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
+import static java.util.Collections.sort;
 
 /**
  *
  * @author Diarsid
  */
-public class WebItemsOrderer {
+public class WebObjectsOrderer {
     
-    public WebItemsOrderer() {
+    public WebObjectsOrderer() {
     }
     
     public void reorderWebItemsAccordingToNewOrder(
-            List<? extends OrderableWebItem> items, int itemOldOrder, int itemNewOrder) {
+            List<? extends OrderableWebObject> items, int itemOldOrder, int itemNewOrder) {
         int collectionSize = items.size();
         if ( itemNewOrder == itemOldOrder ) {
             // do not sort collection at all.
@@ -54,6 +61,7 @@ public class WebItemsOrderer {
             for (int i = itemOldOrder + 1; i <= itemNewOrder; i++) {
                 items.get(i).setOrder(i - 1);
             }
+            sort(items);
         } else {
             /*
              * itemOldOrder > itemNewOrder
@@ -81,10 +89,11 @@ public class WebItemsOrderer {
             for (int i = itemNewOrder; i < itemOldOrder; i++) {
                 items.get(i).setOrder(i + 1);
             }
+            sort(items);
         }
     }
     
-    public void reorderToExtractWebItemLater(List<? extends OrderableWebItem> items, int itemOrder) {
+    public void reorderToExtractWebItemLater(List<? extends OrderableWebObject> items, int itemOrder) {
         itemOrder = this.adjustHighLimit(itemOrder, items.size());
         itemOrder = this.adjustLowLimit(itemOrder);
         /*
@@ -107,7 +116,7 @@ public class WebItemsOrderer {
     }
     
     public void reorderToInsertWebItemLater(
-            List<? extends OrderableWebItem> items, OrderableWebItem newItem, int itemNewOrder) {
+            List<? extends OrderableWebObject> items, OrderableWebObject newItem, int itemNewOrder) {
         /*
          * Items:
          *   1 2 3 4 5

@@ -9,14 +9,14 @@ package diarsid.beam.server.data.entities;
  *
  * @author Diarsid
  */
-public interface OrderableWebItem extends WebItem, Comparable<OrderableWebItem> {
+public interface OrderableWebObject extends WebObject, Comparable<OrderableWebObject> {
     
     int getOrder();
     
     void setOrder(int newOrder);
     
     @Override
-    default int compareTo(OrderableWebItem item) {
+    default int compareTo(OrderableWebObject item) {
         if ( this.getOrder() > item.getOrder() ) {
             return 1;
         } else if ( this.getOrder() < item.getOrder() ) {

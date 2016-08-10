@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.tests.util;
+package util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import diarsid.beam.server.data.entities.OrderableWebItem;
-import diarsid.beam.server.data.entities.WebItem;
 import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
+import diarsid.beam.server.data.entities.WebObject;
+import diarsid.beam.server.data.entities.OrderableWebObject;
 
 /**
  *
@@ -22,8 +22,8 @@ public class Util {
     Util() {
     }
     
-    public static WebItem namedWeItemStub(String name) {
-        return new WebItem() {
+    public static WebObject namedWeItemStub(String name) {
+        return new WebObject() {
             
             @Override
             public String getName() {
@@ -37,8 +37,8 @@ public class Util {
         };
     }
     
-    public static List<OrderableWebItem> produceOrderableWebItems() {
-        List<OrderableWebItem> items = new ArrayList<>();
+    public static List<OrderableWebObject> produceOrderableWebItems() {
+        List<OrderableWebObject> items = new ArrayList<>();
         items.add(new PersistableWebPage());
         items.add(new PersistableWebPage());
         items.add(new PersistableWebPage());
@@ -50,5 +50,5 @@ public class Util {
             items.get(i).setName("itemName:" + i+1);
         }
         return items;
-    }
+    }    
 }
