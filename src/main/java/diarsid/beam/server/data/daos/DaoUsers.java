@@ -5,7 +5,6 @@
  */
 package diarsid.beam.server.data.daos;
 
-import diarsid.beam.server.web.services.auth.UserLoginRequestData;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 
 /**
@@ -14,11 +13,13 @@ import diarsid.beam.server.data.entities.jpa.PersistableUser;
  */
 public interface DaoUsers {
     
-    PersistableUser getUserByNickAndPass(UserLoginRequestData login);
+    PersistableUser getUserByNicknameAndPassword(String nickname, String password);
     
     PersistableUser getUserById(int id);
     
-    public boolean isNickNameFree(String nickName);
+    boolean isNickNameFree(String nickName);
     
-    public int addUser(PersistableUser user);
+    PersistableUser addUser(PersistableUser user);
+    
+    boolean existsBy(int id);
 }

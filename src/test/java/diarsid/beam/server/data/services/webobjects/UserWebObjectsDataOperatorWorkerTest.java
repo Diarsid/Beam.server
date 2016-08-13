@@ -6,8 +6,6 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.data.services.webobjects.UserWebObjectsDataOperatorWorker;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +22,11 @@ import springtests.config.AppTestConfig;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryUsers;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDirectories;
-import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebPages;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
 import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
-import diarsid.beam.server.data.services.BadDataRequestArgumentsException;
+import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperatorWorker;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,10 +43,6 @@ import static util.FakeWebDirsProducer.newFakeDirs;
 import static util.FakeWebPagesProducer.PAGE_NAME_TEMPLATE;
 import static util.FakeWebPagesProducer.newFakePages;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppTestConfig.class})
 @Transactional
@@ -56,10 +50,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     
     @Autowired
     private UserWebObjectsDataOperatorWorker dataOperator;
-    
-    @Autowired
-    private RepositoryWebPages pagesRepo;
-    
+        
     @Autowired
     private RepositoryUsers usersRepo;
     
@@ -161,7 +152,8 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, PANEL, 3));
-        List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
+        //List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
+        List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
         dirsRepo.saveAndFlush(savedPanelDir);
         
@@ -186,7 +178,8 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, PANEL, 3));
-        List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
+//        List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
+        List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
         dirsRepo.saveAndFlush(savedPanelDir);
                 

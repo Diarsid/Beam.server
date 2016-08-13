@@ -25,7 +25,7 @@
     specified for component-scanning -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>diarsid.beam.server.config.SpringAnnotationsConfig</param-value>
+        <param-value>diarsid.beam.server.config.spring.java.RootConfig</param-value>
     </context-param>       
         
     <session-config>

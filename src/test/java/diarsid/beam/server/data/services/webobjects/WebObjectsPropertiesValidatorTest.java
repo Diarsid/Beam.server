@@ -6,13 +6,13 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.data.services.webobjects.WebObjectsPropertiesValidator;
+import diarsid.beam.server.services.domain.webobjects.WebObjectsPropertiesValidator;
 
 import org.junit.Test;
 import org.junit.Test.None;
 
-import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectNameException;
-import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectUrlException;
+import diarsid.beam.server.services.domain.exceptions.WebObjectNameInvalidException;
+import diarsid.beam.server.services.domain.exceptions.WebObjectUrlInvalidException;
 
 import static org.junit.Assert.*;
 
@@ -59,7 +59,7 @@ public class WebObjectsPropertiesValidatorTest {
         validator.validateWebItemNames(validName1, validName2);
     }
     
-    @Test(expected = InvalidWebObjectNameException.class)
+    @Test(expected = WebObjectNameInvalidException.class)
     public void testValidateWebItemNames_exceptionThrown() {
         String validName1 = "my * $ name_with [1]";
         String validName2 = " > -name () ; &";
@@ -96,7 +96,7 @@ public class WebObjectsPropertiesValidatorTest {
         validator.validateUrl(validUrl);
     }
     
-    @Test(expected = InvalidWebObjectUrlException.class)
+    @Test(expected = WebObjectUrlInvalidException.class)
     public void testValidateUrl_exceptionThrown() {
         String invalidUrl = "https://www.goo gle.com.ua/";
         validator.validateUrl(invalidUrl);

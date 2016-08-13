@@ -6,8 +6,8 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.data.services.webobjects.UserWebObjectsDataOperator;
-import diarsid.beam.server.data.services.webobjects.UserWebObjectsService;
+import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperator;
+import diarsid.beam.server.services.domain.webobjects.UserWebObjectsService;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDi
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
 import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
-import diarsid.beam.server.data.services.BadDataRequestArgumentsException;
-import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectNameException;
-import diarsid.beam.server.data.services.webobjects.exceptions.InvalidWebObjectUrlException;
+import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.services.domain.exceptions.WebObjectNameInvalidException;
+import diarsid.beam.server.services.domain.exceptions.WebObjectUrlInvalidException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -341,7 +341,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(newPageName, foundDir.getPages().get(renamedPageIndex).getName());
     }
     
-    @Test(expected = InvalidWebObjectNameException.class)
+    @Test(expected = WebObjectNameInvalidException.class)
     public void testRenameUserWebPage_exceptionThrown() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
@@ -409,7 +409,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(newUrl, foundDir.getPages().get(redirectedPageIndex).getUrl());
     }
     
-    @Test(expected = InvalidWebObjectUrlException.class)
+    @Test(expected = WebObjectUrlInvalidException.class)
     public void testRedirectUserWebPageUrl_exceptionThrown() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
@@ -447,7 +447,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(newDirName, foundDir.getName());
     }
     
-    @Test(expected = InvalidWebObjectNameException.class)
+    @Test(expected = WebObjectNameInvalidException.class)
     public void testRenameUserWebDirectory_exceptionThrown() {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);

@@ -10,6 +10,7 @@ package diarsid.beam.server.data.entities;
  * @author Diarsid
  */
 public enum WebPlacement {
+    
     PANEL,
     BOOKMARKS;
     

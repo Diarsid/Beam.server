@@ -15,8 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import diarsid.beam.server.web.services.auth.UserRegistrationRequestData;
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -54,14 +52,15 @@ public class PersistableUser implements Serializable {
     public PersistableUser() {
     }
     
-    public PersistableUser(UserRegistrationRequestData registrationData, String role) {
-        this.password = registrationData.getPassword();
-        this.name = registrationData.getName();
-        this.surname = registrationData.getSurname();
-        this.nickname = registrationData.getNickName();
-        this.email = registrationData.getEmail();
-        this.role = role.toUpperCase();
-    }
+//    
+//    public PersistableUser(UserRegistrationRequestData registrationData, String role) {
+//        this.password = registrationData.getPassword();
+//        this.name = registrationData.getName();
+//        this.surname = registrationData.getSurname();
+//        this.nickname = registrationData.getNickName();
+//        this.email = registrationData.getEmail();
+//        this.role = role.toUpperCase();
+//    }
     
     public int getId() {
         return this.id;

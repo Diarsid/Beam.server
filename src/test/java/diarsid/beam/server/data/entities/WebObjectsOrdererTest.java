@@ -6,7 +6,7 @@
 
 package diarsid.beam.server.data.entities;
 
-import diarsid.beam.server.data.services.webobjects.WebObjectsOrderer;
+import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
 
 import java.util.List;
 

@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         basePackages = {"diarsid.beam.server.data.daos.springdata.repositories.jpa"})
 @Import({
     DataConnectionTestConfig.class, 
-    DataServiceTestConfig.class})
+    DomainServicesTestConfig.class})
 public class AppTestConfig {
     
     public AppTestConfig() {

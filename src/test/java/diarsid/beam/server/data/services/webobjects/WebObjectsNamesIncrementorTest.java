@@ -6,7 +6,7 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.data.services.webobjects.WebObjectsNamesIncrementor;
+import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
 
 import java.util.ArrayList;
 import java.util.List;

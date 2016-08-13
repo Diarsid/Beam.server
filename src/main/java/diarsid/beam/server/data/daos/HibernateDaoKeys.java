@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ import static org.hibernate.criterion.CriteriaSpecification.DISTINCT_ROOT_ENTITY
 @Repository
 public class HibernateDaoKeys implements DaoKeys {
     
-    private final static Logger logger = LoggerFactory.getLogger(HibernateDaoKeys.class);
+    private static final Logger logger = LoggerFactory.getLogger(HibernateDaoKeys.class);
     
     private final SessionFactory sessionFactory;
     
