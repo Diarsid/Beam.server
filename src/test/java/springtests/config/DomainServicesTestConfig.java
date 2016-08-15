@@ -19,7 +19,7 @@ import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceValid
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceWorker;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
-import diarsid.beam.server.services.domain.webobjects.WebObjectsPropertiesValidator;
+import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
 
 /**
  *

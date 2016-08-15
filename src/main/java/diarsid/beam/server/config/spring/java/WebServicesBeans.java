@@ -12,12 +12,15 @@ import org.springframework.context.annotation.Import;
 
 import diarsid.beam.server.data.ObjectDataServiceWorker;
 import diarsid.beam.server.services.domain.users.UsersService;
-import diarsid.beam.server.services.web.filters.AuthenticationFilter;
-import diarsid.beam.server.services.web.auth.jwt.JwtProducer;
+import diarsid.beam.server.services.domain.validation.UsersValidationService;
+import diarsid.beam.server.services.domain.validation.WebObjectsValidationService;
+import diarsid.beam.server.services.web.auth.jwt.JwtService;
 import diarsid.beam.server.services.web.auth.jwt.JwtValidator;
+import diarsid.beam.server.services.web.filters.AuthenticationFilter;
 import diarsid.beam.server.services.web.resources.AuthenticationResource;
 import diarsid.beam.server.services.web.resources.ObjectResource;
-import diarsid.beam.server.services.web.resources.ValidationResource;
+import diarsid.beam.server.services.web.resources.UsersValidationResource;
+import diarsid.beam.server.services.web.resources.WebObjectsValidationResource;
 
 /**
  *
@@ -42,15 +45,20 @@ public class WebServicesBeans {
     @Bean
     public AuthenticationResource authenticationResource(
             UsersService usersService, 
-            JwtValidator jwtValidator,
-            JwtProducer jwtProducer) {
+            JwtService jwtService) {
         return new AuthenticationResource(
-                usersService, jwtValidator, jwtProducer);
+                usersService, jwtService);
     }
     
     @Bean
-    public ValidationResource validationResource() {
-        return new ValidationResource();
+    public UsersValidationResource usersValidationResource(
+            UsersService usersService, UsersValidationService validation) {
+        return new UsersValidationResource(validation, usersService);
+    }
+    
+    @Bean
+    public WebObjectsValidationResource webObjectsValidationResource(WebObjectsValidationService validation) {
+        return new WebObjectsValidationResource(validation);
     }
     
     @Bean  

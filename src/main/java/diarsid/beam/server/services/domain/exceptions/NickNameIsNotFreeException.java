@@ -13,22 +13,22 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  *
  * @author Diarsid
  */
-public class UserInfoInvalidException 
+public class NickNameIsNotFreeException 
         extends RuntimeException 
-        implements ThrowableConvertableToJsonErrorObject {
-    
+        implements ConvertableToJsonErrorObject {
+
     private static final int HTTP_ERROR_STATUS_CODE; 
     static {
         HTTP_ERROR_STATUS_CODE = SC_BAD_REQUEST;
     }
-
+    
     /**
-     * Constructs an instance of <code>UserInfoInvalidException</code> with the specified detail
+     * Constructs an instance of <code>NickNameIsNotFreeException</code> with the specified detail
      * message.
      *
      * @param msg the detail message.
      */
-    public UserInfoInvalidException(String msg) {
+    public NickNameIsNotFreeException(String msg) {
         super(msg);
     }
     

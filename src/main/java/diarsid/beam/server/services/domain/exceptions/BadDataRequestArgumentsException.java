@@ -15,7 +15,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  */
 public class BadDataRequestArgumentsException 
         extends RuntimeException 
-        implements ThrowableConvertableToJsonErrorObject {
+        implements ConvertableToJsonErrorObject {
     
     private static final int HTTP_ERROR_STATUS_CODE; 
     static {

@@ -17,6 +17,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import diarsid.beam.server.data.entities.KeyIdPair;
+import diarsid.beam.server.data.entities.jpa.PersistableUser;
 import diarsid.beam.server.services.domain.keys.KeysService;
 
 import static diarsid.beam.server.services.web.auth.jwt.JwtBeamServerClaims.EXPIRATION;
@@ -47,7 +48,7 @@ public class JwtProducer {
         LOGGER.info("created.");
     }
     
-    public String createJwt(int id, String nickName, String role) {
+    public String createJwt(PersistableUser user) {
         LOGGER.info("JWT creation...");
         KeyIdPair pair = this.keysService.getRandomKeyIdPair();
         Claims claims = Jwts.claims();
@@ -55,9 +56,9 @@ public class JwtProducer {
         long expiration = this.plusOneHourFrom(now);
         claims.put(EXPIRATION.header(), String.valueOf(expiration));
         claims.put(ISSUED_AT.header(), String.valueOf(now));
-        claims.put(USER_ID.header(), String.valueOf(id));
-        claims.put(NICK_NAME.header(), nickName);
-        claims.put(ROLE.header(), role.toLowerCase());        
+        claims.put(USER_ID.header(), String.valueOf(user.getId()));
+        claims.put(NICK_NAME.header(), user.getNickname());
+        claims.put(ROLE.header(), user.getRole());        
         
         return Jwts.builder()
                 .setHeaderParam("kid", pair.getId())

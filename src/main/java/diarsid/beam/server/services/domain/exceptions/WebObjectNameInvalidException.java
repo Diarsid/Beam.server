@@ -5,16 +5,21 @@
  */
 package diarsid.beam.server.services.domain.exceptions;
 
+import diarsid.beam.server.util.JsonErrorObject;
+
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+
 /**
  *
  * @author Diarsid
  */
-public class WebObjectNameInvalidException extends RuntimeException {
-
-    /**
-     * Creates a new instance of <code>BadWebItemNameException</code> without detail message.
-     */
-    public WebObjectNameInvalidException() {
+public class WebObjectNameInvalidException 
+        extends RuntimeException 
+        implements ConvertableToJsonErrorObject {
+    
+    private static final int HTTP_ERROR_STATUS_CODE; 
+    static {
+        HTTP_ERROR_STATUS_CODE = SC_BAD_REQUEST;
     }
 
     /**
@@ -26,4 +31,9 @@ public class WebObjectNameInvalidException extends RuntimeException {
     public WebObjectNameInvalidException(String msg) {
         super(msg);
     }
+    
+    @Override
+    public JsonErrorObject convertToJsonErrorObject() {
+        return new JsonErrorObject(HTTP_ERROR_STATUS_CODE, this.getMessage());
+    } 
 }

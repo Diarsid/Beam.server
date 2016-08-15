@@ -8,30 +8,23 @@ package diarsid.beam.server.services.web.providers;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
-import org.springframework.stereotype.Component;
-
-import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.services.domain.exceptions.UserRegistrationInvalidException;
 
 import static diarsid.beam.server.services.web.providers.JaxRsResponseComposer.composeResponseFrom;
-
 
 /**
  *
  * @author Diarsid
  */
-
-@Provider
-@Component
-public class MapperBadDataRequestArgumentsException 
-        implements ExceptionMapper<BadDataRequestArgumentsException> {
+public class MapperUserRegistrationInvalidException 
+        implements ExceptionMapper<UserRegistrationInvalidException> {
     
-    public MapperBadDataRequestArgumentsException() {
+    public MapperUserRegistrationInvalidException() {
     }
     
     @Override
-    public Response toResponse(BadDataRequestArgumentsException e) {
+    public Response toResponse(UserRegistrationInvalidException e) {
         return composeResponseFrom(e);
     }
 }

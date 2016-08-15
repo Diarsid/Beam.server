@@ -8,32 +8,35 @@ package diarsid.beam.server.services.domain.webobjects;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import diarsid.beam.server.data.entities.WebPlacement;
 import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.services.domain.validation.WebObjectsValidationService;
 
-
+@Component
 public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsService {
     
     private final UserWebObjectsService unvalidatedService;
-    private final WebObjectsPropertiesValidator validator;
+    private final WebObjectsValidationService validation;
     
     public UserWebObjectsServiceValidationWrapper(
-            UserWebObjectsService service, WebObjectsPropertiesValidator validator) {
+            UserWebObjectsService service, WebObjectsValidationService validator) {
         this.unvalidatedService = service;
-        this.validator = validator;
+        this.validation = validator;
     }
 
     @Override
     public boolean reorderUserWebDirectory(
             int userId, WebPlacement place, String dirName, int newOrder) {
-        this.validator.validateWebItemNames(dirName);
+        this.validation.validateWebObjectNames(dirName);
         return this.unvalidatedService.reorderUserWebDirectory(userId, place, dirName, newOrder);
     }
 
     @Override
     public boolean reorderUserWebPageOrder(
             int userId, WebPlacement place, String dirName, String pageName, int newOrder) {
-        this.validator.validateWebItemNames(dirName, pageName);
+        this.validation.validateWebObjectNames(dirName, pageName);
         return this.unvalidatedService.reorderUserWebPageOrder(
                 userId, place, dirName, pageName, newOrder);
     }
@@ -41,7 +44,7 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
     @Override
     public boolean renameUserWebPage(
             int userId, WebPlacement place, String dirName, String oldPageName, String newPageName) {
-        this.validator.validateWebItemNames(dirName, oldPageName, newPageName);
+        this.validation.validateWebObjectNames(dirName, oldPageName, newPageName);
         return this.unvalidatedService.renameUserWebPage(
                 userId, place, dirName, oldPageName, newPageName);
     }
@@ -49,8 +52,8 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
     @Override
     public boolean redirectUserWebPageUrl(
             int userId, WebPlacement place, String dirName, String pageName, String newUrl) {
-        this.validator.validateWebItemNames(dirName, pageName);
-        this.validator.validateUrl(newUrl);
+        this.validation.validateWebObjectNames(dirName, pageName);
+        this.validation.validateUrl(newUrl);
         return this.unvalidatedService.redirectUserWebPageUrl(
                 userId, place, dirName, pageName, newUrl);
     }
@@ -58,7 +61,7 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
     @Override
     public boolean renameUserWebDirectory(
             int userId, WebPlacement place, String oldDirName, String newDirName) {
-        this.validator.validateWebItemNames(newDirName, oldDirName);
+        this.validation.validateWebObjectNames(newDirName, oldDirName);
         return this.unvalidatedService.renameUserWebDirectory(
                 userId, place, oldDirName, newDirName);
     }
@@ -66,7 +69,7 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
     @Override
     public boolean moveUserWebDirectoryIntoPlace(
             int userId, WebPlacement oldPlace, WebPlacement newPlace, String dirName) {
-        this.validator.validateWebItemNames(dirName);
+        this.validation.validateWebObjectNames(dirName);
         if ( oldPlace.equals(newPlace) ) {
             return true;
         } else {
@@ -78,7 +81,7 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
     @Override
     public boolean moveUserWebPageIntoDirectory(
             int userId, WebPlacement place, String oldDirName, String newDirName, String pageName) {
-        this.validator.validateWebItemNames(oldDirName, newDirName, pageName);
+        this.validation.validateWebObjectNames(oldDirName, newDirName, pageName);
         return this.unvalidatedService.moveUserWebPageIntoDirectory(
                 userId, place, oldDirName, newDirName, pageName);
     }
@@ -91,7 +94,7 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
             String oldDirName, 
             String newDirName, 
             String pageName) {
-        this.validator.validateWebItemNames(oldDirName, newDirName, pageName);
+        this.validation.validateWebObjectNames(oldDirName, newDirName, pageName);
         return this.unvalidatedService.moveUserWebPageIntoDirectoryAndPlace(
                 userId, oldPlace, newPlace, oldDirName, newDirName, pageName);
     }
@@ -104,36 +107,36 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
             String newDirName, 
             String pageName, 
             int movedPageNewOrder) {
-        this.validator.validateWebItemNames(oldDirName, newDirName, pageName);
+        this.validation.validateWebObjectNames(oldDirName, newDirName, pageName);
         return this.unvalidatedService.moveUserWebPageIntoDirectoryAndOrder(
                 userId, place, oldDirName, newDirName, pageName, movedPageNewOrder);
     }
 
     @Override
     public boolean deleteUserWebDirectory(int userId, WebPlacement place, String dirName) {
-        this.validator.validateWebItemNames(dirName);
+        this.validation.validateWebObjectNames(dirName);
         return this.unvalidatedService.deleteUserWebDirectory(userId, place, dirName);
     }
 
     @Override
     public boolean deleteUserWebPage(
             int userId, WebPlacement place, String dirName, String pageName) {
-        this.validator.validateWebItemNames(dirName, pageName);
+        this.validation.validateWebObjectNames(dirName, pageName);
         return this.unvalidatedService.deleteUserWebPage(userId, place, dirName, pageName);
     }
 
     @Override
     public boolean createUserWebPage(
             int userId, WebPlacement place, String dirName, String pageName, String pageUrl) {
-        this.validator.validateWebItemNames(dirName, pageName);
-        this.validator.validateUrl(pageUrl);
+        this.validation.validateWebObjectNames(dirName, pageName);
+        this.validation.validateUrl(pageUrl);
         return this.unvalidatedService.createUserWebPage(
                 userId, place, dirName, pageName, pageUrl);
     }
 
     @Override
     public boolean createUserWebDirectory(int userId, WebPlacement place, String dirName) {
-        this.validator.validateWebItemNames(dirName);
+        this.validation.validateWebObjectNames(dirName);
         return this.unvalidatedService.createUserWebDirectory(userId, place, dirName);
     }
 
@@ -145,7 +148,7 @@ public class UserWebObjectsServiceValidationWrapper implements UserWebObjectsSer
     @Override
     public PersistableWebDirectory getUserWebDirectory(
             int userId, WebPlacement place, String dirName) {
-        this.validator.validateWebItemNames(dirName);
+        this.validation.validateWebObjectNames(dirName);
         return this.unvalidatedService.getUserWebDirectory(userId, place, dirName);
     }
 

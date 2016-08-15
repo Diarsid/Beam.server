@@ -6,13 +6,13 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.services.domain.webobjects.WebObjectsPropertiesValidator;
-
 import org.junit.Test;
 import org.junit.Test.None;
 
 import diarsid.beam.server.services.domain.exceptions.WebObjectNameInvalidException;
 import diarsid.beam.server.services.domain.exceptions.WebObjectUrlInvalidException;
+import diarsid.beam.server.services.domain.validation.ValidationResult;
+import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
 
 import static org.junit.Assert.*;
 
@@ -29,15 +29,15 @@ public class WebObjectsPropertiesValidatorTest {
     }
 
     /**
-     * Test of isWebItemNameValid method, of class WebObjectsPropertiesValidator.
+     * Test of isWebObjectNameValid method, of class WebObjectsPropertiesValidator.
      */
     @Test
     public void testIsWebItemNameValid_valid() {
         String validName = "my name_with [1] > -name ()";
         boolean expected = true;
         
-        boolean tested = validator.isWebItemNameValid(validName);
-        assertEquals(expected, tested);
+        ValidationResult result = validator.isWebObjectNameValid(validName);
+        assertEquals(expected, result.isOk());
     }
     
     @Test
@@ -45,25 +45,25 @@ public class WebObjectsPropertiesValidatorTest {
         String invalidName = "my * # name_with [1] > -name () ^ @ & $ ;";
         boolean expected = false;
         
-        boolean tested = validator.isWebItemNameValid(invalidName);
-        assertEquals(expected, tested);
+        ValidationResult result = validator.isWebObjectNameValid(invalidName);
+        assertEquals(expected, result.isOk());
     }
 
     /**
-     * Test of validateWebItemNames method, of class WebObjectsPropertiesValidator.
+     * Test of validateWebObjectNames method, of class WebObjectsPropertiesValidator.
      */
     @Test(expected = None.class)
     public void testValidateWebItemNames_noneThrown() {
         String validName1 = "my name_with [1]";
         String validName2 = " > -name ()";
-        validator.validateWebItemNames(validName1, validName2);
+        validator.validateWebObjectNames(validName1, validName2);
     }
     
     @Test(expected = WebObjectNameInvalidException.class)
     public void testValidateWebItemNames_exceptionThrown() {
         String validName1 = "my * $ name_with [1]";
         String validName2 = " > -name () ; &";
-        validator.validateWebItemNames(validName1, validName2);
+        validator.validateWebObjectNames(validName1, validName2);
     }
 
     /**
@@ -74,8 +74,8 @@ public class WebObjectsPropertiesValidatorTest {
         String validUrl = "https://www.google.com.ua/";
         boolean expected = true;
         
-        boolean tested = validator.isUrlValid(validUrl);
-        assertEquals(expected, tested);
+        ValidationResult result = validator.isUrlValid(validUrl);
+        assertEquals(expected, result.isOk());
     }
     
     @Test
@@ -83,8 +83,8 @@ public class WebObjectsPropertiesValidatorTest {
         String invalidUrl = "https://www.goo gle.com.ua/";
         boolean expected = false;
         
-        boolean tested = validator.isUrlValid(invalidUrl);
-        assertEquals(expected, tested);
+        ValidationResult result = validator.isUrlValid(invalidUrl);
+        assertEquals(expected, result.isOk());
     }
 
     /**

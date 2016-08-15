@@ -12,10 +12,9 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.services.domain.exceptions.WebObjectUrlInvalidException;
 
 import static diarsid.beam.server.services.web.providers.JaxRsResponseComposer.composeResponseFrom;
-
 
 /**
  *
@@ -24,14 +23,14 @@ import static diarsid.beam.server.services.web.providers.JaxRsResponseComposer.c
 
 @Provider
 @Component
-public class MapperBadDataRequestArgumentsException 
-        implements ExceptionMapper<BadDataRequestArgumentsException> {
+public class MapperWebObjectUrlInvalidException 
+        implements ExceptionMapper<WebObjectUrlInvalidException> {
     
-    public MapperBadDataRequestArgumentsException() {
+    public MapperWebObjectUrlInvalidException() {
     }
-    
+
     @Override
-    public Response toResponse(BadDataRequestArgumentsException e) {
+    public Response toResponse(WebObjectUrlInvalidException e) {
         return composeResponseFrom(e);
     }
 }

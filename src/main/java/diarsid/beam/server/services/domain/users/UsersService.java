@@ -26,11 +26,5 @@ public interface UsersService {
     
     PersistableUser createUserBy(UserRegistrationRequestData registration); 
     
-    boolean isPassValid(String pass);
-    
-    boolean isNameValid(String name);
-    
-    boolean isNickValidAndFree(String name);
-    
-    boolean isEmailValid(String email);
+    boolean isNicknameFree(String nick);
 }

@@ -13,7 +13,12 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.data.daos.DaoUsers;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
-import diarsid.beam.server.services.domain.exceptions.UnknownUsersServiceLogicException;
+import diarsid.beam.server.services.domain.exceptions.NickNameIsNotFreeException;
+import diarsid.beam.server.services.domain.exceptions.UserLoginInvalidException;
+import diarsid.beam.server.services.domain.exceptions.UserRegistrationInvalidException;
+import diarsid.beam.server.services.domain.exceptions.UsersServiceUnknownLogicException;
+import diarsid.beam.server.services.domain.validation.UsersValidationService;
+import diarsid.beam.server.services.domain.validation.ValidationResult;
 import diarsid.beam.server.services.web.auth.UserLoginRequestData;
 import diarsid.beam.server.services.web.auth.UserRegistrationRequestData;
 import diarsid.beam.server.services.web.auth.UserRole;
@@ -27,11 +32,11 @@ public class UsersServiceWorker implements UsersService {
     }
     
     private final DaoUsers users;
-    private final UsersInfoValidator validator;
+    private final UsersValidationService validation;
     
-    public UsersServiceWorker(DaoUsers dao, UsersInfoValidator validator) {
+    public UsersServiceWorker(DaoUsers dao, UsersValidationService validator) {
         this.users = dao;
-        this.validator = validator;
+        this.validation = validator;
     }
 
     @Override
@@ -64,51 +69,46 @@ public class UsersServiceWorker implements UsersService {
 
     @Override
     public PersistableUser findBy(UserLoginRequestData login) {        
-        this.validator.validateLoginInfo(login);
-        PersistableUser user = this.users.getUserByNicknameAndPassword(
-                login.getNickName(), login.getPassword());
-        if ( user == null ) {
-            logger.debug("Any user has not been found by login " + 
-                    login.getNickName() + ":" + login.getPassword());
-            throw new BadDataRequestArgumentsException(
-                    "User with nickname " + login.getNickName() + 
-                            " and given password does not exist.");
+        ValidationResult result = this.validation.validateLoginInfo(login);
+        if ( result.isOk() ) {
+            PersistableUser user = this.users.getUserByNicknameAndPassword(
+                    login.getNickName(), login.getPassword());
+            if ( user == null ) {
+                logger.debug("Any user has not been found by login " + 
+                        login.getNickName() + ":" + login.getPassword());
+                throw new BadDataRequestArgumentsException(
+                        "User with nickname " + login.getNickName() + 
+                                " and given password does not exist.");
+            } else {
+                return user;
+            }
         } else {
-            return user;
-        }
+            throw new UserLoginInvalidException(result);
+        }        
     }
 
     @Override
     public PersistableUser createUserBy(UserRegistrationRequestData registration) {
-        this.validator.validateRegistrationInfo(registration);
-        PersistableUser savedUser = this.users.addUser(registration.composeNewUnpersistedUser());
-        if ( savedUser == null ) {
-            logger.debug("Unknown error during new user saving.");
-            throw new UnknownUsersServiceLogicException("Unknown error during new user saving.");
+        ValidationResult result = this.validation.validateRegistrationInfo(registration);
+        if ( result.isOk() ) {
+            if ( ! this.users.isNickNameFree(registration.getNickName()) ) {
+                throw new NickNameIsNotFreeException(
+                        "Nickname " + registration.getNickName() + " is not free.");
+            }
+            PersistableUser savedUser = this.users.addUser(registration.composeNewUnpersistedUser());
+            if ( savedUser == null ) {
+                logger.debug("Unknown error during new user saving.");
+                throw new UsersServiceUnknownLogicException("Unknown error during new user saving.");
+            } else {
+                return savedUser;
+            }
         } else {
-            return savedUser;
-        }
-    }
-
-    @Override
-    public boolean isPassValid(String pass) {
-        return this.validator.isPassValid(pass);
-    }
-
-    @Override
-    public boolean isNameValid(String name) {
-        return this.validator.isNameValid(name);
+            throw new UserRegistrationInvalidException(result);
+        }        
     }
     
     @Override
-    public boolean isNickValidAndFree(String nick) {
-        return 
-                this.validator.isNickValid(nick) && 
-                this.users.isNickNameFree(nick);
-    }
-
-    @Override
-    public boolean isEmailValid(String email) {
-        return this.validator.isEmailValid(email);
+    public boolean isNicknameFree(String nick) {
+        return this.users.isNickNameFree(nick);
     }
 }

@@ -13,9 +13,9 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  *
  * @author Diarsid
  */
-public class UnknownUsersServiceLogicException 
+public class UsersServiceUnknownLogicException 
         extends RuntimeException
-        implements ThrowableConvertableToJsonErrorObject {
+        implements ConvertableToJsonErrorObject {
 
     private static final int HTTP_ERROR_STATUS_CODE; 
     static {
@@ -28,7 +28,7 @@ public class UnknownUsersServiceLogicException
      *
      * @param msg the detail message.
      */
-    public UnknownUsersServiceLogicException(String msg) {
+    public UsersServiceUnknownLogicException(String msg) {
         super(msg);
     }
     

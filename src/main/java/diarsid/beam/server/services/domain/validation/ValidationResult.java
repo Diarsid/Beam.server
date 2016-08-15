@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.services.domain.exceptions;
-
-import diarsid.beam.server.util.JsonErrorObject;
+package diarsid.beam.server.services.domain.validation;
 
 /**
  *
  * @author Diarsid
  */
-public interface ThrowableConvertableToJsonErrorObject {
+public interface ValidationResult {
     
-    JsonErrorObject convertToJsonErrorObject();    
+    boolean isOk();
+    
+    String getFailureMessage();
 }

@@ -18,7 +18,7 @@ import diarsid.beam.server.data.daos.DaoUsers;
 import diarsid.beam.server.data.daos.DaoWebDirectories;
 import diarsid.beam.server.services.domain.keys.KeysService;
 import diarsid.beam.server.services.domain.keys.KeysServiceWorker;
-import diarsid.beam.server.services.domain.users.UsersInfoValidator;
+import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
 import diarsid.beam.server.services.domain.users.UsersService;
 import diarsid.beam.server.services.domain.users.UsersServiceWorker;
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperator;
@@ -28,7 +28,7 @@ import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceValid
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceWorker;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
-import diarsid.beam.server.services.domain.webobjects.WebObjectsPropertiesValidator;
+import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
 import diarsid.beam.server.util.RandomStringGenerator;
 
 /**
