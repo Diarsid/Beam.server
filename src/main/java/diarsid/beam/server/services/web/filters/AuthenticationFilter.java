@@ -18,9 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.services.web.auth.jwt.JwtUserInfo;
-import diarsid.beam.server.services.web.auth.jwt.JwtValidationResult;
-import diarsid.beam.server.services.web.auth.jwt.JwtValidator;
+import diarsid.beam.server.services.domain.jwtauth.JwtUserInfo;
+import diarsid.beam.server.services.domain.jwtauth.JwtValidationResult;
+import diarsid.beam.server.services.domain.jwtauth.JwtValidator;
 
 import static javax.ws.rs.core.Response.Status.FOUND;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;

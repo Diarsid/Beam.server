@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     DataConnectionBeans.class,
     DomainServicesBeans.class,
     WebServicesBeans.class,
-    AuthenticationBeans.class,
     UtilBeans.class})
 @PropertySources({
     @PropertySource("classpath:beam.server.properties")

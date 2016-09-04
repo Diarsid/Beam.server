@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.web.auth.jwt;
+package diarsid.beam.server.services.domain.jwtauth;
 
 import javax.ws.rs.container.ContainerRequestContext;
 
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 
 @Component
-public class JwtServiceWorker implements JwtService {
+public class JwtAuthServiceWorker implements JwtAuthService {
     
     private final JwtValidator jwtValidator;
     private final JwtProducer jwtProducer;
     
-    public JwtServiceWorker(JwtValidator jwtValidator, JwtProducer jwtProducer) {        
+    public JwtAuthServiceWorker(JwtValidator jwtValidator, JwtProducer jwtProducer) {        
         this.jwtValidator = jwtValidator;
         this.jwtProducer = jwtProducer;
     }

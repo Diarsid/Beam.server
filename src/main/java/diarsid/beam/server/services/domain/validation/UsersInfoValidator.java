@@ -11,8 +11,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import diarsid.beam.server.services.web.auth.UserLoginRequestData;
-import diarsid.beam.server.services.web.auth.UserRegistrationRequestData;
+import diarsid.beam.server.services.web.dto.UserLoginRequestData;
+import diarsid.beam.server.services.web.dto.UserRegistrationRequestData;
 
 import static org.apache.commons.validator.routines.EmailValidator.getInstance;
 

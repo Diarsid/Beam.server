@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.services.domain.users.UsersService;
 import diarsid.beam.server.services.domain.validation.UsersValidationService;
-import diarsid.beam.server.services.domain.validation.ValidatablePayload;
 import diarsid.beam.server.services.domain.validation.ValidationResult;
+import diarsid.beam.server.services.web.dto.JsonPayload;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.FOUND;
@@ -50,7 +50,7 @@ public class UsersValidationResource {
     
     @POST
     @Path("/names") 
-    public Response validateName(ValidatablePayload payload) {
+    public Response validateName(JsonPayload payload) {
         logger.info("name validation..." + payload.get());
         ValidationResult result = this.validationService.validateName(payload.get());
         if ( result.isOk() ) {
@@ -64,7 +64,7 @@ public class UsersValidationResource {
     
     @POST
     @Path("/surnames") 
-    public Response validateSurname(ValidatablePayload payload) {
+    public Response validateSurname(JsonPayload payload) {
         logger.info("surname validation..." + payload.get());
         ValidationResult result = this.validationService.validateName(payload.get());
         if ( result.isOk() ) {
@@ -78,7 +78,7 @@ public class UsersValidationResource {
     
     @POST
     @Path("/free-nicknames")
-    public Response validateFreeNickName(ValidatablePayload payload) {
+    public Response validateFreeNickName(JsonPayload payload) {
         logger.info("free nickname validation..." + payload.get());        
         ValidationResult result = this.validationService.validateNick(payload.get());
         if ( result.isOk() ) {
@@ -97,7 +97,7 @@ public class UsersValidationResource {
     
     @POST
     @Path("/nicknames")
-    public Response validateNickName(ValidatablePayload payload) {        
+    public Response validateNickName(JsonPayload payload) {        
         logger.info("nickname validation..." + payload.get());
         ValidationResult result = this.validationService.validateNick(payload.get());
         if ( result.isOk() ) {
@@ -111,7 +111,7 @@ public class UsersValidationResource {
     
     @POST
     @Path("/passwords")
-    public Response validatePassword(ValidatablePayload payload) {
+    public Response validatePassword(JsonPayload payload) {
         logger.info("password validation..." + payload.get());
         ValidationResult result = validationService.validatePassword(payload.get());
         if ( result.isOk() ) {
@@ -125,7 +125,7 @@ public class UsersValidationResource {
     
     @POST
     @Path("/emails")
-    public Response validateEmail(ValidatablePayload payload) {
+    public Response validateEmail(JsonPayload payload) {
         logger.info("email validation..." + payload.get());
         ValidationResult result = this.validationService.validateEmail(payload.get());
         if ( result.isOk() ) {

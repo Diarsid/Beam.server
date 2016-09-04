@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.web.auth.jwt;
+package diarsid.beam.server.services.domain.jwtauth;
 
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_EXPIRED;
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_NOT_FOUND;
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_SIGN_INVALID;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_EXPIRED;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_NOT_FOUND;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_SIGN_INVALID;
 
 /**
  *

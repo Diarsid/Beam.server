@@ -18,18 +18,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
+import diarsid.beam.server.services.domain.jwtauth.JwtAuthService;
+import diarsid.beam.server.services.domain.jwtauth.JwtValidationResult;
 import diarsid.beam.server.services.domain.users.UsersService;
-import diarsid.beam.server.services.web.auth.UserLoginRequestData;
-import diarsid.beam.server.services.web.auth.UserRegistrationRequestData;
-import diarsid.beam.server.services.web.auth.jwt.JwtService;
-import diarsid.beam.server.services.web.auth.jwt.JwtValidationResult;
+import diarsid.beam.server.services.web.dto.UserLoginRequestData;
+import diarsid.beam.server.services.web.dto.UserRegistrationRequestData;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import static diarsid.beam.server.services.web.auth.jwt.JwtProducer.JWT_RESPONSE_HEADER;
+import static diarsid.beam.server.services.domain.jwtauth.JwtProducer.JWT_RESPONSE_HEADER;
 
 /**
  *
@@ -46,12 +46,12 @@ public class AuthenticationResource {
     }
     
     private final UsersService usersService;
-    private final JwtService jwtService;
+    private final JwtAuthService jwtAuthService;
     
     public AuthenticationResource(
             UsersService users, 
-            JwtService jwtService) {
-        this.jwtService = jwtService;
+            JwtAuthService jwtService) {
+        this.jwtAuthService = jwtService;
         this.usersService = users;
         logger.info("created.");
     }
@@ -66,7 +66,7 @@ public class AuthenticationResource {
             logger.info("login succeed with " + login.getNickName() + ":" + login.getPassword());               
             return Response.ok().header(
                     JWT_RESPONSE_HEADER, 
-                    this.jwtService.createJwtFor(user)).build();
+                    this.jwtAuthService.createJwtFor(user)).build();
         } else {
             logger.info("login failed with " + login.getNickName() + ":" + login.getPassword());
             return Response.status(UNAUTHORIZED).build();
@@ -78,15 +78,19 @@ public class AuthenticationResource {
     @Consumes(APPLICATION_JSON)
     public Response registerUserAndReturnJWT(UserRegistrationRequestData registration) {        
         PersistableUser user = this.usersService.createUserBy(registration);
-        logger.info("user registration succeed: <id:" + user.getId() + ", nick:" + user.getNickname() + ">");
-        return Response.ok().header(JWT_RESPONSE_HEADER, this.jwtService.createJwtFor(user)).build();                
+        logger.info(
+                "user registration succeed: <id:" + user.getId() + 
+                        ", nick:" + user.getNickname() + ">");
+        return Response.ok()
+                .header(JWT_RESPONSE_HEADER, this.jwtAuthService.createJwtFor(user))
+                .build();                
     }
     
     @POST
     @Path("/verify")
     public Response validateJWT(@Context ContainerRequestContext request) {
         logger.info("token verification...");
-        JwtValidationResult result = this.jwtService.validateRequest(request);
+        JwtValidationResult result = this.jwtAuthService.validateRequest(request);
         if ( result.isJwtPresent() ) {
             if ( result.isJwtSignVerified() ) {
                 if ( result.isJwtNotExpired() ) {

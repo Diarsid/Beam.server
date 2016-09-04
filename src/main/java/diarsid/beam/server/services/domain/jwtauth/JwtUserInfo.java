@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.web.auth.jwt;
+package diarsid.beam.server.services.domain.jwtauth;
 
 import java.util.Objects;
 

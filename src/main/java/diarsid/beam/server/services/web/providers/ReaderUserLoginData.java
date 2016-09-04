@@ -20,7 +20,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.services.web.auth.UserLoginRequestData;
+import diarsid.beam.server.services.web.dto.UserLoginRequestData;
 import diarsid.beam.server.util.JsonToJavaObjectConverter;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;

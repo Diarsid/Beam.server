@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.web.auth;
+package diarsid.beam.server.services.web.dto;
 
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 

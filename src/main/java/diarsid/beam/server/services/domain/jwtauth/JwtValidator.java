@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.web.auth.jwt;
+package diarsid.beam.server.services.domain.jwtauth;
 
 import java.security.Key;
 import java.util.Date;
@@ -23,16 +23,14 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.SigningKeyResolver;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
 
-import diarsid.beam.server.services.domain.keys.KeysService;
-
-import static diarsid.beam.server.services.web.auth.jwt.JwtBeamServerClaims.EXPIRATION;
-import static diarsid.beam.server.services.web.auth.jwt.JwtBeamServerClaims.NICK_NAME;
-import static diarsid.beam.server.services.web.auth.jwt.JwtBeamServerClaims.ROLE;
-import static diarsid.beam.server.services.web.auth.jwt.JwtBeamServerClaims.USER_ID;
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_EXPIRED;
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_LEGAL;
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_NOT_FOUND;
-import static diarsid.beam.server.services.web.auth.jwt.JwtStatus.JWT_SIGN_INVALID;
+import static diarsid.beam.server.services.domain.jwtauth.JwtBeamServerClaims.EXPIRATION;
+import static diarsid.beam.server.services.domain.jwtauth.JwtBeamServerClaims.NICK_NAME;
+import static diarsid.beam.server.services.domain.jwtauth.JwtBeamServerClaims.ROLE;
+import static diarsid.beam.server.services.domain.jwtauth.JwtBeamServerClaims.USER_ID;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_EXPIRED;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_LEGAL;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_NOT_FOUND;
+import static diarsid.beam.server.services.domain.jwtauth.JwtStatus.JWT_SIGN_INVALID;
 
 /**
  *

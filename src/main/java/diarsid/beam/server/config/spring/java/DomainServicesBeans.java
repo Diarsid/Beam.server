@@ -16,8 +16,12 @@ import diarsid.beam.server.data.ObjectDataServiceWorker;
 import diarsid.beam.server.data.daos.DaoKeys;
 import diarsid.beam.server.data.daos.DaoUsers;
 import diarsid.beam.server.data.daos.DaoWebDirectories;
-import diarsid.beam.server.services.domain.keys.KeysService;
-import diarsid.beam.server.services.domain.keys.KeysServiceWorker;
+import diarsid.beam.server.services.domain.jwtauth.JwtAuthService;
+import diarsid.beam.server.services.domain.jwtauth.JwtAuthServiceWorker;
+import diarsid.beam.server.services.domain.jwtauth.JwtProducer;
+import diarsid.beam.server.services.domain.jwtauth.JwtValidator;
+import diarsid.beam.server.services.domain.jwtauth.KeysService;
+import diarsid.beam.server.services.domain.jwtauth.KeysServiceWorker;
 import diarsid.beam.server.services.domain.users.UsersService;
 import diarsid.beam.server.services.domain.users.UsersServiceWorker;
 import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
@@ -29,10 +33,6 @@ import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceValid
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceWorker;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
-import diarsid.beam.server.services.web.auth.jwt.JwtProducer;
-import diarsid.beam.server.services.web.auth.jwt.JwtService;
-import diarsid.beam.server.services.web.auth.jwt.JwtServiceWorker;
-import diarsid.beam.server.services.web.auth.jwt.JwtValidator;
 import diarsid.beam.server.util.RandomStringGenerator;
 
 /**
@@ -102,9 +102,13 @@ public class DomainServicesBeans {
     }    
     
     @Bean
-    public JwtService jwtService(KeysService keysService) {
-        JwtValidator jwtValidator = new JwtValidator(keysService);
+    public JwtValidator jwtValidator(KeysService keysService) {
+        return new JwtValidator(keysService);
+    }
+    
+    @Bean
+    public JwtAuthService jwtService(KeysService keysService, JwtValidator jwtValidator) {
         JwtProducer jwtProducer = new JwtProducer(keysService);
-        return new JwtServiceWorker(jwtValidator, jwtProducer);
+        return new JwtAuthServiceWorker(jwtValidator, jwtProducer);
     }
 }

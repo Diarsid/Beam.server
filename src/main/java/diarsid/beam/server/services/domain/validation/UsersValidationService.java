@@ -5,8 +5,8 @@
  */
 package diarsid.beam.server.services.domain.validation;
 
-import diarsid.beam.server.services.web.auth.UserLoginRequestData;
-import diarsid.beam.server.services.web.auth.UserRegistrationRequestData;
+import diarsid.beam.server.services.web.dto.UserLoginRequestData;
+import diarsid.beam.server.services.web.dto.UserRegistrationRequestData;
 
 /**
  *

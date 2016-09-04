@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import diarsid.beam.server.data.ObjectDataServiceWorker;
+import diarsid.beam.server.services.domain.jwtauth.JwtAuthService;
+import diarsid.beam.server.services.domain.jwtauth.JwtValidator;
 import diarsid.beam.server.services.domain.users.UsersService;
 import diarsid.beam.server.services.domain.validation.UsersValidationService;
 import diarsid.beam.server.services.domain.validation.WebObjectsValidationService;
-import diarsid.beam.server.services.web.auth.jwt.JwtService;
-import diarsid.beam.server.services.web.auth.jwt.JwtValidator;
 import diarsid.beam.server.services.web.filters.AuthenticationFilter;
 import diarsid.beam.server.services.web.resources.AuthenticationResource;
 import diarsid.beam.server.services.web.resources.ObjectResource;
@@ -29,7 +29,6 @@ import diarsid.beam.server.services.web.resources.WebObjectsValidationResource;
 
 @Configuration
 @Import({
-    AuthenticationBeans.class,
     DomainServicesBeans.class,
     WebServicesProvidersBeans.class})
 public class WebServicesBeans {
@@ -45,7 +44,7 @@ public class WebServicesBeans {
     @Bean
     public AuthenticationResource authenticationResource(
             UsersService usersService, 
-            JwtService jwtService) {
+            JwtAuthService jwtService) {
         return new AuthenticationResource(
                 usersService, jwtService);
     }

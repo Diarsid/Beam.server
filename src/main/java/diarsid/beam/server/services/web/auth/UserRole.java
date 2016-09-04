@@ -5,7 +5,7 @@
  */
 package diarsid.beam.server.services.web.auth;
 
-import diarsid.beam.server.services.web.auth.jwt.JwtUserInfo;
+import diarsid.beam.server.services.domain.jwtauth.JwtUserInfo;
 import diarsid.beam.server.data.entities.jpa.PersistableUser;
 
 

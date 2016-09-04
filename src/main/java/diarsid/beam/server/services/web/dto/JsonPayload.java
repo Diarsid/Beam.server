@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.domain.validation;
+package diarsid.beam.server.services.web.dto;
 
 /**
  *
  * @author Diarsid
  */
-public class ValidatablePayload {
+public class JsonPayload {
     
     private final String payload;
     
-    public ValidatablePayload(String payload) {
+    public JsonPayload(String payload) {
         this.payload = payload;
     }
     

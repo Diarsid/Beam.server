@@ -20,7 +20,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.services.domain.validation.ValidatablePayload;
+import diarsid.beam.server.services.web.dto.JsonPayload;
 import diarsid.beam.server.util.JsonToJavaObjectConverter;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -33,7 +33,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Component
 @Provider
 @Consumes(APPLICATION_JSON)
-public class ReaderValidatablePayload implements MessageBodyReader<ValidatablePayload> {
+public class ReaderValidatablePayload implements MessageBodyReader<JsonPayload> {
     
     private final JsonToJavaObjectConverter converter;
     
@@ -45,12 +45,12 @@ public class ReaderValidatablePayload implements MessageBodyReader<ValidatablePa
     public boolean isReadable(
             Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         
-        return type.equals(ValidatablePayload.class);
+        return type.equals(JsonPayload.class);
     }
 
     @Override
-    public ValidatablePayload readFrom(
-            Class<ValidatablePayload> type, 
+    public JsonPayload readFrom(
+            Class<JsonPayload> type, 
             Type genericType, 
             Annotation[] annotations, 
             MediaType mediaType, 
@@ -58,7 +58,7 @@ public class ReaderValidatablePayload implements MessageBodyReader<ValidatablePa
             InputStream entityStream)
             throws IOException, WebApplicationException {
         
-        return (ValidatablePayload) this.converter
-                .objectivize(entityStream, ValidatablePayload.class);
+        return (JsonPayload) this.converter
+                .objectivize(entityStream, JsonPayload.class);
     }
 }

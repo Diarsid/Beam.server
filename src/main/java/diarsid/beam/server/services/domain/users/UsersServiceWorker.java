@@ -19,8 +19,8 @@ import diarsid.beam.server.services.domain.exceptions.UserRegistrationInvalidExc
 import diarsid.beam.server.services.domain.exceptions.UsersServiceUnknownLogicException;
 import diarsid.beam.server.services.domain.validation.UsersValidationService;
 import diarsid.beam.server.services.domain.validation.ValidationResult;
-import diarsid.beam.server.services.web.auth.UserLoginRequestData;
-import diarsid.beam.server.services.web.auth.UserRegistrationRequestData;
+import diarsid.beam.server.services.web.dto.UserLoginRequestData;
+import diarsid.beam.server.services.web.dto.UserRegistrationRequestData;
 import diarsid.beam.server.services.web.auth.UserRole;
 
 @Component

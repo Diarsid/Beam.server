@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.services.domain.keys;
+package diarsid.beam.server.services.domain.jwtauth;
 
 import java.security.Key;
 import java.util.ArrayList;

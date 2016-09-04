@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package diarsid.beam.server.services.domain.keys;
+package diarsid.beam.server.services.domain.jwtauth;
 
 import java.security.Key;
 
