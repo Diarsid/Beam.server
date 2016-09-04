@@ -6,7 +6,7 @@
 
 package diarsid.beam.server.services.web.resources;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
@@ -48,74 +48,91 @@ public class UsersValidationResource {
         this.usersService = usersService;
     }
     
-    @GET
+    @POST
     @Path("/names") 
     public Response validateName(ValidatablePayload payload) {
+        logger.info("name validation..." + payload.get());
         ValidationResult result = this.validationService.validateName(payload.get());
         if ( result.isOk() ) {
+            logger.info(" -ok.");
             return Response.status(OK).build();
         } else {
+            logger.info(" -failed: " + result.getFailureMessage());
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }
     }
     
-    @GET
+    @POST
     @Path("/surnames") 
     public Response validateSurname(ValidatablePayload payload) {
+        logger.info("surname validation..." + payload.get());
         ValidationResult result = this.validationService.validateName(payload.get());
         if ( result.isOk() ) {
+            logger.info(" -ok.");
             return Response.status(OK).build();
         } else {
+            logger.info(" -failed: " + result.getFailureMessage());
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }
     }
     
-    @GET
+    @POST
     @Path("/free-nicknames")
     public Response validateFreeNickName(ValidatablePayload payload) {
-        logger.info("free nickname usage validation...");        
+        logger.info("free nickname validation..." + payload.get());        
         ValidationResult result = this.validationService.validateNick(payload.get());
         if ( result.isOk() ) {
             if ( this.usersService.isNicknameFree(payload.get()) ) {
-                return Response.status(OK).build();
+                logger.info(" -ok.");
+                return Response.status(OK).build();                
             } else {
+                logger.info("nickname is not free.");
                 return Response.status(FOUND).build();
             }            
         } else {
+            logger.info(" -failed: " + result.getFailureMessage());
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }
     }
     
-    @GET
+    @POST
     @Path("/nicknames")
-    public Response validateNickName(ValidatablePayload payload) {
-        logger.info("nickname usage validation...");        
+    public Response validateNickName(ValidatablePayload payload) {        
+        logger.info("nickname validation..." + payload.get());
         ValidationResult result = this.validationService.validateNick(payload.get());
         if ( result.isOk() ) {
-            return Response.status(OK).build();            
+            logger.info(" -ok.");
+            return Response.status(OK).build();      
         } else {
+            logger.info(" -failed: " + result.getFailureMessage());
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }
     }
     
-    @GET
+    @POST
     @Path("/passwords")
     public Response validatePassword(ValidatablePayload payload) {
+        logger.info("password validation..." + payload.get());
         ValidationResult result = validationService.validatePassword(payload.get());
         if ( result.isOk() ) {
-            return Response.status(OK).build();
+            logger.info(" -ok.");
+            return Response.status(OK).build();      
         } else {
+            logger.info(" -failed: " + result.getFailureMessage());
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }
     }
     
-    @GET
+    @POST
     @Path("/emails")
     public Response validateEmail(ValidatablePayload payload) {
+        logger.info("email validation..." + payload.get());
         ValidationResult result = this.validationService.validateEmail(payload.get());
         if ( result.isOk() ) {
+            logger.info(" -ok.");
             return Response.status(OK).build();
         } else {
+            logger.info(" -failed: " + result.getFailureMessage());
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }
     }

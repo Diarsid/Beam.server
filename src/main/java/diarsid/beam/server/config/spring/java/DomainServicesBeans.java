@@ -18,9 +18,10 @@ import diarsid.beam.server.data.daos.DaoUsers;
 import diarsid.beam.server.data.daos.DaoWebDirectories;
 import diarsid.beam.server.services.domain.keys.KeysService;
 import diarsid.beam.server.services.domain.keys.KeysServiceWorker;
-import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
 import diarsid.beam.server.services.domain.users.UsersService;
 import diarsid.beam.server.services.domain.users.UsersServiceWorker;
+import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
+import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperator;
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperatorWorker;
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsService;
@@ -28,7 +29,10 @@ import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceValid
 import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceWorker;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
 import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
-import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
+import diarsid.beam.server.services.web.auth.jwt.JwtProducer;
+import diarsid.beam.server.services.web.auth.jwt.JwtService;
+import diarsid.beam.server.services.web.auth.jwt.JwtServiceWorker;
+import diarsid.beam.server.services.web.auth.jwt.JwtValidator;
 import diarsid.beam.server.util.RandomStringGenerator;
 
 /**
@@ -96,4 +100,11 @@ public class DomainServicesBeans {
     public WebObjectsNamesIncrementor nameIncrementor() {
         return new WebObjectsNamesIncrementor();
     }    
+    
+    @Bean
+    public JwtService jwtService(KeysService keysService) {
+        JwtValidator jwtValidator = new JwtValidator(keysService);
+        JwtProducer jwtProducer = new JwtProducer(keysService);
+        return new JwtServiceWorker(jwtValidator, jwtProducer);
+    }
 }

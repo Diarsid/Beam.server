@@ -18,9 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import diarsid.beam.server.services.web.auth.jwt.JwtUserInfo;
 import diarsid.beam.server.services.web.auth.jwt.JwtValidationResult;
 import diarsid.beam.server.services.web.auth.jwt.JwtValidator;
-import diarsid.beam.server.services.web.auth.jwt.JwtUserInfo;
 
 import static javax.ws.rs.core.Response.Status.FOUND;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
@@ -53,7 +53,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext request) throws IOException {        
         String path = request.getUriInfo().getPath();
-        if ( path.contains("auth") ) {
+        if ( path.contains("auth") || path.contains("validation") ) {
             logger.info("unprotected area: " + path);
         } else {
             logger.info("auth: required for: " + path);
