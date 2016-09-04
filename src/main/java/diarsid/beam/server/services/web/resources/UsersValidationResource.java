@@ -71,9 +71,9 @@ public class UsersValidationResource {
     }
     
     @GET
-    @Path("/nicknames")
-    public Response validateNickName(ValidatablePayload payload) {
-        logger.info("nickname usage validation...");        
+    @Path("/free-nicknames")
+    public Response validateFreeNickName(ValidatablePayload payload) {
+        logger.info("free nickname usage validation...");        
         ValidationResult result = this.validationService.validateNick(payload.get());
         if ( result.isOk() ) {
             if ( this.usersService.isNicknameFree(payload.get()) ) {
@@ -81,6 +81,18 @@ public class UsersValidationResource {
             } else {
                 return Response.status(FOUND).build();
             }            
+        } else {
+            return composeResponseFrom(SC_BAD_REQUEST, result);
+        }
+    }
+    
+    @GET
+    @Path("/nicknames")
+    public Response validateNickName(ValidatablePayload payload) {
+        logger.info("nickname usage validation...");        
+        ValidationResult result = this.validationService.validateNick(payload.get());
+        if ( result.isOk() ) {
+            return Response.status(OK).build();            
         } else {
             return composeResponseFrom(SC_BAD_REQUEST, result);
         }

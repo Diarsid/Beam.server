@@ -26,11 +26,11 @@ public class ValidationResultImpl implements ValidationResult {
         this.description = description;
     }
     
-    static ValidationResultImpl validationOk() {
+    static ValidationResult validationOk() {
         return OK_RESULT;
     }
     
-    static ValidationResultImpl validationFailsWith(String description) {
+    static ValidationResult validationFailsWith(String description) {
         return new ValidationResultImpl(false, description);
     }
     
