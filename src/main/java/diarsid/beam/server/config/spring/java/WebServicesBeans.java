@@ -10,17 +10,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import diarsid.beam.server.data.ObjectDataServiceWorker;
-import diarsid.beam.server.services.domain.jwtauth.JwtAuthService;
-import diarsid.beam.server.services.domain.jwtauth.JwtValidator;
-import diarsid.beam.server.services.domain.users.UsersService;
-import diarsid.beam.server.services.domain.validation.UsersValidationService;
-import diarsid.beam.server.services.domain.validation.WebObjectsValidationService;
-import diarsid.beam.server.services.web.filters.AuthenticationFilter;
-import diarsid.beam.server.services.web.resources.AuthenticationResource;
-import diarsid.beam.server.services.web.resources.ObjectResource;
-import diarsid.beam.server.services.web.resources.UsersValidationResource;
-import diarsid.beam.server.services.web.resources.WebObjectsValidationResource;
+import diarsid.beam.server.domain.services.jwtauth.JwtAuthService;
+import diarsid.beam.server.domain.services.jwtauth.JwtValidator;
+import diarsid.beam.server.domain.services.users.UsersService;
+import diarsid.beam.server.domain.services.validation.UsersValidationService;
+import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
+import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.filters.AuthenticationFilter;
+import diarsid.beam.server.presentation.web.services.resources.AuthenticationResource;
+import diarsid.beam.server.presentation.web.services.resources.UsersValidationResource;
+import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
+import diarsid.beam.server.presentation.web.services.resources.WebObjectsValidationResource;
 
 /**
  *
@@ -30,7 +31,8 @@ import diarsid.beam.server.services.web.resources.WebObjectsValidationResource;
 @Configuration
 @Import({
     DomainServicesBeans.class,
-    WebServicesProvidersBeans.class})
+    WebServicesProvidersBeans.class, 
+    UtilBeans.class})
 public class WebServicesBeans {
     
     public WebServicesBeans() {
@@ -60,8 +62,11 @@ public class WebServicesBeans {
         return new WebObjectsValidationResource(validation);
     }
     
-    @Bean  
-    public ObjectResource objectResource(ObjectDataServiceWorker objectDataService) {
-        return new ObjectResource(objectDataService);
+    @Bean
+    public WebDirectoriesResource webDirectoriesResource(
+            UserWebObjectsService webObjects, 
+            UsersService users, 
+            JavaObjectToJsonConverter toJsonConverter) {
+        return new WebDirectoriesResource(webObjects, users, toJsonConverter);
     }
 }

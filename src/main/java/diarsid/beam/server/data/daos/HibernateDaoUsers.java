@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import diarsid.beam.server.data.entities.jpa.PersistableUser;
+import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 
 @Repository
 public class HibernateDaoUsers implements DaoUsers {

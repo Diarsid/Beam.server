@@ -6,9 +6,6 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperator;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsService;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -23,12 +20,14 @@ import springtests.config.AppTestConfig;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryUsers;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDirectories;
-import diarsid.beam.server.data.entities.jpa.PersistableUser;
-import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
-import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
-import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
-import diarsid.beam.server.services.domain.exceptions.WebObjectNameInvalidException;
-import diarsid.beam.server.services.domain.exceptions.WebObjectUrlInvalidException;
+import diarsid.beam.server.domain.entities.jpa.PersistableUser;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
+import diarsid.beam.server.domain.services.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.domain.services.exceptions.WebObjectNameInvalidException;
+import diarsid.beam.server.domain.services.exceptions.WebObjectUrlInvalidException;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperator;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -38,19 +37,13 @@ import static org.junit.Assert.fail;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTableWhere;
 
-import static diarsid.beam.server.data.entities.WebPlacement.BOOKMARKS;
-import static diarsid.beam.server.data.entities.WebPlacement.PANEL;
+import static diarsid.beam.server.domain.entities.WebPlacement.BOOKMARKS;
+import static diarsid.beam.server.domain.entities.WebPlacement.WEBPANEL;
 
 import static util.FakeUserProducer.newFakeUser;
 import static util.FakeWebDirsProducer.newFakeDir;
 import static util.FakeWebDirsProducer.newFakeDirs;
 import static util.FakeWebPagesProducer.newFakePages;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  *
@@ -89,7 +82,7 @@ public class UserWebObjectsServiceWorkerTest {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         List<PersistableWebDirectory> savedDirs = 
-                dirsRepo.save(newFakeDirs(savedUser, PANEL, 6, dirsQty));
+                dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 6, dirsQty));
         dirsRepo.flush();
         
         String movedDirName = savedDirs.get(3).getName();
@@ -99,7 +92,7 @@ public class UserWebObjectsServiceWorkerTest {
          */
         int movedDirNewOrder = 1;
         
-        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), PANEL, movedDirName, movedDirNewOrder);
+        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), WEBPANEL, movedDirName, movedDirNewOrder);
         assertTrue(reorder);
         
         int expectedDirsQty = dirsQty;
@@ -108,7 +101,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirsQty, actualDirsQty);
         
         List<PersistableWebDirectory> foundDirs = 
-                dirsRepo.getByPlaceAndUserIdOrderByOrder(PANEL.name(), savedUser.getId());
+                dirsRepo.getByPlaceAndUserIdOrderByOrder(WEBPANEL.name(), savedUser.getId());
         for (int i = 0; i < foundDirs.size(); i++) {
             assertEquals(i, foundDirs.get(i).getOrder());            
         }
@@ -120,7 +113,7 @@ public class UserWebObjectsServiceWorkerTest {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         List<PersistableWebDirectory> savedDirs = 
-                dirsRepo.save(newFakeDirs(savedUser, PANEL, 6, dirsQty));
+                dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 6, dirsQty));
         dirsRepo.flush();
         
         String movedDirName = savedDirs.get(1).getName();
@@ -130,7 +123,7 @@ public class UserWebObjectsServiceWorkerTest {
          */
         int movedDirNewOrder = 3;
         
-        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), PANEL, movedDirName, movedDirNewOrder);
+        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), WEBPANEL, movedDirName, movedDirNewOrder);
         assertTrue(reorder);
         
         int expectedDirsQty = dirsQty;
@@ -139,7 +132,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirsQty, actualDirsQty);
         
         List<PersistableWebDirectory> foundDirs = 
-                dirsRepo.getByPlaceAndUserIdOrderByOrder(PANEL.name(), savedUser.getId());
+                dirsRepo.getByPlaceAndUserIdOrderByOrder(WEBPANEL.name(), savedUser.getId());
         for (int i = 0; i < foundDirs.size(); i++) {
             assertEquals(i, foundDirs.get(i).getOrder());            
         }
@@ -151,7 +144,7 @@ public class UserWebObjectsServiceWorkerTest {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         List<PersistableWebDirectory> savedDirs = 
-                dirsRepo.save(newFakeDirs(savedUser, PANEL, 6, dirsQty));
+                dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 6, dirsQty));
         dirsRepo.flush();
         
         String movedDirName = savedDirs.get(3).getName();
@@ -161,7 +154,7 @@ public class UserWebObjectsServiceWorkerTest {
          */
         int movedDirNewOrder = -3;
         
-        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), PANEL, movedDirName, movedDirNewOrder);
+        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), WEBPANEL, movedDirName, movedDirNewOrder);
         assertTrue(reorder);
         
         int expectedDirsQty = dirsQty;
@@ -170,7 +163,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirsQty, actualDirsQty);
         
         List<PersistableWebDirectory> foundDirs = 
-                dirsRepo.getByPlaceAndUserIdOrderByOrder(PANEL.name(), savedUser.getId());
+                dirsRepo.getByPlaceAndUserIdOrderByOrder(WEBPANEL.name(), savedUser.getId());
         for (int i = 0; i < foundDirs.size(); i++) {
             assertEquals(i, foundDirs.get(i).getOrder());            
         }
@@ -182,7 +175,7 @@ public class UserWebObjectsServiceWorkerTest {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         List<PersistableWebDirectory> savedDirs = 
-                dirsRepo.save(newFakeDirs(savedUser, PANEL, 6, dirsQty));
+                dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 6, dirsQty));
         dirsRepo.flush();
         
         String movedDirName = savedDirs.get(1).getName();
@@ -192,7 +185,7 @@ public class UserWebObjectsServiceWorkerTest {
          */
         int movedDirNewOrder = 100;
         
-        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), PANEL, movedDirName, movedDirNewOrder);
+        boolean reorder = service.reorderUserWebDirectory(savedUser.getId(), WEBPANEL, movedDirName, movedDirNewOrder);
         assertTrue(reorder);
         
         int expectedDirsQty = dirsQty;
@@ -201,7 +194,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirsQty, actualDirsQty);
         
         List<PersistableWebDirectory> foundDirs = 
-                dirsRepo.getByPlaceAndUserIdOrderByOrder(PANEL.name(), savedUser.getId());
+                dirsRepo.getByPlaceAndUserIdOrderByOrder(WEBPANEL.name(), savedUser.getId());
         for (int i = 0; i < foundDirs.size(); i++) {
             assertEquals(i, foundDirs.get(i).getOrder());            
         }
@@ -215,7 +208,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testReorderUserWebPageOrder_straightOrder() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -225,12 +218,11 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageNewOrder = 3;
         String movedPageName = savedDir.getPages().get(movedPageOldOrder).getName();
         
-        boolean reorder = service.reorderUserWebPageOrder(
-                savedUser.getId(), PANEL, savedDir.getName(), movedPageName, movedPageNewOrder);
+        boolean reorder = service.reorderUserWebPageOrder(savedUser.getId(), WEBPANEL, savedDir.getName(), movedPageName, movedPageNewOrder);
         
         assertTrue(reorder);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         for (int i = 0; i < foundDir.getPages().size(); i++) {
             assertEquals(i, foundDir.getPages().get(i).getOrder());            
         }
@@ -241,7 +233,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testReorderUserWebPageOrder_reverseOrder() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -251,12 +243,11 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageNewOrder = 1;
         String movedPageName = savedDir.getPages().get(movedPageOldOrder).getName();
         
-        boolean reorder = service.reorderUserWebPageOrder(
-                savedUser.getId(), PANEL, savedDir.getName(), movedPageName, movedPageNewOrder);
+        boolean reorder = service.reorderUserWebPageOrder(savedUser.getId(), WEBPANEL, savedDir.getName(), movedPageName, movedPageNewOrder);
         
         assertTrue(reorder);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         for (int i = 0; i < foundDir.getPages().size(); i++) {
             assertEquals(i, foundDir.getPages().get(i).getOrder());            
         }
@@ -267,7 +258,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testReorderUserWebPageOrder_straightOrder_wrongBoundary() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -278,12 +269,11 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageNewOrder_exepcted = pagesQty - 1;
         String movedPageName = savedDir.getPages().get(movedPageOldOrder).getName();
         
-        boolean reorder = service.reorderUserWebPageOrder(
-                savedUser.getId(), PANEL, savedDir.getName(), movedPageName, movedPageNewOrder_wrong);
+        boolean reorder = service.reorderUserWebPageOrder(savedUser.getId(), WEBPANEL, savedDir.getName(), movedPageName, movedPageNewOrder_wrong);
         
         assertTrue(reorder);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         for (int i = 0; i < foundDir.getPages().size(); i++) {
             assertEquals(i, foundDir.getPages().get(i).getOrder());            
         }
@@ -294,7 +284,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testReorderUserWebPageOrder_reverseOrder_wrongBoundary() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -305,12 +295,11 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageNewOrder_exepcted = 0;
         String movedPageName = savedDir.getPages().get(movedPageOldOrder).getName();
         
-        boolean reorder = service.reorderUserWebPageOrder(
-                savedUser.getId(), PANEL, savedDir.getName(), movedPageName, movedPageNewOrder_wrong);
+        boolean reorder = service.reorderUserWebPageOrder(savedUser.getId(), WEBPANEL, savedDir.getName(), movedPageName, movedPageNewOrder_wrong);
         
         assertTrue(reorder);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         for (int i = 0; i < foundDir.getPages().size(); i++) {
             assertEquals(i, foundDir.getPages().get(i).getOrder());            
         }
@@ -324,7 +313,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testRenameUserWebPage() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -334,10 +323,10 @@ public class UserWebObjectsServiceWorkerTest {
         String oldPageName = savedPages.get(renamedPageIndex).getName();
         String newPageName = "new_name";
         
-        boolean rename = service.renameUserWebPage(savedUser.getId(), PANEL, savedDir.getName(), oldPageName, newPageName);
+        boolean rename = service.renameUserWebPage(savedUser.getId(), WEBPANEL, savedDir.getName(), oldPageName, newPageName);
         assertTrue(rename);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         assertEquals(newPageName, foundDir.getPages().get(renamedPageIndex).getName());
     }
     
@@ -345,7 +334,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testRenameUserWebPage_exceptionThrown() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -355,7 +344,7 @@ public class UserWebObjectsServiceWorkerTest {
         String oldPageName = savedPages.get(renamedPageIndex).getName();
         String newPageName = "new_$ invalid *name";
         
-        boolean rename = service.renameUserWebPage(savedUser.getId(), PANEL, savedDir.getName(), oldPageName, newPageName);
+        boolean rename = service.renameUserWebPage(savedUser.getId(), WEBPANEL, savedDir.getName(), oldPageName, newPageName);
         fail();
     }
     
@@ -363,7 +352,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testRenameUserWebPage_nameIncremented() {
         int pagesQty = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedPages.get(0).setName("first");
         savedPages.get(1).setName("second");
@@ -377,10 +366,10 @@ public class UserWebObjectsServiceWorkerTest {
         String newPageName = "third";
         String expectedIncrementedName = "third (2)";
         
-        boolean rename = service.renameUserWebPage(savedUser.getId(), PANEL, savedDir.getName(), oldPageName, newPageName);
+        boolean rename = service.renameUserWebPage(savedUser.getId(), WEBPANEL, savedDir.getName(), oldPageName, newPageName);
         assertTrue(rename);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         assertEquals(expectedIncrementedName, foundDir.getPages().get(renamedPageIndex).getName());
     }
 
@@ -391,7 +380,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testRedirectUserWebPageUrl() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -401,11 +390,10 @@ public class UserWebObjectsServiceWorkerTest {
         String redirectedPageName = savedPages.get(redirectedPageIndex).getName();
         String newUrl = "http://new.valid.url.com";
         
-        boolean redirected = service.redirectUserWebPageUrl(
-                savedUser.getId(), PANEL, savedDir.getName(), redirectedPageName, newUrl);
+        boolean redirected = service.redirectUserWebPageUrl(savedUser.getId(), WEBPANEL, savedDir.getName(), redirectedPageName, newUrl);
         assertTrue(redirected);
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         assertEquals(newUrl, foundDir.getPages().get(redirectedPageIndex).getUrl());
     }
     
@@ -413,7 +401,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testRedirectUserWebPageUrl_exceptionThrown() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -423,8 +411,7 @@ public class UserWebObjectsServiceWorkerTest {
         String redirectedPageName = savedPages.get(redirectedPageIndex).getName();
         String newUrl = "http://new.*in$valid.url.com";
         
-        boolean redirected = service.redirectUserWebPageUrl(
-                savedUser.getId(), PANEL, savedDir.getName(), redirectedPageName, newUrl);
+        boolean redirected = service.redirectUserWebPageUrl(savedUser.getId(), WEBPANEL, savedDir.getName(), redirectedPageName, newUrl);
         fail();
     }
 
@@ -434,13 +421,13 @@ public class UserWebObjectsServiceWorkerTest {
     @Test
     public void testRenameUserWebDirectory() {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         savedDir = dirsRepo.saveAndFlush(savedDir);
         
         String oldDirName = savedDir.getName();
         String newDirName = "new_name";
         
-        boolean renamed = service.renameUserWebDirectory(savedUser.getId(), PANEL, oldDirName, newDirName);
+        boolean renamed = service.renameUserWebDirectory(savedUser.getId(), WEBPANEL, oldDirName, newDirName);
         assertTrue(renamed);
         
         PersistableWebDirectory foundDir = dirsRepo.findOne(savedDir.getId());
@@ -450,13 +437,13 @@ public class UserWebObjectsServiceWorkerTest {
     @Test(expected = WebObjectNameInvalidException.class)
     public void testRenameUserWebDirectory_exceptionThrown() {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         savedDir = dirsRepo.saveAndFlush(savedDir);
         
         String oldDirName = savedDir.getName();
         String newDirName = "new_# invalid % name";
         
-        boolean renamed = service.renameUserWebDirectory(savedUser.getId(), PANEL, oldDirName, newDirName);
+        boolean renamed = service.renameUserWebDirectory(savedUser.getId(), WEBPANEL, oldDirName, newDirName);
         fail();
     }
     
@@ -464,7 +451,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testRenameUserWebDirectory_incrementedName() {
         int dirsQty = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs.get(0).setName("one");
         savedDirs.get(1).setName("two");
         savedDirs.get(2).setName("three");
@@ -476,10 +463,10 @@ public class UserWebObjectsServiceWorkerTest {
         String newDirName = "three";
         String expectedNewDirName = "three (2)";
         
-        boolean renamed = service.renameUserWebDirectory(savedUser.getId(), PANEL, oldDirName, newDirName);
+        boolean renamed = service.renameUserWebDirectory(savedUser.getId(), WEBPANEL, oldDirName, newDirName);
         assertTrue(renamed);
         
-        PersistableWebDirectory foundDir = dirsRepo.findByNameAndPlaceAndUserId(expectedNewDirName, PANEL.name(), savedUser.getId());
+        PersistableWebDirectory foundDir = dirsRepo.findByNameAndPlaceAndUserId(expectedNewDirName, WEBPANEL.name(), savedUser.getId());
         assertEquals(expectedNewDirName, foundDir.getName());
     }
 
@@ -491,7 +478,7 @@ public class UserWebObjectsServiceWorkerTest {
         int panelDirsQty = 4;
         int bookmDirsQty = 6;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> panelDirs = newFakeDirs(savedUser, PANEL, 6, panelDirsQty);
+        List<PersistableWebDirectory> panelDirs = newFakeDirs(savedUser, WEBPANEL, 6, panelDirsQty);
         List<PersistableWebDirectory> bookmDirs = newFakeDirs(savedUser, BOOKMARKS, 23, bookmDirsQty);
         panelDirs = dirsRepo.save(panelDirs);
         bookmDirs = dirsRepo.save(bookmDirs);
@@ -500,17 +487,17 @@ public class UserWebObjectsServiceWorkerTest {
         int movedFromBookmarksDirIndex = 3;
         String movedDirName = bookmDirs.get(movedFromBookmarksDirIndex).getName();
         
-        boolean moved = service.moveUserWebDirectoryIntoPlace(savedUser.getId(), BOOKMARKS, PANEL, movedDirName);
+        boolean moved = service.moveUserWebDirectoryIntoPlace(savedUser.getId(), BOOKMARKS, WEBPANEL, movedDirName);
         assertTrue(moved);
         
         int expectedPanelSize = panelDirsQty + 1;
         int expectedBookmSize = bookmDirsQty - 1;
-        int actualPanelSize = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'PANEL' ");
+        int actualPanelSize = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'WEBPANEL' ");
         int actualBookmSize = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'BOOKMARKS' ");
         assertEquals(expectedBookmSize, actualBookmSize);
         assertEquals(expectedPanelSize, actualPanelSize);
         
-        List<PersistableWebDirectory> foundPanel = service.getUserWebDirectoriesInPlace(savedUser.getId(), PANEL);
+        List<PersistableWebDirectory> foundPanel = service.getUserWebDirectoriesInPlace(savedUser.getId(), WEBPANEL);
         List<PersistableWebDirectory> foundBookm = service.getUserWebDirectoriesInPlace(savedUser.getId(), BOOKMARKS);
         
         for (int i = 0; i < foundPanel.size(); i++ ) {
@@ -521,7 +508,7 @@ public class UserWebObjectsServiceWorkerTest {
             assertEquals(i, foundBookm.get(i).getOrder());
         }
         
-        PersistableWebDirectory movedDir = service.getUserWebDirectory(savedUser.getId(), PANEL, movedDirName);
+        PersistableWebDirectory movedDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, movedDirName);
         assertNotNull(movedDir);
         assertEquals(foundPanel.size() - 1, movedDir.getOrder());
         assertTrue(foundPanel.contains(movedDir));
@@ -540,7 +527,7 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageInitialIndex = 3;
         
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 6, panelDirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 6, panelDirsQty);
         
         PersistableWebDirectory dirFrom = dirs.get(dirFromIndex);
         PersistableWebDirectory dirTo = dirs.get(dirToIndex);
@@ -558,8 +545,7 @@ public class UserWebObjectsServiceWorkerTest {
         dirTo = dirs.get(dirToIndex);
         dirsRepo.flush();
         
-        boolean moved = service.moveUserWebPageIntoDirectory(
-                savedUser.getId(), PANEL, dirFrom.getName(), dirTo.getName(), movedPageName);
+        boolean moved = service.moveUserWebPageIntoDirectory(savedUser.getId(), WEBPANEL, dirFrom.getName(), dirTo.getName(), movedPageName);
         
         assertTrue(moved);
         
@@ -570,8 +556,8 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirFromSize, actualDirFromSize);
         assertEquals(expectedDirToSize, actualDirToSize);
         
-        dirFrom = service.getUserWebDirectory(savedUser.getId(), PANEL, dirFrom.getName());
-        dirTo = service.getUserWebDirectory(savedUser.getId(), PANEL, dirTo.getName());
+        dirFrom = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, dirFrom.getName());
+        dirTo = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, dirTo.getName());
         
         for (int i = 0; i < dirFrom.getPages().size(); i++ ) {
             assertEquals(i, dirFrom.getPages().get(i).getOrder());
@@ -600,7 +586,7 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageNewOrder = 1;
         
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 6, panelDirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 6, panelDirsQty);
         
         PersistableWebDirectory dirFrom = dirs.get(dirFromIndex);
         PersistableWebDirectory dirTo = dirs.get(dirToIndex);
@@ -618,8 +604,7 @@ public class UserWebObjectsServiceWorkerTest {
         dirFrom = dirs.get(dirFromIndex);
         dirTo = dirs.get(dirToIndex);
                 
-        boolean moved = service.moveUserWebPageIntoDirectoryAndOrder(
-                savedUser.getId(), PANEL, dirFrom.getName(), dirTo.getName(), movedPageName, movedPageNewOrder);
+        boolean moved = service.moveUserWebPageIntoDirectoryAndOrder(savedUser.getId(), WEBPANEL, dirFrom.getName(), dirTo.getName(), movedPageName, movedPageNewOrder);
         
         assertTrue(moved);
         
@@ -630,8 +615,8 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirFromSize, actualDirFromSize);
         assertEquals(expectedDirToSize, actualDirToSize);
         
-        dirFrom = service.getUserWebDirectory(savedUser.getId(), PANEL, dirFrom.getName());
-        dirTo = service.getUserWebDirectory(savedUser.getId(), PANEL, dirTo.getName());
+        dirFrom = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, dirFrom.getName());
+        dirTo = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, dirTo.getName());
         
         for (int i = 0; i < dirFrom.getPages().size(); i++ ) {            
             assertEquals(i, dirFrom.getPages().get(i).getOrder());
@@ -660,7 +645,7 @@ public class UserWebObjectsServiceWorkerTest {
         int movedPageInitialIndex = 3;
         
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> panelDirs = newFakeDirs(savedUser, PANEL, 10, panelDirsQty);
+        List<PersistableWebDirectory> panelDirs = newFakeDirs(savedUser, WEBPANEL, 10, panelDirsQty);
         List<PersistableWebDirectory> bookmDirs = newFakeDirs(savedUser, BOOKMARKS, 20, bookmDirsQty);
         
         PersistableWebDirectory dirFrom = panelDirs.get(dirFromIndex);
@@ -680,8 +665,7 @@ public class UserWebObjectsServiceWorkerTest {
         dirFrom = panelDirs.get(dirFromIndex);
         dirTo = bookmDirs.get(dirToIndex);
         
-        boolean moved = service.moveUserWebPageIntoDirectoryAndPlace(
-                savedUser.getId(), PANEL, BOOKMARKS, dirFrom.getName(), dirTo.getName(), movedPageName);
+        boolean moved = service.moveUserWebPageIntoDirectoryAndPlace(savedUser.getId(), WEBPANEL, BOOKMARKS, dirFrom.getName(), dirTo.getName(), movedPageName);
         
         assertTrue(moved);
         
@@ -692,7 +676,7 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirFromSize, actualDirFromSize);
         assertEquals(expectedDirToSize, actualDirToSize);
         
-        dirFrom = service.getUserWebDirectory(savedUser.getId(), PANEL, dirFrom.getName());
+        dirFrom = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, dirFrom.getName());
         dirTo = service.getUserWebDirectory(savedUser.getId(), BOOKMARKS, dirTo.getName());
         
         for (int i = 0; i < dirFrom.getPages().size(); i++ ) {
@@ -719,7 +703,7 @@ public class UserWebObjectsServiceWorkerTest {
         int anotherDir2Index = 0;
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 10, dirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 10, dirsQty);
         PersistableWebDirectory deletedDir = dirs.get(deletedDirIndex);
         PersistableWebDirectory anotherDir1 = dirs.get(anotherDir1Index);
         PersistableWebDirectory anotherDir2 = dirs.get(anotherDir2Index);
@@ -741,7 +725,7 @@ public class UserWebObjectsServiceWorkerTest {
               
         String deletedDirName = dirs.get(deletedDirIndex).getName();
         
-        boolean deleted = service.deleteUserWebDirectory(savedUser.getId(), PANEL, deletedDirName);
+        boolean deleted = service.deleteUserWebDirectory(savedUser.getId(), WEBPANEL, deletedDirName);
         assertTrue(deleted);
         
         expectedDirsQty = dirsQty - 1;
@@ -754,7 +738,7 @@ public class UserWebObjectsServiceWorkerTest {
         List<PersistableWebDirectory> foundDirs = service.getUserAllWebDirectories(savedUser.getId());
         assertEquals(dirsQty - 1, foundDirs.size());
         try {
-            PersistableWebDirectory nonExistedDir = service.getUserWebDirectory(savedUser.getId(), PANEL, deletedDirName);
+            PersistableWebDirectory nonExistedDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, deletedDirName);
             fail();
         } catch (BadDataRequestArgumentsException e) {
             assertTrue(true);
@@ -769,7 +753,7 @@ public class UserWebObjectsServiceWorkerTest {
         int pagesQty = 5;
         int deletedPageIndex = 1;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -781,14 +765,14 @@ public class UserWebObjectsServiceWorkerTest {
         
         String deletedPageName = savedDir.getPages().get(deletedPageIndex).getName();
         
-        boolean deleted = service.deleteUserWebPage(savedUser.getId(), PANEL, savedDir.getName(), deletedPageName);
+        boolean deleted = service.deleteUserWebPage(savedUser.getId(), WEBPANEL, savedDir.getName(), deletedPageName);
         assertTrue(deleted);
         
         expectedPagesQty = pagesQty - 1;
         actualPagesQty = countRowsInTable(jdbcTemplate, "pages");
         assertEquals(expectedPagesQty, actualPagesQty); 
         
-        savedDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        savedDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         for (int i = 0; i < savedDir.getPages().size(); i++) {
             assertEquals(i, savedDir.getPages().get(i).getOrder());
             assertNotEquals(savedDir.getPages().get(i).getName(), deletedPageName);
@@ -809,7 +793,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testCreateUserWebPage() {        
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
         savedDir.setPages(savedPages);
         savedDir = dirsRepo.save(savedDir);
@@ -822,14 +806,14 @@ public class UserWebObjectsServiceWorkerTest {
         String newPageName = "valid-> page_name (created) [new56]";
         String newPageUrl = "http://valid.page.im?peers=3342544_c65_c1_c167_c18&sel=c91";        
         
-        boolean saved = service.createUserWebPage(savedUser.getId(), PANEL, savedDir.getName(), newPageName, newPageUrl);
+        boolean saved = service.createUserWebPage(savedUser.getId(), WEBPANEL, savedDir.getName(), newPageName, newPageUrl);
         assertTrue(saved);
         
         expectedPagesQty = pagesQty + 1;
         actualPagesQty = countRowsInTable(jdbcTemplate, "pages");
         assertEquals(expectedPagesQty, actualPagesQty); 
         
-        savedDir = service.getUserWebDirectory(savedUser.getId(), PANEL, savedDir.getName());
+        savedDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, savedDir.getName());
         for (int i = 0; i < savedDir.getPages().size(); i++) {
             assertEquals(i, savedDir.getPages().get(i).getOrder());
         }
@@ -844,7 +828,7 @@ public class UserWebObjectsServiceWorkerTest {
     public void testCreateUserWebDirectory() {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 10, dirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 10, dirsQty);
         List<PersistableWebDirectory> dirsInAnotherPlace = newFakeDirs(savedUser, BOOKMARKS, 20, dirsQty);
         dirs = dirsRepo.save(dirs);
         dirsInAnotherPlace = dirsRepo.save(dirsInAnotherPlace);
@@ -856,20 +840,20 @@ public class UserWebObjectsServiceWorkerTest {
         
         String newDirName = "valid [dir]_name (new 1)";
         
-        boolean created = service.createUserWebDirectory(savedUser.getId(), PANEL, newDirName);
+        boolean created = service.createUserWebDirectory(savedUser.getId(), WEBPANEL, newDirName);
         assertTrue(created);
         
         expectedDirsQty = (dirsQty * 2) + 1;
         actualDirsQty = countRowsInTable(jdbcTemplate, "dirs");
         assertEquals(expectedDirsQty, actualDirsQty); 
         int expectedPanelDirsQty = dirsQty + 1;
-        int actualPanelDirsQty = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'PANEL' ");
+        int actualPanelDirsQty = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'WEBPANEL' ");
         assertEquals(expectedPanelDirsQty, actualPanelDirsQty);
                 
-        PersistableWebDirectory newDir = service.getUserWebDirectory(savedUser.getId(), PANEL, newDirName);
-        List<PersistableWebDirectory> dirsInPlace = service.getUserWebDirectoriesInPlace(savedUser.getId(), PANEL);
+        PersistableWebDirectory newDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, newDirName);
+        List<PersistableWebDirectory> dirsInPlace = service.getUserWebDirectoriesInPlace(savedUser.getId(), WEBPANEL);
         assertEquals(newDirName, newDir.getName());
-        assertEquals(PANEL.name(), newDir.getPlace());
+        assertEquals(WEBPANEL.name(), newDir.getPlace());
         assertEquals(dirsInPlace.size() - 1, newDir.getOrder());
     }
 
@@ -881,8 +865,8 @@ public class UserWebObjectsServiceWorkerTest {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableUser anotherUser = usersRepo.saveAndFlush(newFakeUser(5));
-        List<PersistableWebDirectory> anotherUserDirs = newFakeDirs(anotherUser, PANEL, 10, dirsQty);
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 10, dirsQty);
+        List<PersistableWebDirectory> anotherUserDirs = newFakeDirs(anotherUser, WEBPANEL, 10, dirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 10, dirsQty);
         List<PersistableWebDirectory> dirsInAnotherPlace = newFakeDirs(savedUser, BOOKMARKS, 20, dirsQty);
         anotherUserDirs = dirsRepo.save(anotherUserDirs);
         dirs = dirsRepo.save(dirs);
@@ -894,10 +878,10 @@ public class UserWebObjectsServiceWorkerTest {
         assertEquals(expectedDirsQty, actualDirsQty); 
         
         int expectedPanelDirsQty = dirsQty;
-        int actualPanelDirsQty = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'PANEL' AND user_id IS " + savedUser.getId());
+        int actualPanelDirsQty = countRowsInTableWhere(jdbcTemplate, "dirs", " dir_place IS 'WEBPANEL' AND user_id IS " + savedUser.getId());
         assertEquals(expectedPanelDirsQty, actualPanelDirsQty);
         
-        List<PersistableWebDirectory> foundUserDirsInPlace = service.getUserWebDirectoriesInPlace(savedUser.getId(), PANEL);
+        List<PersistableWebDirectory> foundUserDirsInPlace = service.getUserWebDirectoriesInPlace(savedUser.getId(), WEBPANEL);
         assertEquals(dirs.size(), foundUserDirsInPlace.size());
         for (int i = 0; i < foundUserDirsInPlace.size(); i++) {
             assertEquals(dirs.get(i).getName(), foundUserDirsInPlace.get(i).getName());
@@ -913,8 +897,8 @@ public class UserWebObjectsServiceWorkerTest {
         int searchedDirIndex = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableUser anotherUser = usersRepo.saveAndFlush(newFakeUser(5));
-        List<PersistableWebDirectory> anotherUserDirs = newFakeDirs(anotherUser, PANEL, 10, dirsQty);
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 10, dirsQty);
+        List<PersistableWebDirectory> anotherUserDirs = newFakeDirs(anotherUser, WEBPANEL, 10, dirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 10, dirsQty);
         List<PersistableWebDirectory> dirsInAnotherPlace = newFakeDirs(savedUser, BOOKMARKS, 20, dirsQty);
         anotherUserDirs = dirsRepo.save(anotherUserDirs);
         dirs = dirsRepo.save(dirs);
@@ -923,7 +907,7 @@ public class UserWebObjectsServiceWorkerTest {
         
         String searchedDirName = dirs.get(searchedDirIndex).getName();
         
-        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), PANEL, searchedDirName);
+        PersistableWebDirectory foundDir = service.getUserWebDirectory(savedUser.getId(), WEBPANEL, searchedDirName);
         assertEquals(searchedDirName, foundDir.getName());        
     }
 
@@ -935,8 +919,8 @@ public class UserWebObjectsServiceWorkerTest {
         int dirsQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableUser anotherUser = usersRepo.saveAndFlush(newFakeUser(5));
-        List<PersistableWebDirectory> anotherUserDirs = newFakeDirs(anotherUser, PANEL, 10, dirsQty);
-        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, PANEL, 10, dirsQty);
+        List<PersistableWebDirectory> anotherUserDirs = newFakeDirs(anotherUser, WEBPANEL, 10, dirsQty);
+        List<PersistableWebDirectory> dirs = newFakeDirs(savedUser, WEBPANEL, 10, dirsQty);
         List<PersistableWebDirectory> dirsInAnotherPlace = newFakeDirs(savedUser, BOOKMARKS, 20, dirsQty);
         anotherUserDirs = dirsRepo.save(anotherUserDirs);
         dirs = dirsRepo.save(dirs);

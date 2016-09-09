@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Import;
 
 import diarsid.beam.server.data.daos.DaoUsers;
 import diarsid.beam.server.data.daos.DaoWebDirectories;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperator;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperatorWorker;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsService;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceValidationWrapper;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceWorker;
-import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
-import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
-import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperator;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperatorWorker;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsServiceValidationWrapper;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsServiceWorker;
+import diarsid.beam.server.domain.services.webobjects.WebObjectsNamesIncrementor;
+import diarsid.beam.server.domain.services.webobjects.WebObjectsOrderer;
+import diarsid.beam.server.domain.services.validation.WebObjectsValidationServiceWorker;
 
 /**
  *
@@ -40,7 +40,7 @@ public class DomainServicesTestConfig {
             UserWebObjectsDataOperator dataOperator,
             WebObjectsOrderer webItemsOrderer,
             WebObjectsNamesIncrementor incrementor,
-            WebObjectsPropertiesValidator validator) {
+            WebObjectsValidationServiceWorker validator) {
         UserWebObjectsServiceWorker service = 
                 new UserWebObjectsServiceWorker(dataOperator, webItemsOrderer, incrementor);
         UserWebObjectsServiceValidationWrapper validatedService = 
@@ -68,7 +68,7 @@ public class DomainServicesTestConfig {
     }
     
     @Bean
-    public WebObjectsPropertiesValidator webItemInputValidator() {
-        return new WebObjectsPropertiesValidator();
+    public WebObjectsValidationServiceWorker webItemInputValidator() {
+        return new WebObjectsValidationServiceWorker();
     }
 }

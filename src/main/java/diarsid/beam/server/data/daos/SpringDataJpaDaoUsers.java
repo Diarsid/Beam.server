@@ -9,7 +9,7 @@ package diarsid.beam.server.data.daos;
 import org.springframework.stereotype.Repository;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryUsers;
-import diarsid.beam.server.data.entities.jpa.PersistableUser;
+import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 
 @Repository
 public class SpringDataJpaDaoUsers implements DaoUsers {

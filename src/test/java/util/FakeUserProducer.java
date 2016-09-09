@@ -6,7 +6,7 @@
 
 package util;
 
-import diarsid.beam.server.data.entities.jpa.PersistableUser;
+import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 
 /**
  *

@@ -22,19 +22,18 @@ import springtests.config.AppTestConfig;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryUsers;
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDirectories;
-import diarsid.beam.server.data.entities.jpa.PersistableUser;
-import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
-import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
-import diarsid.beam.server.services.domain.exceptions.BadDataRequestArgumentsException;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperatorWorker;
+import diarsid.beam.server.domain.entities.jpa.PersistableUser;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
+import diarsid.beam.server.domain.services.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperatorWorker;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 
-import static diarsid.beam.server.data.entities.WebPlacement.BOOKMARKS;
-import static diarsid.beam.server.data.entities.WebPlacement.PANEL;
+import static diarsid.beam.server.domain.entities.WebPlacement.BOOKMARKS;
 
 import static util.FakeUserProducer.newFakeUser;
 import static util.FakeWebDirsProducer.DIR_NAME_TEMPLATE;
@@ -42,6 +41,8 @@ import static util.FakeWebDirsProducer.newFakeDir;
 import static util.FakeWebDirsProducer.newFakeDirs;
 import static util.FakeWebPagesProducer.PAGE_NAME_TEMPLATE;
 import static util.FakeWebPagesProducer.newFakePages;
+
+import static diarsid.beam.server.domain.entities.WebPlacement.WEBPANEL;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppTestConfig.class})
@@ -112,13 +113,13 @@ public class UserWebObjectsDataOperatorWorkerTest {
     @Test
     public void testCountWebDirectoriesInPlace() {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> savedDirs = dirsRepo.save(newFakeDirs(savedUser, PANEL, 3, 5));
+        List<PersistableWebDirectory> savedDirs = dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 3, 5));
         dirsRepo.flush();
         
         int expectedDirsQty = savedDirs.size();
         int assuredActualDirsQty = countRowsInTable(jdbcTemplate, "dirs");
         
-        int actualDirsQty = dataOperator.countWebDirectoriesInPlace(PANEL, savedUser.getId());
+        int actualDirsQty = dataOperator.countWebDirectoriesInPlace(WEBPANEL, savedUser.getId());
         
         assertEquals(expectedDirsQty, assuredActualDirsQty);
         assertEquals(expectedDirsQty, actualDirsQty);        
@@ -132,7 +133,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int panelDirs = 5;
         int bookmDirs = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        List<PersistableWebDirectory> savedPanelDirs = dirsRepo.save(newFakeDirs(savedUser, PANEL, 3, panelDirs));
+        List<PersistableWebDirectory> savedPanelDirs = dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 3, panelDirs));
         List<PersistableWebDirectory> savedBookmDirs = dirsRepo.save(newFakeDirs(savedUser, BOOKMARKS, 10, bookmDirs));
         dirsRepo.flush();
         
@@ -151,7 +152,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebPageInDirectoryNotNull_noException() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, PANEL, 3));
+        PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, WEBPANEL, 3));
         //List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
@@ -165,7 +166,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int assuredActualPagesQty = countRowsInTable(jdbcTemplate, "pages");
         
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNull(savedPanelDir.getName(), PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNull(savedPanelDir.getName(), WEBPANEL, savedUser.getId());
         PersistableWebPage foundPage = 
                 dataOperator.findWebPageInDirectoryNotNull(foundDir.getPages(), expectedPageName);
         assertEquals(expectedPageName, foundPage.getName());
@@ -177,14 +178,14 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebPageInDirectoryNotNull_exceptionThrown() {
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, PANEL, 3));
+        PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, WEBPANEL, 3));
 //        List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
         dirsRepo.saveAndFlush(savedPanelDir);
                 
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNull(savedPanelDir.getName(), PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNull(savedPanelDir.getName(), WEBPANEL, savedUser.getId());
         PersistableWebPage foundPage = 
                 dataOperator.findWebPageInDirectoryNotNull(foundDir.getPages(), "another_page_name");
         foundPage.getName();
@@ -198,7 +199,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebDirectoryNotNull_noException() {  
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
         savedPanelDir = dirsRepo.saveAndFlush(savedPanelDir);
@@ -209,7 +210,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int assuredActualPagesQty = countRowsInTable(jdbcTemplate, "pages");
 
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNull(savedPanelDir.getName(), PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNull(savedPanelDir.getName(), WEBPANEL, savedUser.getId());
         
         assertEquals(foundDir.getPages().size(), pagesQty);
         assertEquals(foundDir.getName(), savedPanelDir.getName());
@@ -221,13 +222,13 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebDirectoryNotNull_exceptionThrown() {  
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
         savedPanelDir = dirsRepo.saveAndFlush(savedPanelDir);
 
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNull("another_name", PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNull("another_name", WEBPANEL, savedUser.getId());
         foundDir.getName();
         fail();
     }
@@ -239,7 +240,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebDirectoryNotNullNotEmpty_noException() {
         int pagesQty = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
         savedPanelDir.setPages(savedPages);
         savedPanelDir = dirsRepo.saveAndFlush(savedPanelDir);
@@ -250,7 +251,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int assuredActualPagesQty = countRowsInTable(jdbcTemplate, "pages");
         
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNullNotEmpty(savedPanelDir.getName(), PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNullNotEmpty(savedPanelDir.getName(), WEBPANEL, savedUser.getId());
         
         assertEquals(savedPanelDir.getPages().size(), foundDir.getPages().size());
         assertEquals(expectedDirsQty, assuredActualDirsQty);
@@ -261,7 +262,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebDirectoryNotNullNotEmpty_exceptionThrown() {
         int pagesQty = 0;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
-        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
         savedPanelDir.setPages(new ArrayList<>());
         savedPanelDir = dirsRepo.saveAndFlush(savedPanelDir);
         
@@ -274,7 +275,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         assertEquals(expectedPagesQty, assuredActualPagesQty);
         
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNullNotEmpty(savedPanelDir.getName(), PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNullNotEmpty(savedPanelDir.getName(), WEBPANEL, savedUser.getId());
         foundDir.getName();
         fail();
     }
@@ -286,7 +287,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebDirectoriesNotEmpty_noException() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dirsRepo.save(savedDirs);
         dirsRepo.flush();
         
@@ -294,7 +295,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int assuredActualDirsQty = countRowsInTable(jdbcTemplate, "dirs");
         
         List<PersistableWebDirectory> foundDirs = 
-                dataOperator.findWebDirectoriesNotEmpty(PANEL, savedUser.getId());
+                dataOperator.findWebDirectoriesNotEmpty(WEBPANEL, savedUser.getId());
         
         assertEquals(dirsQty, foundDirs.size());
         assertEquals(expectedDirsQty, assuredActualDirsQty);
@@ -304,7 +305,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindWebDirectoriesNotEmpty_exceptionThrown() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dirsRepo.save(savedDirs);
         dirsRepo.flush();
         
@@ -326,7 +327,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindDirectoryFromDirectoriesNotNull_noException() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dirsRepo.save(savedDirs);
         dirsRepo.flush();
         
@@ -336,7 +337,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         String expectedDirName = DIR_NAME_TEMPLATE + 8;
         
         List<PersistableWebDirectory> foundDirs = 
-                dataOperator.findWebDirectoriesNotEmpty(PANEL, savedUser.getId());
+                dataOperator.findWebDirectoriesNotEmpty(WEBPANEL, savedUser.getId());
         
         PersistableWebDirectory foundDir = 
                 dataOperator.findDirectoryFromDirectoriesNotNull(foundDirs, expectedDirName);
@@ -349,7 +350,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testFindDirectoryFromDirectoriesNotNull_exceptionThrown() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dirsRepo.save(savedDirs);
         dirsRepo.flush();
         
@@ -357,7 +358,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         int assuredActualDirsQty = countRowsInTable(jdbcTemplate, "dirs");
                 
         List<PersistableWebDirectory> foundDirs = 
-                dataOperator.findWebDirectoriesNotEmpty(PANEL, savedUser.getId());
+                dataOperator.findWebDirectoriesNotEmpty(WEBPANEL, savedUser.getId());
         
         assertEquals(expectedDirsQty, assuredActualDirsQty);
         
@@ -374,7 +375,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testSaveModifiedDirectories() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dataOperator.saveModifiedDirectories(savedDirs);
         
         int expectedDirsQty = dirsQty;
@@ -392,7 +393,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     @Test
     public void testSaveModifiedDirectory() {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        PersistableWebDirectory savedDir = newFakeDir(savedUser, PANEL, 3);
+        PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         savedDir = dataOperator.saveModifiedDirectory(savedDir);
         
         int expectedDirsQty = 1;
@@ -432,7 +433,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testDeleteDirectory() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dataOperator.saveModifiedDirectories(savedDirs);
         
         int expectedDirsQty = dirsQty;
@@ -454,7 +455,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     public void testDeletePage() {
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
-        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, PANEL, 6, dirsQty);
+        List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
         savedDirs = dataOperator.saveModifiedDirectories(savedDirs);
         
         PersistableWebDirectory workedDir = savedDirs.get(2);
@@ -478,7 +479,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
         assertEquals(expectedPagesQty, assuredActualPagesqty);
         
         PersistableWebDirectory foundDir = 
-                dataOperator.findWebDirectoryNotNullNotEmpty(workedDir.getName(), PANEL, savedUser.getId());
+                dataOperator.findWebDirectoryNotNullNotEmpty(workedDir.getName(), WEBPANEL, savedUser.getId());
         assertEquals(expectedPagesQty, foundDir.getPages().size());        
     }
 }

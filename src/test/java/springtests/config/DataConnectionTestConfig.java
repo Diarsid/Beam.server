@@ -52,7 +52,7 @@ public class DataConnectionTestConfig {
         LocalContainerEntityManagerFactoryBean factory = 
                 new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("diarsid.beam.server.data.entities.jpa");
+        factory.setPackagesToScan("diarsid.beam.server.domain.entities.jpa");
         factory.setDataSource(dataSource);
         factory.afterPropertiesSet();
 

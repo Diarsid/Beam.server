@@ -9,10 +9,10 @@ package diarsid.beam.server.data.services.webobjects;
 import org.junit.Test;
 import org.junit.Test.None;
 
-import diarsid.beam.server.services.domain.exceptions.WebObjectNameInvalidException;
-import diarsid.beam.server.services.domain.exceptions.WebObjectUrlInvalidException;
-import diarsid.beam.server.services.domain.validation.ValidationResult;
-import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
+import diarsid.beam.server.domain.services.exceptions.WebObjectNameInvalidException;
+import diarsid.beam.server.domain.services.exceptions.WebObjectUrlInvalidException;
+import diarsid.beam.server.domain.services.validation.ValidationResult;
+import diarsid.beam.server.domain.services.validation.WebObjectsValidationServiceWorker;
 
 import static org.junit.Assert.*;
 
@@ -22,14 +22,14 @@ import static org.junit.Assert.*;
  */
 public class WebObjectsPropertiesValidatorTest {
     
-    private final WebObjectsPropertiesValidator validator;
+    private final WebObjectsValidationServiceWorker validator;
 
     public WebObjectsPropertiesValidatorTest() {
-        this.validator = new WebObjectsPropertiesValidator();
+        this.validator = new WebObjectsValidationServiceWorker();
     }
 
     /**
-     * Test of isWebObjectNameValid method, of class WebObjectsPropertiesValidator.
+     * Test of isWebObjectNameValid method, of class WebObjectsValidationServiceWorker.
      */
     @Test
     public void testIsWebItemNameValid_valid() {
@@ -50,7 +50,7 @@ public class WebObjectsPropertiesValidatorTest {
     }
 
     /**
-     * Test of validateWebObjectNames method, of class WebObjectsPropertiesValidator.
+     * Test of validateWebObjectNames method, of class WebObjectsValidationServiceWorker.
      */
     @Test(expected = None.class)
     public void testValidateWebItemNames_noneThrown() {
@@ -67,7 +67,7 @@ public class WebObjectsPropertiesValidatorTest {
     }
 
     /**
-     * Test of isUrlValid method, of class WebObjectsPropertiesValidator.
+     * Test of isUrlValid method, of class WebObjectsValidationServiceWorker.
      */
     @Test
     public void testIsUrlValid_valid() {
@@ -88,7 +88,7 @@ public class WebObjectsPropertiesValidatorTest {
     }
 
     /**
-     * Test of validateUrl method, of class WebObjectsPropertiesValidator.
+     * Test of validateUrl method, of class WebObjectsValidationServiceWorker.
      */
     @Test(expected = None.class)
     public void testValidateUrl_noneThrown() {

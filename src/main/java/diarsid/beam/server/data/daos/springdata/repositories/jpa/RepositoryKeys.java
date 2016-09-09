@@ -8,7 +8,7 @@ package diarsid.beam.server.data.daos.springdata.repositories.jpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import diarsid.beam.server.data.entities.jpa.PersistableKey;
+import diarsid.beam.server.domain.entities.jpa.PersistableKey;
 
 /**
  *

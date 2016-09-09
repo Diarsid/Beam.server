@@ -25,10 +25,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import diarsid.beam.server.data.entities.jpa.PersistableKey;
-import diarsid.beam.server.data.entities.jpa.PersistableUser;
-import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
-import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
+import diarsid.beam.server.domain.entities.jpa.PersistableKey;
+import diarsid.beam.server.domain.entities.jpa.PersistableUser;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
 
 /**
  *
@@ -78,7 +78,7 @@ public class DataConnectionBeans {
         LocalContainerEntityManagerFactoryBean factory = 
                 new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("diarsid.beam.server.data.entities.jpa");
+        factory.setPackagesToScan("diarsid.beam.server.domain.entities.jpa");
         factory.setDataSource(dataSource);
         factory.afterPropertiesSet();
 

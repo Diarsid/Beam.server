@@ -9,13 +9,13 @@ package diarsid.beam.server.config.spring.java;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import diarsid.beam.server.services.web.providers.MapperBadDataRequestArgumentsException;
-import diarsid.beam.server.services.web.providers.MapperNickNameIsNotFreeException;
-import diarsid.beam.server.services.web.providers.MapperUserLoginInvalidException;
-import diarsid.beam.server.services.web.providers.MapperUserRegistrationInvalidException;
-import diarsid.beam.server.services.web.providers.MapperUsersServiceUnknownLogicException;
-import diarsid.beam.server.services.web.providers.MapperWebObjectNameInvalidException;
-import diarsid.beam.server.services.web.providers.MapperWebObjectUrlInvalidException;
+import diarsid.beam.server.presentation.web.services.providers.MapperBadDataRequestArgumentsException;
+import diarsid.beam.server.presentation.web.services.providers.MapperNickNameIsNotFreeException;
+import diarsid.beam.server.presentation.web.services.providers.MapperUserLoginInvalidException;
+import diarsid.beam.server.presentation.web.services.providers.MapperUserRegistrationInvalidException;
+import diarsid.beam.server.presentation.web.services.providers.MapperUsersServiceUnknownLogicException;
+import diarsid.beam.server.presentation.web.services.providers.MapperWebObjectNameInvalidException;
+import diarsid.beam.server.presentation.web.services.providers.MapperWebObjectUrlInvalidException;
 
 /**
  *

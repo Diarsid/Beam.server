@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryKeys;
-import diarsid.beam.server.data.entities.KeyIdPair;
-import diarsid.beam.server.data.entities.jpa.PersistableKey;
+import diarsid.beam.server.domain.entities.KeyIdPair;
+import diarsid.beam.server.domain.entities.jpa.PersistableKey;
 
 @Repository
 public class SpringDataJpaDaoKeys implements DaoKeys {

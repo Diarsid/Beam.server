@@ -5,7 +5,7 @@
  */
 package diarsid.beam.server.data.daos;
 
-import diarsid.beam.server.data.entities.KeyIdPair;
+import diarsid.beam.server.domain.entities.KeyIdPair;
 
 import java.util.Map;
 import java.util.Set;

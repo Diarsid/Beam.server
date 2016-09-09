@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import diarsid.beam.server.data.entities.KeyIdPair;
-import diarsid.beam.server.data.entities.jpa.PersistableKey;
+import diarsid.beam.server.domain.entities.KeyIdPair;
+import diarsid.beam.server.domain.entities.jpa.PersistableKey;
 
 import static org.hibernate.criterion.CriteriaSpecification.DISTINCT_ROOT_ENTITY;
 

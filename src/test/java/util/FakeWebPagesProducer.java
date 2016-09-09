@@ -9,8 +9,8 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 
-import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
-import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
 
 /**
  *

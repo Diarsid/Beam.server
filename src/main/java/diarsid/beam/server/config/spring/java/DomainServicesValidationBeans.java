@@ -9,10 +9,10 @@ package diarsid.beam.server.config.spring.java;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
-import diarsid.beam.server.services.domain.validation.UsersValidationService;
-import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
-import diarsid.beam.server.services.domain.validation.WebObjectsValidationService;
+import diarsid.beam.server.domain.services.validation.UsersValidationServiceWorker;
+import diarsid.beam.server.domain.services.validation.UsersValidationService;
+import diarsid.beam.server.domain.services.validation.WebObjectsValidationServiceWorker;
+import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
 
 /**
  *
@@ -27,11 +27,11 @@ public class DomainServicesValidationBeans {
         
     @Bean
     public WebObjectsValidationService webObjectsValidationService() {
-        return new WebObjectsPropertiesValidator();
+        return new WebObjectsValidationServiceWorker();
     }
     
     @Bean
     public UsersValidationService usersValidationService() {
-        return new UsersInfoValidator();
+        return new UsersValidationServiceWorker();
     }
 }

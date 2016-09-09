@@ -6,13 +6,14 @@
 
 package diarsid.beam.server.data.entities;
 
-import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
+import diarsid.beam.server.domain.entities.OrderableWebObject;
+import diarsid.beam.server.domain.services.webobjects.WebObjectsOrderer;
 
 import java.util.List;
 
 import org.junit.Test;
 
-import diarsid.beam.server.data.entities.jpa.PersistableWebPage;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
 
 import static java.util.Collections.sort;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import diarsid.beam.server.data.daos.springdata.repositories.jpa.RepositoryWebDirectories;
-import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
 
 @Repository
 public class SpringDataJpaDaoWebDirectories implements DaoWebDirectories {

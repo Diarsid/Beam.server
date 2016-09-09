@@ -6,7 +6,7 @@
 
 package diarsid.beam.server.data.services.webobjects;
 
-import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
+import diarsid.beam.server.domain.services.webobjects.WebObjectsNamesIncrementor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import static util.Util.namedWeItemStub;
 
-import diarsid.beam.server.data.entities.WebObject;
+import diarsid.beam.server.domain.entities.WebObject;
 
 import static org.junit.Assert.assertEquals;
 

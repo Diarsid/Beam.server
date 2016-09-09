@@ -10,9 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import diarsid.beam.server.services.web.providers.WriterJsonErrorObject;
-import diarsid.beam.server.services.web.providers.WriterObjectData;
-import diarsid.beam.server.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.providers.WriterJsonErrorObject;
 
 /**
  *
@@ -25,11 +24,6 @@ public class WebServicesEntityWritersBeans {
     
     public WebServicesEntityWritersBeans() {
     }    
-    
-    @Bean
-    public WriterObjectData writerObjectData(JavaObjectToJsonConverter toJsonConverter) {
-        return new WriterObjectData(toJsonConverter);
-    }
     
     @Bean
     public WriterJsonErrorObject writerJsonErrorObject(JavaObjectToJsonConverter toJsonConverter) {

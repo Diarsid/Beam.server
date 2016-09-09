@@ -9,12 +9,12 @@ package diarsid.beam.server.config.spring.java;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import diarsid.beam.server.util.JavaObjectToJsonConverter;
-import diarsid.beam.server.util.JavaObjectToJsonConverterWorkerGson;
-import diarsid.beam.server.util.JsonToJavaObjectConverter;
-import diarsid.beam.server.util.JsonToJavaObjectConverterWorkerGson;
-import diarsid.beam.server.util.RandomHexadecimalStringGenerator;
-import diarsid.beam.server.util.RandomStringGenerator;
+import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverterWorkerGson;
+import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
+import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverterWorkerGson;
+import diarsid.beam.server.domain.util.RandomHexadecimalStringGenerator;
+import diarsid.beam.server.domain.util.RandomStringGenerator;
 
 /**
  *

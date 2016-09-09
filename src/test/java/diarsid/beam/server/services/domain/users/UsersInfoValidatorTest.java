@@ -8,8 +8,8 @@ package diarsid.beam.server.services.domain.users;
 
 import org.junit.Test;
 
-import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
-import diarsid.beam.server.services.domain.validation.ValidationResult;
+import diarsid.beam.server.domain.services.validation.UsersValidationServiceWorker;
+import diarsid.beam.server.domain.services.validation.ValidationResult;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,7 +23,7 @@ import static util.FakeUserDataProducer.fakeRegistration;
  */
 public class UsersInfoValidatorTest {
     
-    private final UsersInfoValidator validator = new UsersInfoValidator();
+    private final UsersValidationServiceWorker validator = new UsersValidationServiceWorker();
     
     public UsersInfoValidatorTest() {
     }
@@ -31,7 +31,7 @@ public class UsersInfoValidatorTest {
     // fakeRegistration("John", "Doesson", "Cool_J.d.Nick", "john.doe.84@gmail.com", "joHn.DoE(pa[ss]Wo123rd")
 
     /**
-     * Test of validateRegistrationInfo method, of class UsersInfoValidator.
+     * Test of validateRegistrationInfo method, of class UsersValidationServiceWorker.
      */
     @Test
     public void testValidateRegistrationInfo_ok() {
@@ -96,7 +96,7 @@ public class UsersInfoValidatorTest {
     
 
     /**
-     * Test of validateLoginInfo method, of class UsersInfoValidator.
+     * Test of validateLoginInfo method, of class UsersValidationServiceWorker.
      */
     @Test
     public void testValidateLoginInfo_ok() {

@@ -6,8 +6,8 @@
 
 package util;
 
-import diarsid.beam.server.services.web.dto.UserLoginRequestData;
-import diarsid.beam.server.services.web.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
+import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
 
 /**
  *

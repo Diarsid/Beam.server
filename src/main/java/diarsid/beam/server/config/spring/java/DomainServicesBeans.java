@@ -12,28 +12,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 
-import diarsid.beam.server.data.ObjectDataServiceWorker;
 import diarsid.beam.server.data.daos.DaoKeys;
 import diarsid.beam.server.data.daos.DaoUsers;
 import diarsid.beam.server.data.daos.DaoWebDirectories;
-import diarsid.beam.server.services.domain.jwtauth.JwtAuthService;
-import diarsid.beam.server.services.domain.jwtauth.JwtAuthServiceWorker;
-import diarsid.beam.server.services.domain.jwtauth.JwtProducer;
-import diarsid.beam.server.services.domain.jwtauth.JwtValidator;
-import diarsid.beam.server.services.domain.jwtauth.KeysService;
-import diarsid.beam.server.services.domain.jwtauth.KeysServiceWorker;
-import diarsid.beam.server.services.domain.users.UsersService;
-import diarsid.beam.server.services.domain.users.UsersServiceWorker;
-import diarsid.beam.server.services.domain.validation.UsersInfoValidator;
-import diarsid.beam.server.services.domain.validation.WebObjectsPropertiesValidator;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperator;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsDataOperatorWorker;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsService;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceValidationWrapper;
-import diarsid.beam.server.services.domain.webobjects.UserWebObjectsServiceWorker;
-import diarsid.beam.server.services.domain.webobjects.WebObjectsNamesIncrementor;
-import diarsid.beam.server.services.domain.webobjects.WebObjectsOrderer;
-import diarsid.beam.server.util.RandomStringGenerator;
+import diarsid.beam.server.domain.services.jwtauth.JwtAuthService;
+import diarsid.beam.server.domain.services.jwtauth.JwtAuthServiceWorker;
+import diarsid.beam.server.domain.services.jwtauth.JwtProducer;
+import diarsid.beam.server.domain.services.jwtauth.JwtValidator;
+import diarsid.beam.server.domain.services.jwtauth.KeysService;
+import diarsid.beam.server.domain.services.jwtauth.KeysServiceWorker;
+import diarsid.beam.server.domain.services.users.UsersService;
+import diarsid.beam.server.domain.services.users.UsersServiceWorker;
+import diarsid.beam.server.domain.services.validation.UsersValidationServiceWorker;
+import diarsid.beam.server.domain.services.validation.WebObjectsValidationServiceWorker;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperator;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperatorWorker;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsServiceValidationWrapper;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsServiceWorker;
+import diarsid.beam.server.domain.services.webobjects.WebObjectsNamesIncrementor;
+import diarsid.beam.server.domain.services.webobjects.WebObjectsOrderer;
+import diarsid.beam.server.domain.util.RandomStringGenerator;
 
 /**
  *
@@ -53,12 +52,7 @@ public class DomainServicesBeans {
     
     public DomainServicesBeans() {
     }
-            
-    @Bean    
-    public ObjectDataServiceWorker objectDataService() {
-        return new ObjectDataServiceWorker();
-    }
-    
+               
     @Bean
     public KeysService keysService(DaoKeys keysDao, RandomStringGenerator stringGenerator) {
         int keysQty = Integer.valueOf(environment.getProperty("beam.server.keysqty"));
@@ -67,13 +61,13 @@ public class DomainServicesBeans {
     }
     
     @Bean
-    public UsersService usersService(DaoUsers daoUsers, UsersInfoValidator usersInfoValidator) {
+    public UsersService usersService(DaoUsers daoUsers, UsersValidationServiceWorker usersInfoValidator) {
         return new UsersServiceWorker(daoUsers, usersInfoValidator);
     }
     
     @Bean
     public UserWebObjectsService webContentService(
-            WebObjectsPropertiesValidator webItemInputValidator,
+            WebObjectsValidationServiceWorker webItemInputValidator,
             WebObjectsOrderer webItemsOrderer,
             WebObjectsNamesIncrementor nameIncrementor,
             UserWebObjectsDataOperator userWebItemsDataOperator) {

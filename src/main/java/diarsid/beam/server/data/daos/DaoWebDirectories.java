@@ -7,7 +7,7 @@ package diarsid.beam.server.data.daos;
 
 import java.util.List;
 
-import diarsid.beam.server.data.entities.jpa.PersistableWebDirectory;
+import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
 
 /**
  *
