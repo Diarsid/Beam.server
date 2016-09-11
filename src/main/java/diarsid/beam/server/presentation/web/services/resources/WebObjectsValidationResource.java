@@ -6,18 +6,17 @@
 
 package diarsid.beam.server.presentation.web.services.resources;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
 import diarsid.beam.server.domain.services.validation.ValidationResult;
 import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
+import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
 
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 
 /**
@@ -34,7 +33,7 @@ public class WebObjectsValidationResource {
         this.validationService = validator;
     }
     
-    @GET
+    @POST
     @Path("/names")
     public Response validateName(JsonPayload payload) {
         ValidationResult result = this.validationService.isWebObjectNameValid(payload.get());
@@ -45,7 +44,7 @@ public class WebObjectsValidationResource {
         }
     }
     
-    @GET
+    @POST
     @Path("/urls")
     public Response validateUrl(JsonPayload payload) {
         ValidationResult result = this.validationService.isUrlValid(payload.get());

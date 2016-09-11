@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
 import diarsid.beam.server.presentation.web.services.providers.ReaderUserLoginData;
 import diarsid.beam.server.presentation.web.services.providers.ReaderUserRegistrationData;
-import diarsid.beam.server.presentation.web.services.providers.ReaderValidatablePayload;
+import diarsid.beam.server.presentation.web.services.providers.ReaderJsonPayload;
 
 /**
  *
@@ -39,8 +39,8 @@ public class WebServicesEntityReadersBeans {
     }
         
     @Bean
-    public ReaderValidatablePayload readerValidatablePayload(
+    public ReaderJsonPayload readerValidatablePayload(
             JsonToJavaObjectConverter toJavaObjectConverter) {
-        return new ReaderValidatablePayload(toJavaObjectConverter);
+        return new ReaderJsonPayload(toJavaObjectConverter);
     }
 }

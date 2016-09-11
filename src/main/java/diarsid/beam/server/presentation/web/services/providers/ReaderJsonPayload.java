@@ -33,11 +33,11 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Component
 @Provider
 @Consumes(APPLICATION_JSON)
-public class ReaderValidatablePayload implements MessageBodyReader<JsonPayload> {
+public class ReaderJsonPayload implements MessageBodyReader<JsonPayload> {
     
     private final JsonToJavaObjectConverter converter;
     
-    public ReaderValidatablePayload(JsonToJavaObjectConverter converter) {
+    public ReaderJsonPayload(JsonToJavaObjectConverter converter) {
         this.converter = converter;
     }
     

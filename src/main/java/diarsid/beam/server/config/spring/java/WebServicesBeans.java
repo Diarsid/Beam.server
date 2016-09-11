@@ -19,6 +19,7 @@ import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
 import diarsid.beam.server.presentation.web.services.filters.AuthenticationFilter;
 import diarsid.beam.server.presentation.web.services.resources.AuthenticationResource;
+import diarsid.beam.server.presentation.web.services.resources.SingleWebDirectoryResource;
 import diarsid.beam.server.presentation.web.services.resources.UsersValidationResource;
 import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
 import diarsid.beam.server.presentation.web.services.resources.WebObjectsValidationResource;
@@ -68,5 +69,11 @@ public class WebServicesBeans {
             UsersService users, 
             JavaObjectToJsonConverter toJsonConverter) {
         return new WebDirectoriesResource(webObjects, users, toJsonConverter);
+    }
+    
+    @Bean
+    public SingleWebDirectoryResource singleWebDirectoryResource(
+            UserWebObjectsService webObjects, JavaObjectToJsonConverter toJsonConverter) {
+        return new SingleWebDirectoryResource(webObjects, toJsonConverter);
     }
 }
