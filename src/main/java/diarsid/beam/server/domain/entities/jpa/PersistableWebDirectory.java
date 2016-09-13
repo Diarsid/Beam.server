@@ -21,15 +21,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import static javax.persistence.CascadeType.ALL;
+import diarsid.beam.server.domain.entities.OrderableWebObject;
+import diarsid.beam.server.domain.entities.OrderableWebObjectsCollection;
+
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.GenerationType.IDENTITY;
-
-import diarsid.beam.server.domain.entities.OrderableWebObject;
-import diarsid.beam.server.domain.entities.OrderableWebObjectsCollection;
 
 /**
  *
@@ -64,7 +64,7 @@ public class PersistableWebDirectory
     @OneToMany(
             mappedBy = "dir",
             fetch = FetchType.EAGER, 
-            cascade = ALL,
+            cascade = {DETACH, MERGE, PERSIST, REFRESH, REMOVE},
             orphanRemoval = true)
     @OrderBy("page_order")
     private List<PersistableWebPage> pages;

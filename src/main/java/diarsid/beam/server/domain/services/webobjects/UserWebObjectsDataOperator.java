@@ -7,6 +7,8 @@ package diarsid.beam.server.domain.services.webobjects;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import diarsid.beam.server.domain.entities.WebPlacement;
 import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
@@ -16,6 +18,7 @@ import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
  *
  * @author Diarsid
  */
+@Transactional
 public interface UserWebObjectsDataOperator {
 
     PersistableUser findUserNotNull(int userId);

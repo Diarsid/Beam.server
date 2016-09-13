@@ -5,6 +5,8 @@
  */
 package diarsid.beam.server.domain.services.users;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
 import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
@@ -14,6 +16,8 @@ import diarsid.beam.server.presentation.web.services.auth.UserRole;
  *
  * @author Diarsid
  */
+
+@Transactional
 public interface UsersService {
     
     void checkUser(int userId);

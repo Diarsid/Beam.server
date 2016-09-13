@@ -10,6 +10,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.springframework.stereotype.Component;
+
 import diarsid.beam.server.domain.services.validation.ValidationResult;
 import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
 import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
@@ -24,6 +26,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
  * @author Diarsid
  */
 
+@Component
 @Path("/validation/webobjects")
 public class WebObjectsValidationResource {
     

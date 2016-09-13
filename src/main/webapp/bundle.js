@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8a691d109e0201450cd0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "281046a3e9ce97f1defd"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8267,10 +8267,10 @@
 	var Provider = __webpack_require__(257).Provider;
 
 	var appStore = __webpack_require__(280);
-	var actionDispatchers = __webpack_require__(296);
-	var ajaxJwtValidation = __webpack_require__(298);
-	var storage = __webpack_require__(299);
-	var RootPageContainer = __webpack_require__(300);
+	var actionDispatchers = __webpack_require__(293);
+	var ajaxJwtValidation = __webpack_require__(295);
+	var storage = __webpack_require__(298);
+	var RootPageContainer = __webpack_require__(299);
 
 	// --------------------------------------------
 
@@ -8286,7 +8286,6 @@
 	        actionDispatchers.app.dispatchGoToRegisterAction();
 	    },
 	    onJwtExpired: function onJwtExpired() {
-	        storage.deleteJwt();
 	        actionDispatchers.app.dispatchGoToLoginAction();
 	    }
 	};
@@ -31514,7 +31513,7 @@
 	var defineLoginPageState = __webpack_require__(289);
 	var defineRegistrationPageState = __webpack_require__(290);
 	var defineMainPageState = __webpack_require__(291);
-	var defineErrorPageState = __webpack_require__(295);
+	var defineErrorPageState = __webpack_require__(292);
 
 	var appInitialState = {
 	    user: {},
@@ -31825,7 +31824,13 @@
 
 	    bookmarksLoadingBegins: "BOOKMARKS_LOADING_BEGINS",
 	    bookmarksLoaded: "BOOKMARKS_LOADED",
-	    bookmarksLoadingFailed: "BOOKMARKS_LOADING_FAILED"
+	    bookmarksLoadingFailed: "BOOKMARKS_LOADING_FAILED",
+
+	    directoryCreationStart: "DIR_CREATION_START",
+	    directoryCreationSuccess: "DIR_CREATION_SUCCESS",
+	    directoryCreationFail: "DIR_CREATION_FAIL",
+
+	    toggleMainPageContentView: "TOGGLE_MAIN_PAGE_CONTENT"
 	};
 
 	module.exports = actionTypes;
@@ -31878,9 +31883,10 @@
 	        case actionTypes.logout:
 	            currentPageLog("logout");
 	            return appPages.landing;
+	        case actionTypes.goToError:
+	            return appPages.error;
 
 	        default:
-	            currentPageLog("default: " + currentPageState);
 	            return currentPageState;
 	    }
 	}
@@ -31925,6 +31931,9 @@
 	    switch (action.type) {
 
 	        case actionTypes.appStarts:
+	            return initialLoginPageState;
+
+	        case actionTypes.logout:
 	            return initialLoginPageState;
 
 	        // actions to process nick name input field
@@ -32063,6 +32072,9 @@
 	    switch (action.type) {
 
 	        case actionTypes.appStarts:
+	            return initialRegPageState;
+
+	        case actionTypes.logout:
 	            return initialRegPageState;
 
 	        // actions to process nick name input field
@@ -32249,16 +32261,22 @@
 
 	var actionTypes = __webpack_require__(287);
 
-	var getDirectoriesAjaxCall = __webpack_require__(292);
-
 	var mainPageViews = {
 	    webPanel: "webPanel",
 	    bookmarks: "bookmarks"
 	};
 
+	function toggleView(currentView) {
+	    if (currentView === mainPageViews.webPanel) {
+	        return mainPageViews.bookmarks;
+	    } else {
+	        return mainPageViews.webPanel;
+	    }
+	}
+
 	var mainPageInitialState = {
 
-	    mainView: mainPageViews.webPanel,
+	    currentView: mainPageViews.webPanel,
 
 	    webPanelLoading: false,
 	    bookmarksLoading: false,
@@ -32277,6 +32295,9 @@
 	    switch (action.type) {
 
 	        case actionTypes.appStarts:
+	            return mainPageInitialState;
+
+	        case actionTypes.logout:
 	            return mainPageInitialState;
 
 	        // data loading progress
@@ -32313,6 +32334,15 @@
 	                bookmarksDirs: action.dirs
 	            });
 
+	        // toggle views
+	        case actionTypes.toggleMainPageContentView:
+	            return Object.assign({}, mainPageState, {
+	                currentView: toggleView(mainPageState.currentView)
+	            });
+
+	        case actionTypes.directoryCreationSuccess:
+	            return Object.assign({}, mainPageState);
+
 	        default:
 	            return mainPageState;
 	    }
@@ -32331,45 +32361,895 @@
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var actionTypes = __webpack_require__(287);
 
-	var resources = __webpack_require__(294);
+	var initialErrorPageState = {
+	    message: ""
+	};
+
+	function defineErrorPageState() {
+	    var errorPageState = arguments.length <= 0 || arguments[0] === undefined ? initialErrorPageState : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+
+	        case actionTypes.appStarts:
+	            return initialErrorPageState;
+
+	        case actionTypes.logout:
+	            return initialErrorPageState;
+
+	        case actionTypes.goToError:
+	            return Object.assign({}, errorPageState, {
+	                message: action.message
+	            });
+	        default:
+	            return errorPageState;
+	    }
+	}
+
+	module.exports = defineErrorPageState;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "define-error-page-state-reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var dispatch = __webpack_require__(280).dispatch;
+	var actionCreators = __webpack_require__(294);
+
+	function dispatchLog(message) {
+	    console.log("[APP] [ACTION DISPATCHER] " + message);
+	}
+
+	var actionDispatchers = {
+
+	    app: {
+
+	        dispatchAppStartsAction: function dispatchAppStartsAction() {
+	            dispatchLog("app starts.");
+	            dispatch(actionCreators.app.appStartsAction());
+	        },
+
+	        dispatchGoToLandingPageAction: function dispatchGoToLandingPageAction() {
+	            dispatchLog("go to landing.");
+	            dispatch(actionCreators.app.goToLandingPageAction());
+	        },
+
+	        dispatchGoToLoginAction: function dispatchGoToLoginAction() {
+	            dispatchLog("go to login.");
+	            dispatch(actionCreators.initialAuthCheck.goToLoginAction());
+	        },
+
+	        dispatchGoToRegisterAction: function dispatchGoToRegisterAction() {
+	            dispatchLog("go to register.");
+	            dispatch(actionCreators.initialAuthCheck.goToRegisterAction());
+	        },
+
+	        dispatchLogoutAction: function dispatchLogoutAction() {
+	            dispatchLog("logout.");
+	            dispatch(actionCreators.app.logoutAction());
+	        },
+
+	        dispatchGoToErrorAction: function dispatchGoToErrorAction(message) {
+	            dispatchLog("Error occurs : " + message);
+	            dispatch(actionCreators.app.goToErrorAction(message));
+	        }
+	    },
+
+	    initialAuthCheck: {
+
+	        dispatchStoredUserInfoValidationBeginsAction: function dispatchStoredUserInfoValidationBeginsAction() {
+	            dispatchLog("stored user info validation... ");
+	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidationBeginsAction());
+	        },
+
+	        dispatchStoredUserInfoValidAction: function dispatchStoredUserInfoValidAction(userInfo) {
+	            dispatchLog("stored user info valid, " + userInfo);
+	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidAction(userInfo));
+	        }
+
+	    },
+
+	    login: {
+
+	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
+	            dispatchLog("nickName changed : " + newNickName);
+	            dispatch(actionCreators.login.nickNameChangedAction(newNickName));
+	        },
+
+	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
+	            dispatchLog("nickNameValid");
+	            dispatch(actionCreators.login.nickNameValidAction());
+	        },
+
+	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
+	            dispatchLog("nickName invalid : " + message);
+	            dispatch(actionCreators.login.nickNameInvalidAction(message));
+	        },
+
+	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
+	            dispatchLog("nickName validation begins... ");
+	            dispatch(actionCreators.login.nickNameValidationBeginsAction());
+	        },
+
+	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
+	            dispatchLog("password changed : " + newPassword);
+	            dispatch(actionCreators.login.passwordChangedAction(newPassword));
+	        },
+
+	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
+	            dispatchLog("password valid.");
+	            dispatch(actionCreators.login.passwordValidAction());
+	        },
+
+	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
+	            dispatchLog("password invalid : " + message);
+	            dispatch(actionCreators.login.passwordInvalidAction(message));
+	        },
+
+	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
+	            dispatchLog("password validation begins...");
+	            dispatch(actionCreators.login.passwordValidationBeginsAction());
+	        },
+
+	        dispatchAssessIfLoginAllowedAction: function dispatchAssessIfLoginAllowedAction() {
+	            dispatchLog("is login allowed?");
+	            dispatch(actionCreators.login.assessIfAllowedAction());
+	        },
+
+	        dispatchLoginAttemptBegins: function dispatchLoginAttemptBegins() {
+	            dispatchLog("login call begins...");
+	            dispatch(actionCreators.login.attemptBegins());
+	        },
+
+	        dispatchLoginFailedAction: function dispatchLoginFailedAction(message) {
+	            dispatchLog("login failed : " + message);
+	            dispatch(actionCreators.login.attemptFailedAction(message));
+	        },
+
+	        dispatchLoginSuccessAction: function dispatchLoginSuccessAction(userInfo) {
+	            dispatchLog("login success - " + userInfo);
+	            dispatch(actionCreators.login.attemptSuccessAction(userInfo));
+	        }
+	    },
+
+	    reg: {
+
+	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
+	            dispatchLog("nickName changed : " + newNickName);
+	            dispatch(actionCreators.reg.nickNameChangedAction(newNickName));
+	        },
+
+	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
+	            dispatchLog("nickNameValid");
+	            dispatch(actionCreators.reg.nickNameValidAction());
+	        },
+
+	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
+	            dispatchLog("nickName invalid : " + message);
+	            dispatch(actionCreators.reg.nickNameInvalidAction(message));
+	        },
+
+	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
+	            dispatchLog("nickName validation begins... ");
+	            dispatch(actionCreators.reg.nickNameValidationBeginsAction());
+	        },
+
+	        dispatchNameChangedAction: function dispatchNameChangedAction(newName) {
+	            dispatchLog("name changed : " + newName);
+	            dispatch(actionCreators.reg.nameChangedAction(newName));
+	        },
+
+	        dispatchNameValidAction: function dispatchNameValidAction() {
+	            dispatchLog("nameValid");
+	            dispatch(actionCreators.reg.nameValidAction());
+	        },
+
+	        dispatchNameInvalidAction: function dispatchNameInvalidAction(message) {
+	            dispatchLog("name invalid : " + message);
+	            dispatch(actionCreators.reg.nameInvalidAction(message));
+	        },
+
+	        dispatchNameValidationBeginsAction: function dispatchNameValidationBeginsAction() {
+	            dispatchLog("name validation begins... ");
+	            dispatch(actionCreators.reg.nameValidationBeginsAction());
+	        },
+
+	        dispatchSurnameChangedAction: function dispatchSurnameChangedAction(newSurname) {
+	            dispatchLog("surname changed : " + newSurname);
+	            dispatch(actionCreators.reg.surnameChangedAction(newSurname));
+	        },
+
+	        dispatchSurnameValidAction: function dispatchSurnameValidAction() {
+	            dispatchLog("surname valid");
+	            dispatch(actionCreators.reg.surnameValidAction());
+	        },
+
+	        dispatchSurnameInvalidAction: function dispatchSurnameInvalidAction(message) {
+	            dispatchLog("surname invalid : " + message);
+	            dispatch(actionCreators.reg.surnameInvalidAction(message));
+	        },
+
+	        dispatchSurnameValidationBeginsAction: function dispatchSurnameValidationBeginsAction() {
+	            dispatchLog("surname validation begins... ");
+	            dispatch(actionCreators.reg.surnameValidationBeginsAction());
+	        },
+
+	        dispatchEmailChangedAction: function dispatchEmailChangedAction(newEmail) {
+	            dispatchLog("email changed : " + newEmail);
+	            dispatch(actionCreators.reg.emailChangedAction(newEmail));
+	        },
+
+	        dispatchEmailValidAction: function dispatchEmailValidAction() {
+	            dispatchLog("email valid");
+	            dispatch(actionCreators.reg.emailValidAction());
+	        },
+
+	        dispatchEmailInvalidAction: function dispatchEmailInvalidAction(message) {
+	            dispatchLog("email invalid : " + message);
+	            dispatch(actionCreators.reg.emailInvalidAction(message));
+	        },
+
+	        dispatchEmailValidationBeginsAction: function dispatchEmailValidationBeginsAction() {
+	            dispatchLog("email validation begins... ");
+	            dispatch(actionCreators.reg.emailValidationBeginsAction());
+	        },
+
+	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
+	            dispatchLog("password changed : " + newPassword);
+	            dispatch(actionCreators.reg.passwordChangedAction(newPassword));
+	        },
+
+	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
+	            dispatchLog("password valid.");
+	            dispatch(actionCreators.reg.passwordValidAction());
+	        },
+
+	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
+	            dispatchLog("password invalid : " + message);
+	            dispatch(actionCreators.reg.passwordInvalidAction(message));
+	        },
+
+	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
+	            dispatchLog("password validation begins...");
+	            dispatch(actionCreators.reg.passwordValidationBeginsAction());
+	        },
+
+	        dispatchConfirmPasswordChangedAction: function dispatchConfirmPasswordChangedAction(newConfirmPassword) {
+	            dispatchLog("confirm password changed : " + newConfirmPassword);
+	            dispatch(actionCreators.reg.confirmPasswordChangedAction(newConfirmPassword));
+	        },
+
+	        dispatchConfirmPasswordValidAction: function dispatchConfirmPasswordValidAction() {
+	            dispatchLog("confirm password valid.");
+	            dispatch(actionCreators.reg.confirmPasswordValidAction());
+	        },
+
+	        dispatchConfirmPasswordInvalidAction: function dispatchConfirmPasswordInvalidAction(message) {
+	            dispatchLog("confirm password invalid : " + message);
+	            dispatch(actionCreators.reg.confirmPasswordInvalidAction(message));
+	        },
+
+	        dispatchConfirmPasswordValidationBeginsAction: function dispatchConfirmPasswordValidationBeginsAction() {
+	            dispatchLog("confirm password validation begins...");
+	            dispatch(actionCreators.reg.confirmPasswordValidationBeginsAction());
+	        },
+
+	        dispatchAssessIfRegistrationAllowedAction: function dispatchAssessIfRegistrationAllowedAction() {
+	            dispatchLog("is registr allowed?");
+	            dispatch(actionCreators.reg.assessIfAlowedAction());
+	        },
+
+	        dispatchRegistrationAttemptBegins: function dispatchRegistrationAttemptBegins() {
+	            dispatchLog("registr call begins...");
+	            dispatch(actionCreators.reg.attemptBegins());
+	        },
+
+	        dispatchRegistrationFailedAction: function dispatchRegistrationFailedAction(message) {
+	            dispatchLog("registr failed : " + message);
+	            dispatch(actionCreators.reg.attemptFailedAction(message));
+	        },
+
+	        dispatchRegistrationSuccessAction: function dispatchRegistrationSuccessAction(userInfo) {
+	            dispatchLog("registr success - " + userInfo);
+	            dispatch(actionCreators.reg.attemptSuccessAction(userInfo));
+	        },
+
+	        dispatchPasswordsDifferAction: function dispatchPasswordsDifferAction() {
+	            dispatchLog("passwords differ.");
+	            dispatch(actionCreators.reg.passwordsDifferAction());
+	        },
+
+	        dispatchPasswordsEqualAction: function dispatchPasswordsEqualAction() {
+	            dispatchLog("passwords equal.");
+	            dispatch(actionCreators.reg.passwordsEqualAction());
+	        }
+	    },
+
+	    main: {
+
+	        dispatchToggleMainPageContentViewAction: function dispatchToggleMainPageContentViewAction() {
+	            dispatchLog("toggle main page content view.");
+	            dispatch(actionCreators.main.toggleMainPageContentViewAction());
+	        },
+
+	        webPanel: {
+
+	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
+	                dispatchLog("webPanel loading begins...");
+	                dispatch(actionCreators.main.webPanel.loadingBegins());
+	            },
+
+	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
+	                dispatchLog("webPanel loaded: ");
+	                console.log(dirs);
+	                dispatch(actionCreators.main.webPanel.loaded(dirs));
+	            },
+
+	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
+	                dispatchLog("webPanel loading fails: " + message);
+	                dispatch(actionCreators.main.webPanel.loadingFailed(message));
+	            }
+	        },
+
+	        bookmarks: {
+	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
+	                dispatchLog("bookmarks loading begins...");
+	                dispatch(actionCreators.main.bookmarks.loadingBegins());
+	            },
+
+	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
+	                dispatchLog("bookmarks loaded: ");
+	                console.log(dirs);
+	                dispatch(actionCreators.main.bookmarks.loaded(dirs));
+	            },
+
+	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
+	                dispatchLog("bookmarks loading fails: " + message);
+	                dispatch(actionCreators.main.bookmarks.loadingFailed(message));
+	            }
+	        },
+
+	        directory: {
+	            dispatchCreationStartAction: function dispatchCreationStartAction() {
+	                dispatchLog("directory creation start...");
+	                dispatch(actionCreators.main.directory.creationStartAction());
+	            },
+	            directoryCreationSuccess: function directoryCreationSuccess(placement, dirName) {
+	                dispatchLog("directory created : " + placement + "::" + dirName);
+	                dispatch(actionCreators.main.directory.creationSuccessAction(placement, dirName));
+	            },
+	            dispatchCreationFailAction: function dispatchCreationFailAction(message) {
+	                dispatchLog("directory creation fails : " + message);
+	                dispatch(actionCreators.main.directory.creationFailAction(message));
+	            }
+	        }
+	    }
+	};
+
+	module.exports = actionDispatchers;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "action-dispatchers.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var actionTypes = __webpack_require__(287);
+
+	function creatorLog(message) {
+	    console.log("[APP] [ACTION CREATOR] " + message);
+	}
+
+	var actionCreators = {
+
+	    app: {
+
+	        appStartsAction: function appStartsAction() {
+	            return {
+	                type: actionTypes.appStarts
+	            };
+	        },
+
+	        goToLandingPageAction: function goToLandingPageAction() {
+	            return {
+	                type: actionTypes.goToLanding
+	            };
+	        },
+
+	        logoutAction: function logoutAction() {
+	            return {
+	                type: actionTypes.logout
+	            };
+	        },
+
+	        goToErrorAction: function goToErrorAction(message) {
+	            return {
+	                type: actionTypes.goToError,
+	                message: message
+	            };
+	        }
+	    },
+
+	    main: {
+
+	        toggleMainPageContentViewAction: function toggleMainPageContentViewAction() {
+	            return {
+	                type: actionTypes.toggleMainPageContentView
+	            };
+	        },
+
+	        webPanel: {
+
+	            loadingBegins: function loadingBegins() {
+	                return {
+	                    type: actionTypes.webPanelLoadingBegins
+	                };
+	            },
+
+	            loaded: function loaded(dirs) {
+	                return {
+	                    type: actionTypes.webPanelLoaded,
+	                    dirs: dirs
+	                };
+	            },
+
+	            loadingFailed: function loadingFailed(message) {
+	                return {
+	                    type: actionTypes.webPanelLoadingFailed,
+	                    message: message
+	                };
+	            }
+	        },
+
+	        bookmarks: {
+	            loadingBegins: function loadingBegins() {
+	                return {
+	                    type: actionTypes.bookmarksLoadingBegins
+	                };
+	            },
+
+	            loaded: function loaded(dirs) {
+	                return {
+	                    type: actionTypes.bookmarksLoaded,
+	                    dirs: dirs
+	                };
+	            },
+
+	            loadingFailed: function loadingFailed(message) {
+	                return {
+	                    type: actionTypes.bookmarksLoadingFailed,
+	                    message: message
+	                };
+	            }
+	        },
+
+	        directory: {
+	            creationStartAction: function creationStartAction() {
+	                return {
+	                    type: actionTypes.directoryCreationStart
+	                };
+	            },
+	            creationSuccessAction: function creationSuccessAction(placement, dirName) {
+	                return {
+	                    type: actionTypes.directoryCreationSuccess,
+	                    placement: placement,
+	                    dirName: dirName
+	                };
+	            },
+	            creationFailAction: function creationFailAction(message) {
+	                return {
+	                    type: actionTypes.directoryCreationFail,
+	                    message: message
+	                };
+	            }
+	        }
+	    },
+
+	    initialAuthCheck: {
+
+	        goToLoginAction: function goToLoginAction() {
+	            creatorLog("force to login.");
+	            return {
+	                type: actionTypes.goToLogin
+	            };
+	        },
+
+	        goToRegisterAction: function goToRegisterAction() {
+	            creatorLog("force to register.");
+	            return {
+	                type: actionTypes.goToRegister
+	            };
+	        },
+
+	        storedUserInfoValidationBeginsAction: function storedUserInfoValidationBeginsAction() {
+	            creatorLog("stored user info validation... ");
+	            return {
+	                type: actionTypes.storedUserInfoValidationBegins
+	            };
+	        },
+
+	        storedUserInfoValidAction: function storedUserInfoValidAction(userInfo) {
+	            creatorLog("stored user info valid: " + userInfo);
+	            return {
+	                type: actionTypes.storedUserInfoValid,
+	                userInfo: userInfo
+	            };
+	        }
+	    },
+
+	    login: {
+
+	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
+	            creatorLog("login nickName changed to : " + newNickName);
+	            return {
+	                type: actionTypes.loginNickNameChanged,
+	                newNickName: newNickName
+	            };
+	        },
+
+	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
+	            creatorLog("login nickName validation begins...");
+	            return {
+	                type: actionTypes.loginNickNameValidationBegins
+	            };
+	        },
+
+	        nickNameValidAction: function nickNameValidAction() {
+	            creatorLog("login nickName valid.");
+	            return {
+	                type: actionTypes.loginNickNameValid
+	            };
+	        },
+
+	        nickNameInvalidAction: function nickNameInvalidAction(message) {
+	            creatorLog("login nickName invalid : " + message);
+	            return {
+	                type: actionTypes.loginNickNameInvalid,
+	                message: message
+	            };
+	        },
+
+	        passwordChangedAction: function passwordChangedAction(newPassword) {
+	            creatorLog("login password changed : " + newPassword);
+	            return {
+	                type: actionTypes.loginPasswordChanged,
+	                newPassword: newPassword
+	            };
+	        },
+
+	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
+	            return {
+	                type: actionTypes.loginPasswordValidationBegins
+	            };
+	        },
+
+	        passwordValidAction: function passwordValidAction() {
+	            return {
+	                type: actionTypes.loginPasswordValid
+	            };
+	        },
+
+	        passwordInvalidAction: function passwordInvalidAction(message) {
+	            return {
+	                type: actionTypes.loginPasswordInvalid,
+	                message: message
+	            };
+	        },
+
+	        assessIfAllowedAction: function assessIfAllowedAction() {
+	            return {
+	                type: actionTypes.loginAssessIfAllowed
+	            };
+	        },
+
+	        attemptBegins: function attemptBegins() {
+	            return {
+	                type: actionTypes.loginAttemptBegins
+	            };
+	        },
+
+	        attemptFailedAction: function attemptFailedAction(message) {
+	            return {
+	                type: actionTypes.loginFailed,
+	                message: message
+	            };
+	        },
+
+	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
+	            return {
+	                type: actionTypes.loginSuccess,
+	                userInfo: userInfo
+	            };
+	        }
+	    },
+
+	    reg: {
+
+	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
+	            creatorLog("registr nickName changed to : " + newNickName);
+	            return {
+	                type: actionTypes.regNickNameChanged,
+	                newNickName: newNickName
+	            };
+	        },
+
+	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
+	            creatorLog("registr nickName validation begins...");
+	            return {
+	                type: actionTypes.regNickNameValidationBegins
+	            };
+	        },
+
+	        nickNameValidAction: function nickNameValidAction() {
+	            creatorLog("registr nickName valid.");
+	            return {
+	                type: actionTypes.regNickNameValid
+	            };
+	        },
+
+	        nickNameInvalidAction: function nickNameInvalidAction(message) {
+	            creatorLog("registr nickName invalid : " + message);
+	            return {
+	                type: actionTypes.regNickNameInvalid,
+	                message: message
+	            };
+	        },
+
+	        nameChangedAction: function nameChangedAction(newName) {
+	            creatorLog("registr name changed to : " + newName);
+	            return {
+	                type: actionTypes.regNameChanged,
+	                newName: newName
+	            };
+	        },
+
+	        nameValidationBeginsAction: function nameValidationBeginsAction() {
+	            creatorLog("registr name validation begins...");
+	            return {
+	                type: actionTypes.regNameValidationBegins
+	            };
+	        },
+
+	        nameValidAction: function nameValidAction() {
+	            creatorLog("registr name valid.");
+	            return {
+	                type: actionTypes.regNameValid
+	            };
+	        },
+
+	        nameInvalidAction: function nameInvalidAction(message) {
+	            creatorLog("registr name invalid : " + message);
+	            return {
+	                type: actionTypes.regNameInvalid,
+	                message: message
+	            };
+	        },
+
+	        surnameChangedAction: function surnameChangedAction(newSurname) {
+	            creatorLog("registr surname changed to : " + newSurname);
+	            return {
+	                type: actionTypes.regSurnameChanged,
+	                newSurname: newSurname
+	            };
+	        },
+
+	        surnameValidationBeginsAction: function surnameValidationBeginsAction() {
+	            creatorLog("registr surname validation begins...");
+	            return {
+	                type: actionTypes.regSurnameValidationBegins
+	            };
+	        },
+
+	        surnameValidAction: function surnameValidAction() {
+	            creatorLog("registr surname valid.");
+	            return {
+	                type: actionTypes.regSurnameValid
+	            };
+	        },
+
+	        surnameInvalidAction: function surnameInvalidAction(message) {
+	            creatorLog("registr surname invalid : " + message);
+	            return {
+	                type: actionTypes.regSurnameInvalid,
+	                message: message
+	            };
+	        },
+
+	        emailChangedAction: function emailChangedAction(newEmail) {
+	            creatorLog("registr email changed to : " + newEmail);
+	            return {
+	                type: actionTypes.regEmailChanged,
+	                newEmail: newEmail
+	            };
+	        },
+
+	        emailValidationBeginsAction: function emailValidationBeginsAction() {
+	            creatorLog("registr email validation begins...");
+	            return {
+	                type: actionTypes.regEmailValidationBegins
+	            };
+	        },
+
+	        emailValidAction: function emailValidAction() {
+	            creatorLog("registr email valid.");
+	            return {
+	                type: actionTypes.regEmailValid
+	            };
+	        },
+
+	        emailInvalidAction: function emailInvalidAction(message) {
+	            creatorLog("registr email invalid : " + message);
+	            return {
+	                type: actionTypes.regEmailInvalid,
+	                message: message
+	            };
+	        },
+
+	        passwordChangedAction: function passwordChangedAction(newPassword) {
+	            creatorLog("registr password changed : " + newPassword);
+	            return {
+	                type: actionTypes.regPasswordChanged,
+	                newPassword: newPassword
+	            };
+	        },
+
+	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
+	            return {
+	                type: actionTypes.regPasswordValidationBegins
+	            };
+	        },
+
+	        passwordValidAction: function passwordValidAction() {
+	            return {
+	                type: actionTypes.regPasswordValid
+	            };
+	        },
+
+	        passwordInvalidAction: function passwordInvalidAction(message) {
+	            return {
+	                type: actionTypes.regPasswordInvalid,
+	                message: message
+	            };
+	        },
+
+	        confirmPasswordChangedAction: function confirmPasswordChangedAction(newConfirmPassword) {
+	            creatorLog("registr confirmPassword changed : " + newConfirmPassword);
+	            return {
+	                type: actionTypes.regConfirmPasswordChanged,
+	                newConfirmPassword: newConfirmPassword
+	            };
+	        },
+
+	        confirmPasswordValidationBeginsAction: function confirmPasswordValidationBeginsAction() {
+	            return {
+	                type: actionTypes.regConfirmPasswordValidationBegins
+	            };
+	        },
+
+	        confirmPasswordValidAction: function confirmPasswordValidAction() {
+	            return {
+	                type: actionTypes.regConfirmPasswordValid
+	            };
+	        },
+
+	        confirmPasswordInvalidAction: function confirmPasswordInvalidAction(message) {
+	            return {
+	                type: actionTypes.regConfirmPasswordInvalid,
+	                message: message
+	            };
+	        },
+
+	        assessIfAlowedAction: function assessIfAlowedAction() {
+	            return {
+	                type: actionTypes.regAssessIfAllowed
+	            };
+	        },
+
+	        attemptBegins: function attemptBegins() {
+	            return {
+	                type: actionTypes.regAttemptBegins
+	            };
+	        },
+
+	        attemptFailedAction: function attemptFailedAction(message) {
+	            return {
+	                type: actionTypes.regFailed,
+	                message: message
+	            };
+	        },
+
+	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
+	            return {
+	                type: actionTypes.regSuccess,
+	                userInfo: userInfo
+	            };
+	        },
+
+	        passwordsDifferAction: function passwordsDifferAction() {
+	            return {
+	                type: actionTypes.regPasswordsDiffer
+	            };
+	        },
+
+	        passwordsEqualAction: function passwordsEqualAction() {
+	            return {
+	                type: actionTypes.regPasswordsEqual
+	            };
+	        }
+	    }
+
+	};
+
+	module.exports = actionCreators;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "action-creators.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var $ = __webpack_require__(296);
+
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 
 	function ajaxLog(message) {
-	    console.log("[APP] [AJAX CALL] [GET DIRECTORIES] " + message);
+	    console.log("[APP] [AJAX CALL] [JWT] " + message);
 	}
 
-	function validateName(userId, placement, callbacks) {
+	function validateJwt(jwtString, callbacks) {
+	    ajaxLog("validation call starts...");
 	    callbacks.onStart();
-	    ajaxLog("starts with userId:" + userId + ", place:" + placement);
 	    $.ajax({
-	        url: resources.directories.url(userId, placement),
-	        method: resources.directories.method,
-	        dataType: 'json',
+	        method: resources.validation.jwt.method,
+	        url: resources.validation.jwt.url,
 	        cache: false,
+	        beforeSend: function beforeSend(xhr) {
+	            xhr.setRequestHeader('Authentication', 'Bearer ' + jwtString);
+	        },
 	        statusCode: {
-	            200: function _(xhr) {
-	                ajaxLog("get...");
-	                console.log(xhr);
-	                callbacks.onSuccess();
+	            200: function _() {
+	                ajaxLog("valid, parse user info and proceed.");
+	                callbacks.onJwtValid();
 	            },
-	            400: function _(xhr, statusText, errorThrown) {
-	                ajaxLog("bad request : " + JSON.parse(xhr.responseText).message);
-	                callbacks.onBadRequest(JSON.parse(xhr.responseText).message);
+	            302: function _() {
+	                ajaxLog("valid, but expired, force to login.");
+	                callbacks.onJwtExpired();
+	            },
+	            401: function _() {
+	                ajaxLog("invalid, force to register.");
+	                callbacks.onJwtInvalid();
 	            }
 	        }
 	    });
 	}
 
-	module.exports = validateName;
+	module.exports = validateJwt;
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "get-directories-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "validate-jwt-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 293 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*eslint-disable no-unused-vars*/
@@ -42449,7 +43329,7 @@
 
 
 /***/ },
-/* 294 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -42466,6 +43346,21 @@
 	}
 
 	var serverRootUrl = obtainServerRootUrl() + "/services";
+
+	var urls = {
+
+	    directories: function directories(userId, placement) {
+	        return serverRootUrl + "/users/" + userId + "/" + placement + "/directories";
+	    },
+
+	    singleDirectory: function singleDirectory(userId, placement, name) {
+	        return serverRootUrl + "/users/" + userId + "/" + placement + "/directories/" + name;
+	    },
+
+	    singleDirectoryProp: function singleDirectoryProp(userId, placement, name, prop) {
+	        return serverRootUrl + "/users/" + userId + "/" + placement + "/directories/" + name + "/" + prop;
+	    }
+	};
 
 	var resources = {
 
@@ -42523,6 +43418,19 @@
 	            method: "POST",
 	            found: 302,
 	            badRequest: 400
+	        },
+
+	        webObjects: {
+
+	            names: {
+	                url: serverRootUrl + "/validation/webobjects/names",
+	                method: "POST"
+	            },
+
+	            urls: {
+	                url: serverRootUrl + "/validation/webobjects/urls",
+	                method: "POST"
+	            }
 	        }
 	    },
 
@@ -42535,11 +43443,35 @@
 	    },
 
 	    directories: {
-	        url: function url(userId, placement) {
-	            return serverRootUrl + "/" + userId + "/" + placement + "/directories";
+
+	        getAllInPlace: {
+	            url: urls.directories,
+	            method: "GET"
 	        },
-	        method: "GET",
-	        success: 200
+
+	        postNew: {
+	            url: urls.directories,
+	            method: "POST"
+	        },
+
+	        single: {
+
+	            getDirectory: {
+	                url: urls.singleDirectory,
+	                method: "GET"
+	            },
+
+	            editProp: {
+	                url: urls.singleDirectoryProp,
+	                method: "PUT"
+	            },
+
+	            remove: {
+	                url: urls.singleDirectory,
+	                method: "DELETE"
+	            }
+	        }
+
 	    }
 
 	};
@@ -42550,829 +43482,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 295 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-
-	"use strict";
-
-	var actionTypes = __webpack_require__(287);
-
-	var errorPageInitialState = {};
-
-	function defineErrorPageState() {
-	    var errorPageState = arguments.length <= 0 || arguments[0] === undefined ? errorPageInitialState : arguments[0];
-	    var action = arguments[1];
-
-	    switch (action.type) {
-
-	        default:
-	            return errorPageInitialState;
-	    }
-	}
-
-	module.exports = defineErrorPageState;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "define-error-page-state-reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
-
-/***/ },
-/* 296 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-
-	"use strict";
-
-	var dispatch = __webpack_require__(280).dispatch;
-	var actionCreators = __webpack_require__(297);
-
-	function dispatchLog(message) {
-	    console.log("[APP] [ACTION DISPATCHER] " + message);
-	}
-
-	var actionDispatchers = {
-
-	    app: {
-
-	        dispatchAppStartsAction: function dispatchAppStartsAction() {
-	            dispatchLog("app starts.");
-	            dispatch(actionCreators.app.appStartsAction());
-	        },
-
-	        dispatchGoToLandingPageAction: function dispatchGoToLandingPageAction() {
-	            dispatchLog("go to landing.");
-	            dispatch(actionCreators.app.goToLandingPageAction());
-	        },
-
-	        dispatchGoToLoginAction: function dispatchGoToLoginAction() {
-	            dispatchLog("go to login.");
-	            dispatch(actionCreators.initialAuthCheck.goToLoginAction());
-	        },
-
-	        dispatchGoToRegisterAction: function dispatchGoToRegisterAction() {
-	            dispatchLog("go to register.");
-	            dispatch(actionCreators.initialAuthCheck.goToRegisterAction());
-	        },
-
-	        dispatchLogoutAction: function dispatchLogoutAction() {
-	            dispatchLog("logout.");
-	            dispatch(actionCreators.app.logoutAction());
-	        }
-	    },
-
-	    initialAuthCheck: {
-
-	        dispatchStoredUserInfoValidationBeginsAction: function dispatchStoredUserInfoValidationBeginsAction() {
-	            dispatchLog("stored user info validation... ");
-	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidationBeginsAction());
-	        },
-
-	        dispatchStoredUserInfoValidAction: function dispatchStoredUserInfoValidAction(userInfo) {
-	            dispatchLog("stored user info valid, " + userInfo);
-	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidAction(userInfo));
-	        }
-
-	    },
-
-	    login: {
-
-	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
-	            dispatchLog("nickName changed : " + newNickName);
-	            dispatch(actionCreators.login.nickNameChangedAction(newNickName));
-	        },
-
-	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
-	            dispatchLog("nickNameValid");
-	            dispatch(actionCreators.login.nickNameValidAction());
-	        },
-
-	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
-	            dispatchLog("nickName invalid : " + message);
-	            dispatch(actionCreators.login.nickNameInvalidAction(message));
-	        },
-
-	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
-	            dispatchLog("nickName validation begins... ");
-	            dispatch(actionCreators.login.nickNameValidationBeginsAction());
-	        },
-
-	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
-	            dispatchLog("password changed : " + newPassword);
-	            dispatch(actionCreators.login.passwordChangedAction(newPassword));
-	        },
-
-	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
-	            dispatchLog("password valid.");
-	            dispatch(actionCreators.login.passwordValidAction());
-	        },
-
-	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
-	            dispatchLog("password invalid : " + message);
-	            dispatch(actionCreators.login.passwordInvalidAction(message));
-	        },
-
-	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
-	            dispatchLog("password validation begins...");
-	            dispatch(actionCreators.login.passwordValidationBeginsAction());
-	        },
-
-	        dispatchAssessIfLoginAllowedAction: function dispatchAssessIfLoginAllowedAction() {
-	            dispatchLog("is login allowed?");
-	            dispatch(actionCreators.login.assessIfAllowedAction());
-	        },
-
-	        dispatchLoginAttemptBegins: function dispatchLoginAttemptBegins() {
-	            dispatchLog("login call begins...");
-	            dispatch(actionCreators.login.attemptBegins());
-	        },
-
-	        dispatchLoginFailedAction: function dispatchLoginFailedAction(message) {
-	            dispatchLog("login failed : " + message);
-	            dispatch(actionCreators.login.attemptFailedAction(message));
-	        },
-
-	        dispatchLoginSuccessAction: function dispatchLoginSuccessAction(userInfo) {
-	            dispatchLog("login success - " + userInfo);
-	            dispatch(actionCreators.login.attemptSuccessAction(userInfo));
-	        }
-	    },
-
-	    reg: {
-
-	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
-	            dispatchLog("nickName changed : " + newNickName);
-	            dispatch(actionCreators.reg.nickNameChangedAction(newNickName));
-	        },
-
-	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
-	            dispatchLog("nickNameValid");
-	            dispatch(actionCreators.reg.nickNameValidAction());
-	        },
-
-	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
-	            dispatchLog("nickName invalid : " + message);
-	            dispatch(actionCreators.reg.nickNameInvalidAction(message));
-	        },
-
-	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
-	            dispatchLog("nickName validation begins... ");
-	            dispatch(actionCreators.reg.nickNameValidationBeginsAction());
-	        },
-
-	        dispatchNameChangedAction: function dispatchNameChangedAction(newName) {
-	            dispatchLog("name changed : " + newName);
-	            dispatch(actionCreators.reg.nameChangedAction(newName));
-	        },
-
-	        dispatchNameValidAction: function dispatchNameValidAction() {
-	            dispatchLog("nameValid");
-	            dispatch(actionCreators.reg.nameValidAction());
-	        },
-
-	        dispatchNameInvalidAction: function dispatchNameInvalidAction(message) {
-	            dispatchLog("name invalid : " + message);
-	            dispatch(actionCreators.reg.nameInvalidAction(message));
-	        },
-
-	        dispatchNameValidationBeginsAction: function dispatchNameValidationBeginsAction() {
-	            dispatchLog("name validation begins... ");
-	            dispatch(actionCreators.reg.nameValidationBeginsAction());
-	        },
-
-	        dispatchSurnameChangedAction: function dispatchSurnameChangedAction(newSurname) {
-	            dispatchLog("surname changed : " + newSurname);
-	            dispatch(actionCreators.reg.surnameChangedAction(newSurname));
-	        },
-
-	        dispatchSurnameValidAction: function dispatchSurnameValidAction() {
-	            dispatchLog("surname valid");
-	            dispatch(actionCreators.reg.surnameValidAction());
-	        },
-
-	        dispatchSurnameInvalidAction: function dispatchSurnameInvalidAction(message) {
-	            dispatchLog("surname invalid : " + message);
-	            dispatch(actionCreators.reg.surnameInvalidAction(message));
-	        },
-
-	        dispatchSurnameValidationBeginsAction: function dispatchSurnameValidationBeginsAction() {
-	            dispatchLog("surname validation begins... ");
-	            dispatch(actionCreators.reg.surnameValidationBeginsAction());
-	        },
-
-	        dispatchEmailChangedAction: function dispatchEmailChangedAction(newEmail) {
-	            dispatchLog("email changed : " + newEmail);
-	            dispatch(actionCreators.reg.emailChangedAction(newEmail));
-	        },
-
-	        dispatchEmailValidAction: function dispatchEmailValidAction() {
-	            dispatchLog("email valid");
-	            dispatch(actionCreators.reg.emailValidAction());
-	        },
-
-	        dispatchEmailInvalidAction: function dispatchEmailInvalidAction(message) {
-	            dispatchLog("email invalid : " + message);
-	            dispatch(actionCreators.reg.emailInvalidAction(message));
-	        },
-
-	        dispatchEmailValidationBeginsAction: function dispatchEmailValidationBeginsAction() {
-	            dispatchLog("email validation begins... ");
-	            dispatch(actionCreators.reg.emailValidationBeginsAction());
-	        },
-
-	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
-	            dispatchLog("password changed : " + newPassword);
-	            dispatch(actionCreators.reg.passwordChangedAction(newPassword));
-	        },
-
-	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
-	            dispatchLog("password valid.");
-	            dispatch(actionCreators.reg.passwordValidAction());
-	        },
-
-	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
-	            dispatchLog("password invalid : " + message);
-	            dispatch(actionCreators.reg.passwordInvalidAction(message));
-	        },
-
-	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
-	            dispatchLog("password validation begins...");
-	            dispatch(actionCreators.reg.passwordValidationBeginsAction());
-	        },
-
-	        dispatchConfirmPasswordChangedAction: function dispatchConfirmPasswordChangedAction(newConfirmPassword) {
-	            dispatchLog("confirm password changed : " + newConfirmPassword);
-	            dispatch(actionCreators.reg.confirmPasswordChangedAction(newConfirmPassword));
-	        },
-
-	        dispatchConfirmPasswordValidAction: function dispatchConfirmPasswordValidAction() {
-	            dispatchLog("confirm password valid.");
-	            dispatch(actionCreators.reg.confirmPasswordValidAction());
-	        },
-
-	        dispatchConfirmPasswordInvalidAction: function dispatchConfirmPasswordInvalidAction(message) {
-	            dispatchLog("confirm password invalid : " + message);
-	            dispatch(actionCreators.reg.confirmPasswordInvalidAction(message));
-	        },
-
-	        dispatchConfirmPasswordValidationBeginsAction: function dispatchConfirmPasswordValidationBeginsAction() {
-	            dispatchLog("confirm password validation begins...");
-	            dispatch(actionCreators.reg.confirmPasswordValidationBeginsAction());
-	        },
-
-	        dispatchAssessIfRegistrationAllowedAction: function dispatchAssessIfRegistrationAllowedAction() {
-	            dispatchLog("is registr allowed?");
-	            dispatch(actionCreators.reg.assessIfAlowedAction());
-	        },
-
-	        dispatchRegistrationAttemptBegins: function dispatchRegistrationAttemptBegins() {
-	            dispatchLog("registr call begins...");
-	            dispatch(actionCreators.reg.attemptBegins());
-	        },
-
-	        dispatchRegistrationFailedAction: function dispatchRegistrationFailedAction(message) {
-	            dispatchLog("registr failed : " + message);
-	            dispatch(actionCreators.reg.attemptFailedAction(message));
-	        },
-
-	        dispatchRegistrationSuccessAction: function dispatchRegistrationSuccessAction(userInfo) {
-	            dispatchLog("registr success - " + userInfo);
-	            dispatch(actionCreators.reg.attemptSuccessAction(userInfo));
-	        },
-
-	        dispatchPasswordsDifferAction: function dispatchPasswordsDifferAction() {
-	            dispatchLog("passwords differ.");
-	            dispatch(actionCreators.reg.passwordsDifferAction());
-	        },
-
-	        dispatchPasswordsEqualAction: function dispatchPasswordsEqualAction() {
-	            dispatchLog("passwords equal.");
-	            dispatch(actionCreators.reg.passwordsEqualAction());
-	        }
-	    },
-
-	    main: {
-	        webPanel: {
-
-	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
-	                dispatchLog("webPanel loading begins...");
-	                dispatch(actionCreators.main.webPanel.loadingBegins());
-	            },
-
-	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
-	                dispatchLog("webPanel loaded: ");
-	                console.log(dirs);
-	                dispatch(actionCreators.main.webPanel.loaded(dirs));
-	            },
-
-	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
-	                dispatchLog("webPanel loading fails: " + message);
-	                dispatch(actionCreators.main.webPanel.loadingFailed(message));
-	            }
-	        },
-
-	        bookmarks: {
-	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
-	                dispatchLog("bookmarks loading begins...");
-	                dispatch(actionCreators.main.bookmarks.loadingBegins());
-	            },
-
-	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
-	                dispatchLog("bookmarks loaded: ");
-	                console.log(dirs);
-	                dispatch(actionCreators.main.bookmarks.loaded(dirs));
-	            },
-
-	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
-	                dispatchLog("bookmarks loading fails: " + message);
-	                dispatch(actionCreators.main.bookmarks.loadingFailed(message));
-	            }
-	        }
-	    }
-	};
-
-	module.exports = actionDispatchers;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "action-dispatchers.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
-
-/***/ },
-/* 297 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-
-	"use strict";
-
-	var actionTypes = __webpack_require__(287);
-
-	function creatorLog(message) {
-	    console.log("[APP] [ACTION CREATOR] " + message);
-	}
-
-	var actionCreators = {
-
-	    app: {
-
-	        appStartsAction: function appStartsAction() {
-	            return {
-	                type: actionTypes.appStarts
-	            };
-	        },
-
-	        goToLandingPageAction: function goToLandingPageAction() {
-	            return {
-	                type: actionTypes.goToLanding
-	            };
-	        },
-
-	        logoutAction: function logoutAction() {
-	            return {
-	                type: actionTypes.logout
-	            };
-	        }
-	    },
-
-	    main: {
-	        webPanel: {
-
-	            loadingBegins: function loadingBegins() {
-	                return {
-	                    type: actionTypes.webPanelLoadingBegins
-	                };
-	            },
-
-	            loaded: function loaded(dirs) {
-	                return {
-	                    type: actionTypes.webPanelLoaded,
-	                    dirs: dirs
-	                };
-	            },
-
-	            loadingFailed: function loadingFailed(message) {
-	                return {
-	                    type: actionTypes.webPanelLoadingFailed,
-	                    message: message
-	                };
-	            }
-	        },
-
-	        bookmarks: {
-	            loadingBegins: function loadingBegins() {
-	                return {
-	                    type: actionTypes.bookmarksLoadingBegins
-	                };
-	            },
-
-	            loaded: function loaded(dirs) {
-	                return {
-	                    type: actionTypes.bookmarksLoaded,
-	                    dirs: dirs
-	                };
-	            },
-
-	            loadingFailed: function loadingFailed(message) {
-	                return {
-	                    type: actionTypes.bookmarksLoadingFailed,
-	                    message: message
-	                };
-	            }
-	        }
-	    },
-
-	    initialAuthCheck: {
-
-	        goToLoginAction: function goToLoginAction() {
-	            creatorLog("force to login.");
-	            return {
-	                type: actionTypes.goToLogin
-	            };
-	        },
-
-	        goToRegisterAction: function goToRegisterAction() {
-	            creatorLog("force to register.");
-	            return {
-	                type: actionTypes.goToRegister
-	            };
-	        },
-
-	        storedUserInfoValidationBeginsAction: function storedUserInfoValidationBeginsAction() {
-	            creatorLog("stored user info validation... ");
-	            return {
-	                type: actionTypes.storedUserInfoValidationBegins
-	            };
-	        },
-
-	        storedUserInfoValidAction: function storedUserInfoValidAction(userInfo) {
-	            creatorLog("stored user info valid: " + userInfo);
-	            return {
-	                type: actionTypes.storedUserInfoValid,
-	                userInfo: userInfo
-	            };
-	        }
-	    },
-
-	    login: {
-
-	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
-	            creatorLog("login nickName changed to : " + newNickName);
-	            return {
-	                type: actionTypes.loginNickNameChanged,
-	                newNickName: newNickName
-	            };
-	        },
-
-	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
-	            creatorLog("login nickName validation begins...");
-	            return {
-	                type: actionTypes.loginNickNameValidationBegins
-	            };
-	        },
-
-	        nickNameValidAction: function nickNameValidAction() {
-	            creatorLog("login nickName valid.");
-	            return {
-	                type: actionTypes.loginNickNameValid
-	            };
-	        },
-
-	        nickNameInvalidAction: function nickNameInvalidAction(message) {
-	            creatorLog("login nickName invalid : " + message);
-	            return {
-	                type: actionTypes.loginNickNameInvalid,
-	                message: message
-	            };
-	        },
-
-	        passwordChangedAction: function passwordChangedAction(newPassword) {
-	            creatorLog("login password changed : " + newPassword);
-	            return {
-	                type: actionTypes.loginPasswordChanged,
-	                newPassword: newPassword
-	            };
-	        },
-
-	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
-	            return {
-	                type: actionTypes.loginPasswordValidationBegins
-	            };
-	        },
-
-	        passwordValidAction: function passwordValidAction() {
-	            return {
-	                type: actionTypes.loginPasswordValid
-	            };
-	        },
-
-	        passwordInvalidAction: function passwordInvalidAction(message) {
-	            return {
-	                type: actionTypes.loginPasswordInvalid,
-	                message: message
-	            };
-	        },
-
-	        assessIfAllowedAction: function assessIfAllowedAction() {
-	            return {
-	                type: actionTypes.loginAssessIfAllowed
-	            };
-	        },
-
-	        attemptBegins: function attemptBegins() {
-	            return {
-	                type: actionTypes.loginAttemptBegins
-	            };
-	        },
-
-	        attemptFailedAction: function attemptFailedAction(message) {
-	            return {
-	                type: actionTypes.loginFailed,
-	                message: message
-	            };
-	        },
-
-	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
-	            return {
-	                type: actionTypes.loginSuccess,
-	                userInfo: userInfo
-	            };
-	        }
-	    },
-
-	    reg: {
-
-	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
-	            creatorLog("registr nickName changed to : " + newNickName);
-	            return {
-	                type: actionTypes.regNickNameChanged,
-	                newNickName: newNickName
-	            };
-	        },
-
-	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
-	            creatorLog("registr nickName validation begins...");
-	            return {
-	                type: actionTypes.regNickNameValidationBegins
-	            };
-	        },
-
-	        nickNameValidAction: function nickNameValidAction() {
-	            creatorLog("registr nickName valid.");
-	            return {
-	                type: actionTypes.regNickNameValid
-	            };
-	        },
-
-	        nickNameInvalidAction: function nickNameInvalidAction(message) {
-	            creatorLog("registr nickName invalid : " + message);
-	            return {
-	                type: actionTypes.regNickNameInvalid,
-	                message: message
-	            };
-	        },
-
-	        nameChangedAction: function nameChangedAction(newName) {
-	            creatorLog("registr name changed to : " + newName);
-	            return {
-	                type: actionTypes.regNameChanged,
-	                newName: newName
-	            };
-	        },
-
-	        nameValidationBeginsAction: function nameValidationBeginsAction() {
-	            creatorLog("registr name validation begins...");
-	            return {
-	                type: actionTypes.regNameValidationBegins
-	            };
-	        },
-
-	        nameValidAction: function nameValidAction() {
-	            creatorLog("registr name valid.");
-	            return {
-	                type: actionTypes.regNameValid
-	            };
-	        },
-
-	        nameInvalidAction: function nameInvalidAction(message) {
-	            creatorLog("registr name invalid : " + message);
-	            return {
-	                type: actionTypes.regNameInvalid,
-	                message: message
-	            };
-	        },
-
-	        surnameChangedAction: function surnameChangedAction(newSurname) {
-	            creatorLog("registr surname changed to : " + newSurname);
-	            return {
-	                type: actionTypes.regSurnameChanged,
-	                newSurname: newSurname
-	            };
-	        },
-
-	        surnameValidationBeginsAction: function surnameValidationBeginsAction() {
-	            creatorLog("registr surname validation begins...");
-	            return {
-	                type: actionTypes.regSurnameValidationBegins
-	            };
-	        },
-
-	        surnameValidAction: function surnameValidAction() {
-	            creatorLog("registr surname valid.");
-	            return {
-	                type: actionTypes.regSurnameValid
-	            };
-	        },
-
-	        surnameInvalidAction: function surnameInvalidAction(message) {
-	            creatorLog("registr surname invalid : " + message);
-	            return {
-	                type: actionTypes.regSurnameInvalid,
-	                message: message
-	            };
-	        },
-
-	        emailChangedAction: function emailChangedAction(newEmail) {
-	            creatorLog("registr email changed to : " + newEmail);
-	            return {
-	                type: actionTypes.regEmailChanged,
-	                newEmail: newEmail
-	            };
-	        },
-
-	        emailValidationBeginsAction: function emailValidationBeginsAction() {
-	            creatorLog("registr email validation begins...");
-	            return {
-	                type: actionTypes.regEmailValidationBegins
-	            };
-	        },
-
-	        emailValidAction: function emailValidAction() {
-	            creatorLog("registr email valid.");
-	            return {
-	                type: actionTypes.regEmailValid
-	            };
-	        },
-
-	        emailInvalidAction: function emailInvalidAction(message) {
-	            creatorLog("registr email invalid : " + message);
-	            return {
-	                type: actionTypes.regEmailInvalid,
-	                message: message
-	            };
-	        },
-
-	        passwordChangedAction: function passwordChangedAction(newPassword) {
-	            creatorLog("registr password changed : " + newPassword);
-	            return {
-	                type: actionTypes.regPasswordChanged,
-	                newPassword: newPassword
-	            };
-	        },
-
-	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
-	            return {
-	                type: actionTypes.regPasswordValidationBegins
-	            };
-	        },
-
-	        passwordValidAction: function passwordValidAction() {
-	            return {
-	                type: actionTypes.regPasswordValid
-	            };
-	        },
-
-	        passwordInvalidAction: function passwordInvalidAction(message) {
-	            return {
-	                type: actionTypes.regPasswordInvalid,
-	                message: message
-	            };
-	        },
-
-	        confirmPasswordChangedAction: function confirmPasswordChangedAction(newConfirmPassword) {
-	            creatorLog("registr confirmPassword changed : " + newConfirmPassword);
-	            return {
-	                type: actionTypes.regConfirmPasswordChanged,
-	                newConfirmPassword: newConfirmPassword
-	            };
-	        },
-
-	        confirmPasswordValidationBeginsAction: function confirmPasswordValidationBeginsAction() {
-	            return {
-	                type: actionTypes.regConfirmPasswordValidationBegins
-	            };
-	        },
-
-	        confirmPasswordValidAction: function confirmPasswordValidAction() {
-	            return {
-	                type: actionTypes.regConfirmPasswordValid
-	            };
-	        },
-
-	        confirmPasswordInvalidAction: function confirmPasswordInvalidAction(message) {
-	            return {
-	                type: actionTypes.regConfirmPasswordInvalid,
-	                message: message
-	            };
-	        },
-
-	        assessIfAlowedAction: function assessIfAlowedAction() {
-	            return {
-	                type: actionTypes.regAssessIfAllowed
-	            };
-	        },
-
-	        attemptBegins: function attemptBegins() {
-	            return {
-	                type: actionTypes.regAttemptBegins
-	            };
-	        },
-
-	        attemptFailedAction: function attemptFailedAction(message) {
-	            return {
-	                type: actionTypes.regFailed,
-	                message: message
-	            };
-	        },
-
-	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
-	            return {
-	                type: actionTypes.regSuccess,
-	                userInfo: userInfo
-	            };
-	        },
-
-	        passwordsDifferAction: function passwordsDifferAction() {
-	            return {
-	                type: actionTypes.regPasswordsDiffer
-	            };
-	        },
-
-	        passwordsEqualAction: function passwordsEqualAction() {
-	            return {
-	                type: actionTypes.regPasswordsEqual
-	            };
-	        }
-	    }
-
-	};
-
-	module.exports = actionCreators;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "action-creators.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
-
-/***/ },
 /* 298 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-
-	"use strict";
-
-	var $ = __webpack_require__(293);
-
-	var resources = __webpack_require__(294);
-
-	// --------------------------------
-
-	function ajaxLog(message) {
-	    console.log("[APP] [AJAX CALL] [JWT] " + message);
-	}
-
-	function validateJwt(jwtString, callbacks) {
-	    ajaxLog("validation call starts...");
-	    callbacks.onStart();
-	    $.ajax({
-	        method: resources.validation.jwt.method,
-	        url: resources.validation.jwt.url,
-	        cache: false,
-	        beforeSend: function beforeSend(xhr) {
-	            xhr.setRequestHeader('Authentication', 'Bearer ' + jwtString);
-	        },
-	        statusCode: {
-	            200: function _() {
-	                ajaxLog("valid, parse user info and proceed.");
-	                callbacks.onJwtValid();
-	            },
-	            302: function _() {
-	                ajaxLog("valid, but expired, force to login.");
-	                callbacks.onJwtExpired();
-	            },
-	            401: function _() {
-	                ajaxLog("invalid, force to register.");
-	                callbacks.onJwtInvalid();
-	            }
-	        }
-	    });
-	}
-
-	module.exports = validateJwt;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "validate-jwt-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
-
-/***/ },
-/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -43445,7 +43555,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 300 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -43454,7 +43564,7 @@
 
 	var connect = __webpack_require__(257).connect;
 
-	var RootPage = __webpack_require__(301);
+	var RootPage = __webpack_require__(300);
 
 	function mapStateToProps(state) {
 	    return {
@@ -43470,7 +43580,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 301 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -43481,11 +43591,11 @@
 
 	var appPages = __webpack_require__(282);
 
-	var MainPageContainer = __webpack_require__(302);
-	var LandingPageContainer = __webpack_require__(309);
-	var LoginPageContainer = __webpack_require__(311);
-	var ErrorPageContainer = __webpack_require__(322);
-	var RegistrationPageContainer = __webpack_require__(324);
+	var MainPageContainer = __webpack_require__(301);
+	var LandingPageContainer = __webpack_require__(340);
+	var LoginPageContainer = __webpack_require__(342);
+	var ErrorPageContainer = __webpack_require__(352);
+	var RegistrationPageContainer = __webpack_require__(354);
 
 	// ----------------------
 
@@ -43560,7 +43670,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 302 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -43569,24 +43679,20 @@
 
 	var connect = __webpack_require__(257).connect;
 
-	var MainPage = __webpack_require__(303);
-	var storage = __webpack_require__(299);
-	var actionDispatchers = __webpack_require__(296);
+	var MainPage = __webpack_require__(302);
+	var actionDispatchers = __webpack_require__(293);
 
-	var getDirectoriesAjaxCall = __webpack_require__(292);
+	var getDirectoriesAjaxCall = __webpack_require__(339);
 
 	// ----------------------
-
-	function performLogout() {
-	    actionDispatchers.app.dispatchLogoutAction();
-	    storage.deleteJwt();
-	}
 
 	function loadWebPanel(userId) {
 	    var callbacks = {
 	        onStart: actionDispatchers.main.webPanel.dispatchLoadingBeginsAction,
 	        onSuccess: actionDispatchers.main.webPanel.dispatchLoadedAction,
-	        onBadRequest: actionDispatchers.main.webPanel.dispatchLoadingFailedAction
+	        onFail: actionDispatchers.main.webPanel.dispatchLoadingFailedAction,
+	        onUnauthenticated: actionDispatchers.app.dispatchGoToLoginAction,
+	        onServerError: actionDispatchers.app.dispatchGoToErrorAction
 	    };
 	    getDirectoriesAjaxCall(userId, "webpanel", callbacks);
 	}
@@ -43595,34 +43701,19 @@
 	    var callbacks = {
 	        onStart: actionDispatchers.main.bookmarks.dispatchLoadingBeginsAction,
 	        onSuccess: actionDispatchers.main.bookmarks.dispatchLoadedAction,
-	        onBadRequest: actionDispatchers.main.bookmarks.dispatchLoadingFailedAction
+	        onFail: actionDispatchers.main.bookmarks.dispatchLoadingFailedAction,
+	        onUnauthenticated: actionDispatchers.app.dispatchGoToLoginAction,
+	        onServerError: actionDispatchers.app.dispatchGoToErrorAction
 	    };
 	    getDirectoriesAjaxCall(userId, "bookmarks", callbacks);
 	}
 
 	function mapStateToProps(state) {
 	    return {
-
-	        nickName: state.user.nickName,
-	        id: state.user.id,
-	        role: state.user.role,
-
-	        mainView: state.mainPage.mainView,
-
-	        webPanelLoading: state.mainPage.webPanelLoading,
-	        bookmarksLoading: state.mainPage.bookmarksLoading,
-
-	        webPanelLoadingFailedMessage: state.mainPage.webPanelLoadingFailedMessage,
-	        bookmarksLoadingFailedMessage: state.mainPage.bookmarksLoadingFailedMessage,
-
-	        webPanelDirs: state.mainPage.webPanelDirs,
-	        bookmarksDirs: state.mainPage.bookmarksDirs,
-
 	        loadInitialData: function loadInitialData() {
 	            loadWebPanel(state.user.id);
 	            loadBookmarks(state.user.id);
-	        },
-	        logout: performLogout
+	        }
 	    };
 	}
 
@@ -43634,7 +43725,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 303 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -43643,8 +43734,8 @@
 
 	var React = __webpack_require__(155);
 
-	var MainPageBar = __webpack_require__(304);
-	var MainPageContent = __webpack_require__(305);
+	var MainPageBarContainer = __webpack_require__(303);
+	var MainPageContentContainer = __webpack_require__(331);
 
 	// -------------------
 
@@ -43661,21 +43752,12 @@
 	            "div",
 	            { className: "main-page" },
 	            React.createElement(
-	                "button",
-	                { type: "button",
-	                    className: "logout-button-on-landing-page",
-	                    onClick: this.props.logout },
-	                "Logout"
-	            ),
-	            React.createElement(
 	                "span",
 	                null,
-	                "Welcome, ",
-	                this.props.nickName,
-	                "!"
+	                "Main page."
 	            ),
-	            React.createElement(MainPageBar, null),
-	            React.createElement(MainPageContent, { dirs: this.props.webPanelDirs })
+	            React.createElement(MainPageBarContainer, null),
+	            React.createElement(MainPageContentContainer, null)
 	        );
 	    }
 	});
@@ -43683,6 +43765,65 @@
 	module.exports = MainPage;
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "main-page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var connect = __webpack_require__(257).connect;
+
+	var MainPageBar = __webpack_require__(304);
+	var storage = __webpack_require__(298);
+	var actionDispatchers = __webpack_require__(293);
+	var createDirAjaxCall = __webpack_require__(330);
+
+	// ----------------------
+
+	function performLogout() {
+	    actionDispatchers.app.dispatchLogoutAction();
+	    storage.deleteJwt();
+	}
+
+	function _createDirectory(userId, currentView, newDirName) {
+	    var callbacks = {
+	        onStart: actionDispatchers.main.directory.dispatchCreationStartAction,
+	        onSuccess: actionDispatchers.main.directory.directoryCreationSuccess,
+	        onFail: actionDispatchers.main.directory.dispatchCreationFailAction,
+	        onUnauthenticated: actionDispatchers.app.dispatchGoToLoginAction,
+	        onServerError: actionDispatchers.app.dispatchGoToErrorAction
+	    };
+	    createDirAjaxCall(userId, currentView, newDirName, callbacks);
+	}
+
+	function getOtherView(currentView) {
+	    if (currentView === "bookmarks") {
+	        return "WebPanel";
+	    } else {
+	        return "Bookmarks";
+	    }
+	}
+
+	function mapStateToProps(state) {
+	    return {
+	        toggleContentView: actionDispatchers.main.dispatchToggleMainPageContentViewAction,
+	        otherView: getOtherView(state.mainPage.currentView),
+	        createDirectory: function createDirectory(newDirName) {
+	            _createDirectory(state.user.id, state.mainPage.currentView, newDirName);
+	        },
+	        logout: performLogout
+	    };
+	}
+
+	var MainPageBarContainer = connect(mapStateToProps)(MainPageBar);
+
+	module.exports = MainPageBarContainer;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "main-page-bar-container.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
@@ -43695,13 +43836,35 @@
 
 	var React = __webpack_require__(155);
 
+	var CreateDirController = __webpack_require__(305);
+
+	// -----------------------
+
 	var MainPageBar = React.createClass({
 	    displayName: "MainPageBar",
+
 
 	    render: function render() {
 	        return React.createElement(
 	            "div",
 	            { className: "main-page-bar" },
+	            React.createElement(
+	                "button",
+	                {
+	                    type: "button",
+	                    className: "logout-button-on-main-page",
+	                    onClick: this.props.logout },
+	                "Logout"
+	            ),
+	            React.createElement(
+	                "button",
+	                {
+	                    type: "button",
+	                    className: "toggle-main-page-content-view-button",
+	                    onClick: this.props.toggleContentView },
+	                this.props.otherView
+	            ),
+	            React.createElement(CreateDirController, { create: this.props.createDirectory }),
 	            "Main page bar."
 	        );
 	    }
@@ -43718,488 +43881,2071 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(155);
+	var Modal = __webpack_require__(306);
 
-	var WebPanel = __webpack_require__(306);
+	var styles = __webpack_require__(326);
+	var DialogButtonsPane = __webpack_require__(327);
+	var FormFieldInvalidUnderlineMessage = __webpack_require__(328);
+	var validateDirectoryName = __webpack_require__(329);
 
-	// ---------------
+	// -----------------------
 
-	var MainPageContent = React.createClass({
-	    displayName: "MainPageContent",
+	var nameValidationDelay;
+
+	var initialControllerState = {
+	    open: false,
+	    newName: "",
+	    newNameValid: false,
+	    newNameInvalidMessage: ""
+	};
+
+	var CreateDirController = React.createClass({
+	    displayName: 'CreateDirController',
+
+
+	    setNameValidationState: function setNameValidationState(isValid, validMessage) {
+	        this.setState({
+	            newNameValid: isValid,
+	            newNameInvalidMessage: validMessage
+	        });
+	    },
+
+	    dirNameValidationCallbacks: function dirNameValidationCallbacks(self) {
+	        return {
+	            onStart: function onStart() {
+	                self.setNameValidationState(false, "");
+	            },
+	            onValid: function onValid() {
+	                self.setNameValidationState(true, "");
+	            },
+	            onInvalid: function onInvalid(message) {
+	                self.setNameValidationState(false, message);
+	            }
+	        };
+	    },
+
+	    getInitialState: function getInitialState() {
+	        return Object.assign({}, initialControllerState);
+	    },
+
+	    open: function open() {
+	        this.setState({
+	            open: true
+	        });
+	    },
+
+	    inputChanged: function inputChanged(e) {
+	        this.setState({
+	            newName: e.target.value
+	        });
+	        window.clearTimeout(nameValidationDelay);
+	        nameValidationDelay = window.setTimeout(validateDirectoryName, 900, e.target.value, this.dirNameValidationCallbacks(this));
+	    },
+
+	    submitDirCreation: function submitDirCreation() {
+	        this.props.create(this.state.newName);
+	        this.setState(Object.assign({}, initialControllerState));
+	    },
+
+	    cancelDirCreation: function cancelDirCreation() {
+	        this.setState(Object.assign({}, initialControllerState));
+	    },
 
 	    render: function render() {
 	        return React.createElement(
-	            "div",
-	            { className: "main-page-content" },
-	            React.createElement(WebPanel, { dirs: this.props.dirs })
+	            'div',
+	            { className: 'create-dir-controller' },
+	            React.createElement(
+	                'button',
+	                { type: 'button',
+	                    className: 'create-directory-button-on-main-page',
+	                    onClick: this.open },
+	                'Create dir'
+	            ),
+	            React.createElement(
+	                Modal,
+	                {
+	                    closeTimeoutMS: 0,
+	                    isOpen: this.state.open,
+	                    shouldCloseOnOverlayClick: false,
+	                    style: styles.modalDialogStyle },
+	                React.createElement(
+	                    'label',
+	                    { className: 'form-label' },
+	                    'Create new directory: '
+	                ),
+	                React.createElement('br', null),
+	                React.createElement('input', { type: 'text',
+	                    id: 'new-dir-name',
+	                    placeholder: 'name...',
+	                    className: 'form-input',
+	                    style: styles.getInputStyle(this.state.newNameValid),
+	                    value: this.state.newName,
+	                    onChange: this.inputChanged }),
+	                React.createElement(FormFieldInvalidUnderlineMessage, {
+	                    message: this.state.newNameInvalidMessage }),
+	                React.createElement('br', null),
+	                React.createElement(DialogButtonsPane, {
+	                    submitAllowed: this.state.newNameValid,
+	                    submitText: 'Create',
+	                    submitAction: this.submitDirCreation,
+	                    cancelAction: this.cancelDirCreation
+	                })
+	            )
 	        );
 	    }
 	});
 
-	module.exports = MainPageContent;
+	module.exports = CreateDirController;
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "main-page-content.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "create-dir-controller.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
 /* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	module.exports = __webpack_require__(307);
 
-	"use strict";
 
-	var React = __webpack_require__(155);
-
-	var Directory = __webpack_require__(307);
-
-	// --------------------
-
-	var WebPanel = React.createClass({
-	    displayName: "WebPanel",
-
-	    render: function render() {
-	        var self = this;
-	        var renderedDirs = this.props.dirs.map(function (dir) {
-	            return React.createElement(Directory, {
-	                dir: dir,
-	                key: dir.name });
-	        });
-	        return React.createElement(
-	            "div",
-	            { className: "web-panel" },
-	            renderedDirs
-	        );
-	    }
-	});
-
-	module.exports = WebPanel;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "web-panel.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
 /* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(155);
+	var ReactDOM = __webpack_require__(171);
+	var ExecutionEnvironment = __webpack_require__(308);
+	var ModalPortal = React.createFactory(__webpack_require__(309));
+	var ariaAppHider = __webpack_require__(324);
+	var elementClass = __webpack_require__(325);
+	var renderSubtreeIntoContainer = __webpack_require__(171).unstable_renderSubtreeIntoContainer;
+	var Assign = __webpack_require__(313);
 
-	"use strict";
+	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
+	var AppElement = ExecutionEnvironment.canUseDOM ? document.body : {appendChild: function() {}};
 
-	var React = __webpack_require__(155);
+	var Modal = React.createClass({
 
-	var Page = __webpack_require__(308);
-
-	// ------------------
-
-	var Directory = React.createClass({
-	    displayName: "Directory",
-
-	    render: function render() {
-	        return React.createElement(
-	            "div",
-	            { className: "directory" },
-	            this.props.dir
-	        );
+	  displayName: 'Modal',
+	  statics: {
+	    setAppElement: function(element) {
+	        AppElement = ariaAppHider.setElement(element);
+	    },
+	    injectCSS: function() {
+	      "production" !== process.env.NODE_ENV
+	        && console.warn('React-Modal: injectCSS has been deprecated ' +
+	                        'and no longer has any effect. It will be removed in a later version');
 	    }
+	  },
+
+	  propTypes: {
+	    isOpen: React.PropTypes.bool.isRequired,
+	    style: React.PropTypes.shape({
+	      content: React.PropTypes.object,
+	      overlay: React.PropTypes.object
+	    }),
+	    appElement: React.PropTypes.instanceOf(SafeHTMLElement),
+	    onAfterOpen: React.PropTypes.func,
+	    onRequestClose: React.PropTypes.func,
+	    closeTimeoutMS: React.PropTypes.number,
+	    ariaHideApp: React.PropTypes.bool,
+	    shouldCloseOnOverlayClick: React.PropTypes.bool
+	  },
+
+	  getDefaultProps: function () {
+	    return {
+	      isOpen: false,
+	      ariaHideApp: true,
+	      closeTimeoutMS: 0,
+	      shouldCloseOnOverlayClick: true
+	    };
+	  },
+
+	  componentDidMount: function() {
+	    this.node = document.createElement('div');
+	    this.node.className = 'ReactModalPortal';
+	    document.body.appendChild(this.node);
+	    this.renderPortal(this.props);
+	  },
+
+	  componentWillReceiveProps: function(newProps) {
+	    this.renderPortal(newProps);
+	  },
+
+	  componentWillUnmount: function() {
+	    ReactDOM.unmountComponentAtNode(this.node);
+	    document.body.removeChild(this.node);
+	    elementClass(document.body).remove('ReactModal__Body--open');
+	  },
+
+	  renderPortal: function(props) {
+	    if (props.isOpen) {
+	      elementClass(document.body).add('ReactModal__Body--open');
+	    } else {
+	      elementClass(document.body).remove('ReactModal__Body--open');
+	    }
+
+	    if (props.ariaHideApp) {
+	      ariaAppHider.toggle(props.isOpen, props.appElement);
+	    }
+
+	    this.portal = renderSubtreeIntoContainer(this, ModalPortal(Assign({}, props, {defaultStyles: Modal.defaultStyles})), this.node);
+	  },
+
+	  render: function () {
+	    return React.DOM.noscript();
+	  }
 	});
 
-	module.exports = Directory;
+	Modal.defaultStyles = {
+	  overlay: {
+	    position        : 'fixed',
+	    top             : 0,
+	    left            : 0,
+	    right           : 0,
+	    bottom          : 0,
+	    backgroundColor : 'rgba(255, 255, 255, 0.75)'
+	  },
+	  content: {
+	    position                : 'absolute',
+	    top                     : '40px',
+	    left                    : '40px',
+	    right                   : '40px',
+	    bottom                  : '40px',
+	    border                  : '1px solid #ccc',
+	    background              : '#fff',
+	    overflow                : 'auto',
+	    WebkitOverflowScrolling : 'touch',
+	    borderRadius            : '4px',
+	    outline                 : 'none',
+	    padding                 : '20px'
+	  }
+	}
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "directory.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+	module.exports = Modal
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ },
 /* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2015 Jed Watson.
+	  Based on code that is Copyright 2013-2015, Facebook, Inc.
+	  All rights reserved.
+	*/
 
-	"use strict";
+	(function () {
+		'use strict';
 
-	var React = __webpack_require__(155);
+		var canUseDOM = !!(
+			typeof window !== 'undefined' &&
+			window.document &&
+			window.document.createElement
+		);
 
-	var Page = React.createClass({
-	    displayName: "Page",
+		var ExecutionEnvironment = {
 
-	    render: function render() {
-	        return React.createElement(
-	            "div",
-	            { className: "page" },
-	            this.props.name
-	        );
-	    }
-	});
+			canUseDOM: canUseDOM,
 
-	module.exports = Page;
+			canUseWorkers: typeof Worker !== 'undefined',
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+			canUseEventListeners:
+				canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+			canUseViewport: canUseDOM && !!window.screen
+
+		};
+
+		if (true) {
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return ExecutionEnvironment;
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else if (typeof module !== 'undefined' && module.exports) {
+			module.exports = ExecutionEnvironment;
+		} else {
+			window.ExecutionEnvironment = ExecutionEnvironment;
+		}
+
+	}());
+
 
 /***/ },
 /* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	var React = __webpack_require__(155);
+	var div = React.DOM.div;
+	var focusManager = __webpack_require__(310);
+	var scopeTab = __webpack_require__(312);
+	var Assign = __webpack_require__(313);
 
-	"use strict";
+	// so that our CSS is statically analyzable
+	var CLASS_NAMES = {
+	  overlay: {
+	    base: 'ReactModal__Overlay',
+	    afterOpen: 'ReactModal__Overlay--after-open',
+	    beforeClose: 'ReactModal__Overlay--before-close'
+	  },
+	  content: {
+	    base: 'ReactModal__Content',
+	    afterOpen: 'ReactModal__Content--after-open',
+	    beforeClose: 'ReactModal__Content--before-close'
+	  }
+	};
 
-	var connect = __webpack_require__(257).connect;
+	var ModalPortal = module.exports = React.createClass({
 
-	var actionDispatchers = __webpack_require__(296);
-	var LandingPage = __webpack_require__(310);
+	  displayName: 'ModalPortal',
 
-	function mapStateToProps(state) {
+	  getDefaultProps: function() {
 	    return {
-	        goToLogin: actionDispatchers.app.dispatchGoToLoginAction,
-	        goToRegistration: actionDispatchers.app.dispatchGoToRegisterAction
+	      style: {
+	        overlay: {},
+	        content: {}
+	      }
 	    };
-	}
+	  },
 
-	var LandingPageContainer = connect(mapStateToProps)(LandingPage);
+	  getInitialState: function() {
+	    return {
+	      afterOpen: false,
+	      beforeClose: false
+	    };
+	  },
 
-	module.exports = LandingPageContainer;
+	  componentDidMount: function() {
+	    // Focus needs to be set when mounting and already open
+	    if (this.props.isOpen) {
+	      this.setFocusAfterRender(true);
+	      this.open();
+	    }
+	  },
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "landing-page-container.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+	  componentWillUnmount: function() {
+	    clearTimeout(this.closeTimer);
+	  },
+
+	  componentWillReceiveProps: function(newProps) {
+	    // Focus only needs to be set once when the modal is being opened
+	    if (!this.props.isOpen && newProps.isOpen) {
+	      this.setFocusAfterRender(true);
+	      this.open();
+	    } else if (this.props.isOpen && !newProps.isOpen) {
+	      this.close();
+	    }
+	  },
+
+	  componentDidUpdate: function () {
+	    if (this.focusAfterRender) {
+	      this.focusContent();
+	      this.setFocusAfterRender(false);
+	    }
+	  },
+
+	  setFocusAfterRender: function (focus) {
+	    this.focusAfterRender = focus;
+	  },
+
+	  open: function() {
+	    if (this.state.afterOpen && this.state.beforeClose) {
+	      clearTimeout(this.closeTimer);
+	      this.setState({ beforeClose: false });
+	    } else {
+	      focusManager.setupScopedFocus(this.node);
+	      focusManager.markForFocusLater();
+	      this.setState({isOpen: true}, function() {
+	        this.setState({afterOpen: true});
+
+	        if (this.props.isOpen && this.props.onAfterOpen) {
+	          this.props.onAfterOpen();
+	        }
+	      }.bind(this));
+	    }
+	  },
+
+	  close: function() {
+	    if (!this.ownerHandlesClose())
+	      return;
+	    if (this.props.closeTimeoutMS > 0)
+	      this.closeWithTimeout();
+	    else
+	      this.closeWithoutTimeout();
+	  },
+
+	  focusContent: function() {
+	    this.refs.content.focus();
+	  },
+
+	  closeWithTimeout: function() {
+	    this.setState({beforeClose: true}, function() {
+	      this.closeTimer = setTimeout(this.closeWithoutTimeout, this.props.closeTimeoutMS);
+	    }.bind(this));
+	  },
+
+	  closeWithoutTimeout: function() {
+	    this.setState({
+	      beforeClose: false,
+	      isOpen: false,
+	      afterOpen: false,
+	    }, this.afterClose);
+	  },
+
+	  afterClose: function() {
+	    focusManager.returnFocus();
+	    focusManager.teardownScopedFocus();
+	  },
+
+	  handleKeyDown: function(event) {
+	    if (event.keyCode == 9 /*tab*/) scopeTab(this.refs.content, event);
+	    if (event.keyCode == 27 /*esc*/) {
+	      event.preventDefault();
+	      this.requestClose(event);
+	    }
+	  },
+
+	  handleOverlayClick: function(event) {
+	    var node = event.target
+
+	    while (node) {
+	      if (node === this.refs.content) return
+	      node = node.parentNode
+	    }
+
+	    if (this.props.shouldCloseOnOverlayClick) {
+	      if (this.ownerHandlesClose())
+	        this.requestClose(event);
+	      else
+	        this.focusContent();
+	    }
+	  },
+
+	  requestClose: function(event) {
+	    if (this.ownerHandlesClose())
+	      this.props.onRequestClose(event);
+	  },
+
+	  ownerHandlesClose: function() {
+	    return this.props.onRequestClose;
+	  },
+
+	  shouldBeClosed: function() {
+	    return !this.props.isOpen && !this.state.beforeClose;
+	  },
+
+	  buildClassName: function(which, additional) {
+	    var className = CLASS_NAMES[which].base;
+	    if (this.state.afterOpen)
+	      className += ' '+CLASS_NAMES[which].afterOpen;
+	    if (this.state.beforeClose)
+	      className += ' '+CLASS_NAMES[which].beforeClose;
+	    return additional ? className + ' ' + additional : className;
+	  },
+
+	  render: function() {
+	    var contentStyles = (this.props.className) ? {} : this.props.defaultStyles.content;
+	    var overlayStyles = (this.props.overlayClassName) ? {} : this.props.defaultStyles.overlay;
+
+	    return this.shouldBeClosed() ? div() : (
+	      div({
+	        ref: "overlay",
+	        className: this.buildClassName('overlay', this.props.overlayClassName),
+	        style: Assign({}, overlayStyles, this.props.style.overlay || {}),
+	        onClick: this.handleOverlayClick
+	      },
+	        div({
+	          ref: "content",
+	          style: Assign({}, contentStyles, this.props.style.content || {}),
+	          className: this.buildClassName('content', this.props.className),
+	          tabIndex: "-1",
+	          onKeyDown: this.handleKeyDown
+	        },
+	          this.props.children
+	        )
+	      )
+	    );
+	  }
+	});
+
 
 /***/ },
 /* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	var findTabbable = __webpack_require__(311);
+	var modalElement = null;
+	var focusLaterElement = null;
+	var needToFocus = false;
 
-	"use strict";
+	function handleBlur(event) {
+	  needToFocus = true;
+	}
 
-	var React = __webpack_require__(155);
-
-	var LandingPage = React.createClass({
-	    displayName: "LandingPage",
-
-
-	    render: function render() {
-	        return React.createElement(
-	            "div",
-	            { className: "landing-page" },
-	            React.createElement(
-	                "button",
-	                { type: "button",
-	                    className: "go-tologin-button-on-landing-page",
-	                    onClick: this.props.goToLogin },
-	                "Login"
-	            ),
-	            React.createElement(
-	                "button",
-	                { type: "button",
-	                    className: "go-to-registration-button-on-landing-page",
-	                    onClick: this.props.goToRegistration },
-	                "Registration"
-	            ),
-	            React.createElement("br", null),
-	            "Landing page."
-	        );
+	function handleFocus(event) {
+	  if (needToFocus) {
+	    needToFocus = false;
+	    if (!modalElement) {
+	      return;
 	    }
-	});
+	    // need to see how jQuery shims document.on('focusin') so we don't need the
+	    // setTimeout, firefox doesn't support focusin, if it did, we could focus
+	    // the element outside of a setTimeout. Side-effect of this implementation 
+	    // is that the document.body gets focus, and then we focus our element right 
+	    // after, seems fine.
+	    setTimeout(function() {
+	      if (modalElement.contains(document.activeElement))
+	        return;
+	      var el = (findTabbable(modalElement)[0] || modalElement);
+	      el.focus();
+	    }, 0);
+	  }
+	}
 
-	module.exports = LandingPage;
+	exports.markForFocusLater = function() {
+	  focusLaterElement = document.activeElement;
+	};
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "landing-page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+	exports.returnFocus = function() {
+	  try {
+	    focusLaterElement.focus();
+	  }
+	  catch (e) {
+	    console.warn('You tried to return focus to '+focusLaterElement+' but it is not in the DOM anymore');
+	  }
+	  focusLaterElement = null;
+	};
+
+	exports.setupScopedFocus = function(element) {
+	  modalElement = element;
+
+	  if (window.addEventListener) {
+	    window.addEventListener('blur', handleBlur, false);
+	    document.addEventListener('focus', handleFocus, true);
+	  } else {
+	    window.attachEvent('onBlur', handleBlur);
+	    document.attachEvent('onFocus', handleFocus);
+	  }
+	};
+
+	exports.teardownScopedFocus = function() {
+	  modalElement = null;
+
+	  if (window.addEventListener) {
+	    window.removeEventListener('blur', handleBlur);
+	    document.removeEventListener('focus', handleFocus);
+	  } else {
+	    window.detachEvent('onBlur', handleBlur);
+	    document.detachEvent('onFocus', handleFocus);
+	  }
+	};
+
+
+
 
 /***/ },
 /* 311 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	/*!
+	 * Adapted from jQuery UI core
+	 *
+	 * http://jqueryui.com
+	 *
+	 * Copyright 2014 jQuery Foundation and other contributors
+	 * Released under the MIT license.
+	 * http://jquery.org/license
+	 *
+	 * http://api.jqueryui.com/category/ui-core/
+	 */
 
-	"use strict";
-
-	var connect = __webpack_require__(257).connect;
-
-	var storage = __webpack_require__(299);
-	var LoginPage = __webpack_require__(312);
-	var actionDispatchers = __webpack_require__(296);
-	var loginAjaxCall = __webpack_require__(319);
-	var validateNickNameAjaxCall = __webpack_require__(320);
-	var validatePasswordAjaxCall = __webpack_require__(321);
-
-	// ----------------------
-
-	var passwordValidationDelay;
-	var nickNameValidationDelay;
-
-	function beginDelayedPasswordValidation(newPassword) {
-	    var passwordAjaxValidationCallbacks = {
-	        onStart: actionDispatchers.login.dispatchPasswordValidationBeginsAction,
-	        onValid: function onValid() {
-	            actionDispatchers.login.dispatchPasswordValidAction();
-	            actionDispatchers.login.dispatchAssessIfLoginAllowedAction();
-	        },
-	        onInvalid: actionDispatchers.login.dispatchPasswordInvalidAction
-	    };
-	    validatePasswordAjaxCall(newPassword, passwordAjaxValidationCallbacks);
+	function focusable(element, isTabIndexNotNaN) {
+	  var nodeName = element.nodeName.toLowerCase();
+	  return (/input|select|textarea|button|object/.test(nodeName) ?
+	    !element.disabled :
+	    "a" === nodeName ?
+	      element.href || isTabIndexNotNaN :
+	      isTabIndexNotNaN) && visible(element);
 	}
 
-	function beginDelayedNickNameValidation(newNickName) {
-	    var nickNameAjaxValidationCallbacks = {
-	        onStart: actionDispatchers.login.dispatchNickNameValidationBeginsAction,
-	        onValid: function onValid() {
-	            actionDispatchers.login.dispatchNickNameValidAction();
-	            actionDispatchers.login.dispatchAssessIfLoginAllowedAction();
-	        },
-	        onInvalid: actionDispatchers.login.dispatchNickNameInvalidAction
-	    };
-	    validateNickNameAjaxCall(newNickName, nickNameAjaxValidationCallbacks);
+	function hidden(el) {
+	  return (el.offsetWidth <= 0 && el.offsetHeight <= 0) ||
+	    el.style.display === 'none';
 	}
 
-	function passwordChanged(newPassword) {
-	    window.clearTimeout(passwordValidationDelay);
-	    actionDispatchers.login.dispatchPasswordChangedAction(newPassword);
-	    passwordValidationDelay = window.setTimeout(beginDelayedPasswordValidation, 700, newPassword);
+	function visible(element) {
+	  while (element) {
+	    if (element === document.body) break;
+	    if (hidden(element)) return false;
+	    element = element.parentNode;
+	  }
+	  return true;
 	}
 
-	function nickNameChanged(newNickName) {
-	    window.clearTimeout(nickNameValidationDelay);
-	    actionDispatchers.login.dispatchNickNameChangedAction(newNickName);
-	    nickNameValidationDelay = window.setTimeout(beginDelayedNickNameValidation, 700, newNickName);
+	function tabbable(element) {
+	  var tabIndex = element.getAttribute('tabindex');
+	  if (tabIndex === null) tabIndex = undefined;
+	  var isTabIndexNaN = isNaN(tabIndex);
+	  return (isTabIndexNaN || tabIndex >= 0) && focusable(element, !isTabIndexNaN);
 	}
 
-	function goToRegistration() {
-	    actionDispatchers.app.dispatchGoToRegisterAction();
+	function findTabbableDescendants(element) {
+	  return [].slice.call(element.querySelectorAll('*'), 0).filter(function(el) {
+	    return tabbable(el);
+	  });
 	}
 
-	function _tryToLogin(loginData) {
-	    var loginAjaxCallbacks = {
-	        onCallStart: actionDispatchers.login.dispatchLoginAttemptBegins,
-	        onCallSuccess: function onCallSuccess(jwtString) {
-	            actionDispatchers.login.dispatchLoginSuccessAction(storage.saveAndParseJwt(jwtString));
-	        },
-	        onUnauthorized: actionDispatchers.login.dispatchLoginFailedAction,
-	        onBadRequest: actionDispatchers.login.dispatchLoginFailedAction
-	    };
-	    loginAjaxCall(loginData, loginAjaxCallbacks);
-	}
+	module.exports = findTabbableDescendants;
 
-	function mapStateToProps(state) {
-	    return {
-	        nickName: state.loginPage.nickName,
-	        nickNameValid: state.loginPage.nickNameValid,
-	        nickNameInvalidMessage: state.loginPage.nickNameInvalidMessage,
-	        nickNameValidationInProgress: state.loginPage.nickNameValidationInProgress,
 
-	        password: state.loginPage.password,
-	        passwordValid: state.loginPage.passwordValid,
-	        passwordInvalidMessage: state.loginPage.passwordInvalidMessage,
-	        passwordValidationInProgress: state.loginPage.passwordValidationInProgress,
-
-	        loginFailureMessage: state.loginPage.loginFailureMessage,
-
-	        loginAllowed: state.loginPage.loginAllowed,
-
-	        goToLanding: actionDispatchers.app.dispatchGoToLandingPageAction,
-	        goToRegistration: goToRegistration,
-	        tryToLogin: function tryToLogin() {
-	            if (state.loginPage.loginAllowed) {
-	                var loginData = {
-	                    "nickName": state.loginPage.nickName,
-	                    "password": state.loginPage.password
-	                };
-	                _tryToLogin(loginData);
-	            }
-	        },
-	        nickNameChanged: nickNameChanged,
-	        passwordChanged: passwordChanged
-	    };
-	}
-
-	var LoginPageContainer = connect(mapStateToProps)(LoginPage);
-
-	module.exports = LoginPageContainer;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "login-page-container.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
 /* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	var findTabbable = __webpack_require__(311);
 
-	"use strict";
+	module.exports = function(node, event) {
+	  var tabbable = findTabbable(node);
+	  if (!tabbable.length) {
+	      event.preventDefault();
+	      return;
+	  }
+	  var finalTabbable = tabbable[event.shiftKey ? 0 : tabbable.length - 1];
+	  var leavingFinalTabbable = (
+	    finalTabbable === document.activeElement ||
+	    // handle immediate shift+tab after opening with mouse
+	    node === document.activeElement
+	  );
+	  if (!leavingFinalTabbable) return;
+	  event.preventDefault();
+	  var target = tabbable[event.shiftKey ? tabbable.length - 1 : 0];
+	  target.focus();
+	};
 
-	var React = __webpack_require__(155);
-
-	var LoginForm = __webpack_require__(313);
-	var FormFailureMessage = __webpack_require__(318);
-
-	var LoginPage = React.createClass({
-	    displayName: "LoginPage",
-
-
-	    render: function render() {
-	        return React.createElement(
-	            "div",
-	            { className: "login-page" },
-	            "Login page",
-	            React.createElement(
-	                "button",
-	                {
-	                    type: "button",
-	                    className: "go-to-registration-button-on-login",
-	                    onClick: this.props.goToRegistration },
-	                "Registration"
-	            ),
-	            React.createElement(
-	                "button",
-	                {
-	                    type: "button",
-	                    className: "go-to-landing-button-on-login",
-	                    onClick: this.props.goToLanding },
-	                "Back"
-	            ),
-	            React.createElement("br", null),
-	            React.createElement(LoginForm, {
-	                nickName: this.props.nickName,
-	                nickNameValid: this.props.nickNameValid,
-	                nickNameInvalidMessage: this.props.nickNameInvalidMessage,
-	                nickNameValidationInProgress: this.props.nickNameValidationInProgress,
-
-	                password: this.props.password,
-	                passwordValid: this.props.passwordValid,
-	                passwordInvalidMessage: this.props.passwordInvalidMessage,
-	                passwordValidationInProgress: this.props.passwordValidationInProgress,
-
-	                loginAllowed: this.props.loginAllowed,
-	                loginAction: this.props.tryToLogin,
-	                nickNameChanged: this.props.nickNameChanged,
-	                passwordChanged: this.props.passwordChanged }),
-	            React.createElement(FormFailureMessage, {
-	                message: this.props.loginFailureMessage })
-	        );
-	    }
-	});
-
-	module.exports = LoginPage;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "login-page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
 /* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseAssign = __webpack_require__(314),
+	    createAssigner = __webpack_require__(320),
+	    keys = __webpack_require__(316);
 
-	'use strict';
+	/**
+	 * A specialized version of `_.assign` for customizing assigned values without
+	 * support for argument juggling, multiple sources, and `this` binding `customizer`
+	 * functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @param {Function} customizer The function to customize assigned values.
+	 * @returns {Object} Returns `object`.
+	 */
+	function assignWith(object, source, customizer) {
+	  var index = -1,
+	      props = keys(source),
+	      length = props.length;
 
-	var React = __webpack_require__(155);
+	  while (++index < length) {
+	    var key = props[index],
+	        value = object[key],
+	        result = customizer(value, source[key], key, object, source);
 
-	var inlineStyles = __webpack_require__(314);
-	var AcceptedSign = __webpack_require__(315);
-	var FormFieldInvalidMessage = __webpack_require__(316);
-	var Spinner = __webpack_require__(317);
-
-	var LoginForm = React.createClass({
-	    displayName: 'LoginForm',
-
-
-	    nickNameInputChanged: function nickNameInputChanged(event) {
-	        this.props.nickNameChanged(event.target.value);
-	    },
-
-	    passwordInputChanged: function passwordInputChanged(event) {
-	        this.props.passwordChanged(event.target.value);
-	    },
-
-	    getLoginButtonStyle: function getLoginButtonStyle() {
-	        if (this.props.loginAllowed) {
-	            return inlineStyles.loginButtonActiveStyle;
-	        } else {
-	            return inlineStyles.loginButtonInactiveStyle;
-	        }
-	    },
-
-	    getNickNameInputStyle: function getNickNameInputStyle() {
-	        return inlineStyles.getInputStyle(this.props.nickNameValid);
-	    },
-
-	    getPasswordInputStyle: function getPasswordInputStyle() {
-	        return inlineStyles.getInputStyle(this.props.passwordValid);
-	    },
-
-	    isNickNameAccepted: function isNickNameAccepted() {
-	        return this.props.nickNameValid && this.props.nickName != "" && !this.props.nickNameValidationInProgress;
-	    },
-
-	    isPasswordAccepted: function isPasswordAccepted() {
-	        return this.props.passwordValid && this.props.password != "" && !this.props.passwordValidationInProgress;
-	    },
-
-	    render: function render() {
-	        var loginButtonStyle = this.getLoginButtonStyle();
-	        var nickNameInputStyle = this.getNickNameInputStyle();
-	        var passwordInputStyle = this.getPasswordInputStyle();
-	        return React.createElement(
-	            'div',
-	            { className: 'login-form' },
-	            React.createElement(
-	                'form',
-	                null,
-	                React.createElement(
-	                    'fieldset',
-	                    null,
-	                    React.createElement(
-	                        'label',
-	                        { className: 'login-form-label' },
-	                        'Nickname:'
-	                    ),
-	                    React.createElement('br', null),
-	                    React.createElement('input', { type: 'text',
-	                        className: 'login-form-input',
-	                        placeholder: 'nick_name',
-	                        style: nickNameInputStyle,
-	                        value: this.props.nickName,
-	                        onChange: this.nickNameInputChanged }),
-	                    React.createElement(AcceptedSign, { accepted: this.isNickNameAccepted() }),
-	                    React.createElement(FormFieldInvalidMessage, { message: this.props.nickNameInvalidMessage }),
-	                    React.createElement('br', null),
-	                    React.createElement(
-	                        'label',
-	                        { className: 'login-form-label' },
-	                        'Password:'
-	                    ),
-	                    React.createElement('br', null),
-	                    React.createElement('input', { type: 'password',
-	                        className: 'login-form-input',
-	                        style: passwordInputStyle,
-	                        value: this.props.password,
-	                        onChange: this.passwordInputChanged }),
-	                    React.createElement(AcceptedSign, { accepted: this.isPasswordAccepted() }),
-	                    React.createElement(FormFieldInvalidMessage, { message: this.props.passwordInvalidMessage }),
-	                    React.createElement('br', null)
-	                )
-	            ),
-	            React.createElement(
-	                'button',
-	                { type: 'button',
-	                    className: 'login-button',
-	                    style: loginButtonStyle,
-	                    onClick: this.props.loginAction },
-	                'Login'
-	            )
-	        );
+	    if ((result === result ? (result !== value) : (value === value)) ||
+	        (value === undefined && !(key in object))) {
+	      object[key] = result;
 	    }
+	  }
+	  return object;
+	}
+
+	/**
+	 * Assigns own enumerable properties of source object(s) to the destination
+	 * object. Subsequent sources overwrite property assignments of previous sources.
+	 * If `customizer` is provided it is invoked to produce the assigned values.
+	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
+	 * (objectValue, sourceValue, key, object, source).
+	 *
+	 * **Note:** This method mutates `object` and is based on
+	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias extend
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @param {Function} [customizer] The function to customize assigned values.
+	 * @param {*} [thisArg] The `this` binding of `customizer`.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
+	 * // => { 'user': 'fred', 'age': 40 }
+	 *
+	 * // using a customizer callback
+	 * var defaults = _.partialRight(_.assign, function(value, other) {
+	 *   return _.isUndefined(value) ? other : value;
+	 * });
+	 *
+	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+	 * // => { 'user': 'barney', 'age': 36 }
+	 */
+	var assign = createAssigner(function(object, source, customizer) {
+	  return customizer
+	    ? assignWith(object, source, customizer)
+	    : baseAssign(object, source);
 	});
 
-	module.exports = LoginForm;
+	module.exports = assign;
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "login-form.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
 /* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseCopy = __webpack_require__(315),
+	    keys = __webpack_require__(316);
+
+	/**
+	 * The base implementation of `_.assign` without support for argument juggling,
+	 * multiple sources, and `customizer` functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseAssign(object, source) {
+	  return source == null
+	    ? object
+	    : baseCopy(source, keys(source), object);
+	}
+
+	module.exports = baseAssign;
+
+
+/***/ },
+/* 315 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property names to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseCopy(source, props, object) {
+	  object || (object = {});
+
+	  var index = -1,
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index];
+	    object[key] = source[key];
+	  }
+	  return object;
+	}
+
+	module.exports = baseCopy;
+
+
+/***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(317),
+	    isArguments = __webpack_require__(318),
+	    isArray = __webpack_require__(319);
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? undefined : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keys;
+
+
+/***/ },
+/* 317 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = getNative;
+
+
+/***/ },
+/* 318 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 */
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(value.length) && !isFunction(value);
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isArguments;
+
+
+/***/ },
+/* 319 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]',
+	    funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var bindCallback = __webpack_require__(321),
+	    isIterateeCall = __webpack_require__(322),
+	    restParam = __webpack_require__(323);
+
+	/**
+	 * Creates a function that assigns properties of source object(s) to a given
+	 * destination object.
+	 *
+	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return restParam(function(object, sources) {
+	    var index = -1,
+	        length = object == null ? 0 : sources.length,
+	        customizer = length > 2 ? sources[length - 2] : undefined,
+	        guard = length > 2 ? sources[2] : undefined,
+	        thisArg = length > 1 ? sources[length - 1] : undefined;
+
+	    if (typeof customizer == 'function') {
+	      customizer = bindCallback(customizer, thisArg, 5);
+	      length -= 2;
+	    } else {
+	      customizer = typeof thisArg == 'function' ? thisArg : undefined;
+	      length -= (customizer ? 1 : 0);
+	    }
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? undefined : customizer;
+	      length = 1;
+	    }
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+
+	module.exports = createAssigner;
+
+
+/***/ },
+/* 321 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 322 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.9 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 323 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.6.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeMax = Math.max;
+
+	/**
+	 * Creates a function that invokes `func` with the `this` binding of the
+	 * created function and arguments from `start` and beyond provided as an array.
+	 *
+	 * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Function
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var say = _.restParam(function(what, names) {
+	 *   return what + ' ' + _.initial(names).join(', ') +
+	 *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+	 * });
+	 *
+	 * say('hello', 'fred', 'barney', 'pebbles');
+	 * // => 'hello fred, barney, & pebbles'
+	 */
+	function restParam(func, start) {
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
+	  return function() {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax(args.length - start, 0),
+	        rest = Array(length);
+
+	    while (++index < length) {
+	      rest[index] = args[start + index];
+	    }
+	    switch (start) {
+	      case 0: return func.call(this, rest);
+	      case 1: return func.call(this, args[0], rest);
+	      case 2: return func.call(this, args[0], args[1], rest);
+	    }
+	    var otherArgs = Array(start + 1);
+	    index = -1;
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+	    otherArgs[start] = rest;
+	    return func.apply(this, otherArgs);
+	  };
+	}
+
+	module.exports = restParam;
+
+
+/***/ },
+/* 324 */
+/***/ function(module, exports) {
+
+	var _element = typeof document !== 'undefined' ? document.body : null;
+
+	function setElement(element) {
+	  if (typeof element === 'string') {
+	    var el = document.querySelectorAll(element);
+	    element = 'length' in el ? el[0] : el;
+	  }
+	  _element = element || _element;
+	  return _element;
+	}
+
+	function hide(appElement) {
+	  validateElement(appElement);
+	  (appElement || _element).setAttribute('aria-hidden', 'true');
+	}
+
+	function show(appElement) {
+	  validateElement(appElement);
+	  (appElement || _element).removeAttribute('aria-hidden');
+	}
+
+	function toggle(shouldHide, appElement) {
+	  if (shouldHide)
+	    hide(appElement);
+	  else
+	    show(appElement);
+	}
+
+	function validateElement(appElement) {
+	  if (!appElement && !_element)
+	    throw new Error('react-modal: You must set an element with `Modal.setAppElement(el)` to make this accessible');
+	}
+
+	function resetForTesting() {
+	  _element = document.body;
+	}
+
+	exports.toggle = toggle;
+	exports.setElement = setElement;
+	exports.show = show;
+	exports.hide = hide;
+	exports.resetForTesting = resetForTesting;
+
+
+/***/ },
+/* 325 */
+/***/ function(module, exports) {
+
+	module.exports = function(opts) {
+	  return new ElementClass(opts)
+	}
+
+	function indexOf(arr, prop) {
+	  if (arr.indexOf) return arr.indexOf(prop)
+	  for (var i = 0, len = arr.length; i < len; i++)
+	    if (arr[i] === prop) return i
+	  return -1
+	}
+
+	function ElementClass(opts) {
+	  if (!(this instanceof ElementClass)) return new ElementClass(opts)
+	  var self = this
+	  if (!opts) opts = {}
+
+	  // similar doing instanceof HTMLElement but works in IE8
+	  if (opts.nodeType) opts = {el: opts}
+
+	  this.opts = opts
+	  this.el = opts.el || document.body
+	  if (typeof this.el !== 'object') this.el = document.querySelector(this.el)
+	}
+
+	ElementClass.prototype.add = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  if (el.className === "") return el.className = className
+	  var classes = el.className.split(' ')
+	  if (indexOf(classes, className) > -1) return classes
+	  classes.push(className)
+	  el.className = classes.join(' ')
+	  return classes
+	}
+
+	ElementClass.prototype.remove = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  if (el.className === "") return
+	  var classes = el.className.split(' ')
+	  var idx = indexOf(classes, className)
+	  if (idx > -1) classes.splice(idx, 1)
+	  el.className = classes.join(' ')
+	  return classes
+	}
+
+	ElementClass.prototype.has = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  var classes = el.className.split(' ')
+	  return indexOf(classes, className) > -1
+	}
+
+	ElementClass.prototype.toggle = function(className) {
+	  var el = this.el
+	  if (!el) return
+	  if (this.has(className)) this.remove(className)
+	  else this.add(className)
+	}
+
+
+/***/ },
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44207,6 +45953,81 @@
 	'use strict';
 
 	var inlineStyles = {
+
+	    modalDialogStyle: {
+	        overlay: {
+	            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	        },
+	        content: {
+	            border: '1px solid darkgray',
+	            borderRadius: '6px',
+	            backgroundColor: '#fafafa',
+	            boxShadow: 'inset 0px 0px 10px 0px lightgrey',
+	            WebkitBoxShadow: 'inset 0px 0px 10px 0px lightgrey',
+	            MozBoxShadow: 'inset 0px 0px 10px 0px lightgrey',
+	            OBoxShadow: 'inset 0px 0px 10px 0px lightgrey',
+	            top: '50%',
+	            left: '50%',
+	            right: 'auto',
+	            bottom: 'auto',
+	            marginRight: '-50%',
+	            transform: 'translate(-50%, -50%)'
+	        }
+	    },
+
+	    dialogButtonStyle: {
+	        color: '#1C1C1C',
+	        height: '30px',
+	        width: '90px',
+	        boxSizing: 'border-box',
+	        opacity: '0.85',
+	        fontFamily: 'Verdana',
+	        fontSize: '15px',
+	        borderRadius: '6px',
+	        border: '1px solid lightgrey',
+	        backgroundColor: '#fafafa',
+	        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        margin: '0 15px 0 0'
+	    },
+
+	    dialogForbiddenButtonStyle: {
+	        color: '#D5D5D5',
+	        height: '30px',
+	        width: '90px',
+	        boxSizing: 'border-box',
+	        opacity: '0.85',
+	        fontFamily: 'Verdana',
+	        fontSize: '15px',
+	        borderRadius: '6px',
+	        border: '1px solid lightgrey',
+	        backgroundColor: '#fafafa',
+	        boxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        WebkitBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        MozBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        OBoxShadow: 'inset 0px 0px 5px 0px lightgrey',
+	        margin: '0 15px 0 0'
+	    },
+
+	    dialogButtonStyleHover: {
+	        color: '#1C1C1C',
+	        height: '30px',
+	        width: '90px',
+	        boxSizing: 'border-box',
+	        opacity: '1',
+	        fontFamily: 'Verdana',
+	        fontSize: '15px',
+	        borderRadius: '6px',
+	        border: '1px solid lightgrey',
+	        backgroundColor: 'white',
+	        boxShadow: '0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey',
+	        WebkitBoxShadow: '0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey',
+	        MozBoxShadow: '0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey',
+	        OBoxShadow: '0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey',
+	        margin: '0 15px 0 0'
+	    },
 
 	    getInputStyle: function getInputStyle(isInputValid) {
 	        if (isInputValid) {
@@ -44319,7 +46140,1614 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 315 */
+/* 327 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var styles = __webpack_require__(326);
+
+	// ----------------------
+
+	var DialogButtonsPane = React.createClass({
+	    displayName: "DialogButtonsPane",
+
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            submitButtonHover: false,
+	            cancelButtonHover: false
+	        };
+	    },
+
+	    submit: function submit() {
+	        if (this.props.submitAllowed) {
+	            this.props.submitAction();
+	        }
+	    },
+
+	    getSubmitStyle: function getSubmitStyle() {
+	        if (this.props.submitAllowed) {
+	            if (this.state.submitButtonHover) {
+	                return styles.dialogButtonStyleHover;
+	            } else {
+	                return styles.dialogButtonStyle;
+	            }
+	        } else {
+	            return styles.dialogForbiddenButtonStyle;
+	        }
+	    },
+
+	    getCancelStyle: function getCancelStyle() {
+	        if (this.state.cancelButtonHover) {
+	            return styles.dialogButtonStyleHover;
+	        } else {
+	            return styles.dialogButtonStyle;
+	        }
+	    },
+
+	    submitButtonToggle: function submitButtonToggle() {
+	        this.setState({
+	            submitButtonHover: !this.state.submitButtonHover
+	        });
+	    },
+
+	    cancelButtonToggle: function cancelButtonToggle() {
+	        this.setState({
+	            cancelButtonHover: !this.state.cancelButtonHover
+	        });
+	    },
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "dialog-button-pane" },
+	            React.createElement(
+	                "button",
+	                {
+	                    type: "button",
+	                    style: this.getSubmitStyle(),
+	                    onClick: this.submit,
+	                    onMouseEnter: this.submitButtonToggle,
+	                    onMouseLeave: this.submitButtonToggle },
+	                this.props.submitText
+	            ),
+	            React.createElement(
+	                "button",
+	                {
+	                    type: "button",
+	                    style: this.getCancelStyle(),
+	                    onClick: this.props.cancelAction,
+	                    onMouseEnter: this.cancelButtonToggle,
+	                    onMouseLeave: this.cancelButtonToggle },
+	                "Cancel"
+	            ),
+	            React.createElement("br", null)
+	        );
+	    }
+	});
+
+	module.exports = DialogButtonsPane;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "dialog-buttons-pane.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 328 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var FormFieldInvalidUnderlineMessage = React.createClass({
+	    displayName: "FormFieldInvalidUnderlineMessage",
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "form-field-invalid-underline-message" },
+	            React.createElement(
+	                "b",
+	                null,
+	                this.props.message
+	            )
+	        );
+	    }
+	});
+
+	module.exports = FormFieldInvalidUnderlineMessage;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "form-field-invalid-underline-message.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 329 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var $ = __webpack_require__(296);
+
+	var resources = __webpack_require__(297);
+
+	// --------------------------------
+
+	function ajaxLog(message) {
+	    console.log("[APP] [AJAX CALL] [WEB-OBJECT NAME VALIDATION] " + message);
+	}
+
+	function validateWebObjectName(name, callbacks) {
+	    callbacks.onStart();
+	    ajaxLog("starts...");
+	    console.log(name);
+	    var payload = { "payload": name };
+	    $.ajax({
+	        url: resources.validation.webObjects.names.url,
+	        method: resources.validation.webObjects.names.method,
+	        data: JSON.stringify(payload),
+	        dataType: "json",
+	        contentType: "application/json; charset=utf-8",
+	        cache: false,
+	        statusCode: {
+	            200: function _() {
+	                ajaxLog("valid.");
+	                callbacks.onValid();
+	            },
+	            400: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("invalid : " + JSON.parse(xhr.responseText).message);
+	                callbacks.onInvalid(JSON.parse(xhr.responseText).message);
+	            }
+	        }
+	    });
+	}
+
+	module.exports = validateWebObjectName;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "validate-webobject-name-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var $ = __webpack_require__(296);
+
+	var storage = __webpack_require__(298);
+	var resources = __webpack_require__(297);
+
+	// --------------------------------
+
+	function ajaxLog(message) {
+	    console.log("[APP] [AJAX CALL] [POST DIRECTORY] " + message);
+	}
+
+	function createNewDirectory(userId, placement, dirName, callbacks) {
+	    callbacks.onStart();
+	    ajaxLog("starts with userId:" + userId + ", place:" + placement + ", dir:" + dirName);
+	    var payload = {
+	        "payload": dirName
+	    };
+	    $.ajax({
+	        url: resources.directories.postNew.url(userId, placement),
+	        method: resources.directories.postNew.method,
+	        data: JSON.stringify(payload),
+	        dataType: "json",
+	        contentType: "application/json; charset=utf-8",
+	        cache: false,
+	        beforeSend: function beforeSend(xhr) {
+	            xhr.setRequestHeader('Authentication', 'Bearer ' + storage.getJwt());
+	        },
+	        statusCode: {
+	            200: function _(data, statusText, xhr) {
+	                ajaxLog("new dir: " + dirName + " created.");
+	                callbacks.onSuccess(placement, dirName);
+	            },
+	            400: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("bad request : " + JSON.parse(xhr.responseText).message);
+	                callbacks.onFail(JSON.parse(xhr.responseText).message);
+	            },
+	            401: function _(xhr, statusText, errorThrown) {
+	                callbacks.onUnauthenticated();
+	            },
+	            404: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("resource not found.");
+	                callbacks.onFail("Resource not found.");
+	            },
+	            500: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("server error.");
+	                callbacks.onServerError(JSON.parse(xhr.responseText).message);
+	            }
+	        }
+	    });
+	}
+
+	module.exports = createNewDirectory;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "directories-create-new-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 331 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var connect = __webpack_require__(257).connect;
+
+	var MainPageContent = __webpack_require__(332);
+
+	// -------------------------------
+
+	function mapStateToProps(state) {
+	    return {
+	        currentView: state.mainPage.currentView,
+
+	        webPanelLoading: state.mainPage.webPanelLoading,
+	        bookmarksLoading: state.mainPage.bookmarksLoading,
+
+	        webPanelLoadingFailedMessage: state.mainPage.webPanelLoadingFailedMessage,
+	        bookmarksLoadingFailedMessage: state.mainPage.bookmarksLoadingFailedMessage,
+
+	        webPanelDirs: state.mainPage.webPanelDirs,
+	        bookmarksDirs: state.mainPage.bookmarksDirs
+	    };
+	}
+
+	var MainPageContentContainer = connect(mapStateToProps)(MainPageContent);
+
+	module.exports = MainPageContentContainer;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "main-page-content-container.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 332 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	var React = __webpack_require__(155);
+	var $ = __webpack_require__(296);
+	__webpack_require__(333);
+
+	var WebPanel = __webpack_require__(335);
+	var Bookmarks = __webpack_require__(338);
+
+	// ---------------
+
+	var MainPageContent = React.createClass({
+	    displayName: 'MainPageContent',
+
+
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (nextProps.currentView === "webPanel") {
+	            $(".bookmarks").toggle("slide", { direction: "left" });
+	            $(".web-panel").toggle("slide", { direction: "right" });
+	        } else {
+	            $(".bookmarks").toggle("slide", { direction: "left" });
+	            $(".web-panel").toggle("slide", { direction: "right" });
+	        }
+	    },
+
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            { className: 'main-page-content' },
+	            React.createElement(WebPanel, {
+	                dirs: this.props.webPanelDirs }),
+	            React.createElement(Bookmarks, {
+	                dirs: this.props.bookmarksDirs })
+	        );
+	    }
+	});
+
+	module.exports = MainPageContent;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "main-page-content.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	 * jQuery UI Widget 1.12.0
+	 * http://jqueryui.com
+	 *
+	 * Copyright jQuery Foundation and other contributors
+	 * Released under the MIT license.
+	 * http://jquery.org/license
+	 */
+
+	//>>label: Widget
+	//>>group: Core
+	//>>description: Provides a factory for creating stateful widgets with a common API.
+	//>>docs: http://api.jqueryui.com/jQuery.widget/
+	//>>demos: http://jqueryui.com/widget/
+
+	( function( factory ) {
+		if ( true ) {
+
+			// AMD. Register as an anonymous module.
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(296), __webpack_require__(334) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+
+			// Browser globals
+			factory( jQuery );
+		}
+	}( function( $ ) {
+
+	var widgetUuid = 0;
+	var widgetSlice = Array.prototype.slice;
+
+	$.cleanData = ( function( orig ) {
+		return function( elems ) {
+			var events, elem, i;
+			for ( i = 0; ( elem = elems[ i ] ) != null; i++ ) {
+				try {
+
+					// Only trigger remove when necessary to save time
+					events = $._data( elem, "events" );
+					if ( events && events.remove ) {
+						$( elem ).triggerHandler( "remove" );
+					}
+
+				// Http://bugs.jquery.com/ticket/8235
+				} catch ( e ) {}
+			}
+			orig( elems );
+		};
+	} )( $.cleanData );
+
+	$.widget = function( name, base, prototype ) {
+		var existingConstructor, constructor, basePrototype;
+
+		// ProxiedPrototype allows the provided prototype to remain unmodified
+		// so that it can be used as a mixin for multiple widgets (#8876)
+		var proxiedPrototype = {};
+
+		var namespace = name.split( "." )[ 0 ];
+		name = name.split( "." )[ 1 ];
+		var fullName = namespace + "-" + name;
+
+		if ( !prototype ) {
+			prototype = base;
+			base = $.Widget;
+		}
+
+		if ( $.isArray( prototype ) ) {
+			prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
+		}
+
+		// Create selector for plugin
+		$.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
+			return !!$.data( elem, fullName );
+		};
+
+		$[ namespace ] = $[ namespace ] || {};
+		existingConstructor = $[ namespace ][ name ];
+		constructor = $[ namespace ][ name ] = function( options, element ) {
+
+			// Allow instantiation without "new" keyword
+			if ( !this._createWidget ) {
+				return new constructor( options, element );
+			}
+
+			// Allow instantiation without initializing for simple inheritance
+			// must use "new" keyword (the code above always passes args)
+			if ( arguments.length ) {
+				this._createWidget( options, element );
+			}
+		};
+
+		// Extend with the existing constructor to carry over any static properties
+		$.extend( constructor, existingConstructor, {
+			version: prototype.version,
+
+			// Copy the object used to create the prototype in case we need to
+			// redefine the widget later
+			_proto: $.extend( {}, prototype ),
+
+			// Track widgets that inherit from this widget in case this widget is
+			// redefined after a widget inherits from it
+			_childConstructors: []
+		} );
+
+		basePrototype = new base();
+
+		// We need to make the options hash a property directly on the new instance
+		// otherwise we'll modify the options hash on the prototype that we're
+		// inheriting from
+		basePrototype.options = $.widget.extend( {}, basePrototype.options );
+		$.each( prototype, function( prop, value ) {
+			if ( !$.isFunction( value ) ) {
+				proxiedPrototype[ prop ] = value;
+				return;
+			}
+			proxiedPrototype[ prop ] = ( function() {
+				function _super() {
+					return base.prototype[ prop ].apply( this, arguments );
+				}
+
+				function _superApply( args ) {
+					return base.prototype[ prop ].apply( this, args );
+				}
+
+				return function() {
+					var __super = this._super;
+					var __superApply = this._superApply;
+					var returnValue;
+
+					this._super = _super;
+					this._superApply = _superApply;
+
+					returnValue = value.apply( this, arguments );
+
+					this._super = __super;
+					this._superApply = __superApply;
+
+					return returnValue;
+				};
+			} )();
+		} );
+		constructor.prototype = $.widget.extend( basePrototype, {
+
+			// TODO: remove support for widgetEventPrefix
+			// always use the name + a colon as the prefix, e.g., draggable:start
+			// don't prefix for widgets that aren't DOM-based
+			widgetEventPrefix: existingConstructor ? ( basePrototype.widgetEventPrefix || name ) : name
+		}, proxiedPrototype, {
+			constructor: constructor,
+			namespace: namespace,
+			widgetName: name,
+			widgetFullName: fullName
+		} );
+
+		// If this widget is being redefined then we need to find all widgets that
+		// are inheriting from it and redefine all of them so that they inherit from
+		// the new version of this widget. We're essentially trying to replace one
+		// level in the prototype chain.
+		if ( existingConstructor ) {
+			$.each( existingConstructor._childConstructors, function( i, child ) {
+				var childPrototype = child.prototype;
+
+				// Redefine the child widget using the same prototype that was
+				// originally used, but inherit from the new version of the base
+				$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor,
+					child._proto );
+			} );
+
+			// Remove the list of existing child constructors from the old constructor
+			// so the old child constructors can be garbage collected
+			delete existingConstructor._childConstructors;
+		} else {
+			base._childConstructors.push( constructor );
+		}
+
+		$.widget.bridge( name, constructor );
+
+		return constructor;
+	};
+
+	$.widget.extend = function( target ) {
+		var input = widgetSlice.call( arguments, 1 );
+		var inputIndex = 0;
+		var inputLength = input.length;
+		var key;
+		var value;
+
+		for ( ; inputIndex < inputLength; inputIndex++ ) {
+			for ( key in input[ inputIndex ] ) {
+				value = input[ inputIndex ][ key ];
+				if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
+
+					// Clone objects
+					if ( $.isPlainObject( value ) ) {
+						target[ key ] = $.isPlainObject( target[ key ] ) ?
+							$.widget.extend( {}, target[ key ], value ) :
+
+							// Don't extend strings, arrays, etc. with objects
+							$.widget.extend( {}, value );
+
+					// Copy everything else by reference
+					} else {
+						target[ key ] = value;
+					}
+				}
+			}
+		}
+		return target;
+	};
+
+	$.widget.bridge = function( name, object ) {
+		var fullName = object.prototype.widgetFullName || name;
+		$.fn[ name ] = function( options ) {
+			var isMethodCall = typeof options === "string";
+			var args = widgetSlice.call( arguments, 1 );
+			var returnValue = this;
+
+			if ( isMethodCall ) {
+				this.each( function() {
+					var methodValue;
+					var instance = $.data( this, fullName );
+
+					if ( options === "instance" ) {
+						returnValue = instance;
+						return false;
+					}
+
+					if ( !instance ) {
+						return $.error( "cannot call methods on " + name +
+							" prior to initialization; " +
+							"attempted to call method '" + options + "'" );
+					}
+
+					if ( !$.isFunction( instance[ options ] ) || options.charAt( 0 ) === "_" ) {
+						return $.error( "no such method '" + options + "' for " + name +
+							" widget instance" );
+					}
+
+					methodValue = instance[ options ].apply( instance, args );
+
+					if ( methodValue !== instance && methodValue !== undefined ) {
+						returnValue = methodValue && methodValue.jquery ?
+							returnValue.pushStack( methodValue.get() ) :
+							methodValue;
+						return false;
+					}
+				} );
+			} else {
+
+				// Allow multiple hashes to be passed on init
+				if ( args.length ) {
+					options = $.widget.extend.apply( null, [ options ].concat( args ) );
+				}
+
+				this.each( function() {
+					var instance = $.data( this, fullName );
+					if ( instance ) {
+						instance.option( options || {} );
+						if ( instance._init ) {
+							instance._init();
+						}
+					} else {
+						$.data( this, fullName, new object( options, this ) );
+					}
+				} );
+			}
+
+			return returnValue;
+		};
+	};
+
+	$.Widget = function( /* options, element */ ) {};
+	$.Widget._childConstructors = [];
+
+	$.Widget.prototype = {
+		widgetName: "widget",
+		widgetEventPrefix: "",
+		defaultElement: "<div>",
+
+		options: {
+			classes: {},
+			disabled: false,
+
+			// Callbacks
+			create: null
+		},
+
+		_createWidget: function( options, element ) {
+			element = $( element || this.defaultElement || this )[ 0 ];
+			this.element = $( element );
+			this.uuid = widgetUuid++;
+			this.eventNamespace = "." + this.widgetName + this.uuid;
+
+			this.bindings = $();
+			this.hoverable = $();
+			this.focusable = $();
+			this.classesElementLookup = {};
+
+			if ( element !== this ) {
+				$.data( element, this.widgetFullName, this );
+				this._on( true, this.element, {
+					remove: function( event ) {
+						if ( event.target === element ) {
+							this.destroy();
+						}
+					}
+				} );
+				this.document = $( element.style ?
+
+					// Element within the document
+					element.ownerDocument :
+
+					// Element is window or document
+					element.document || element );
+				this.window = $( this.document[ 0 ].defaultView || this.document[ 0 ].parentWindow );
+			}
+
+			this.options = $.widget.extend( {},
+				this.options,
+				this._getCreateOptions(),
+				options );
+
+			this._create();
+
+			if ( this.options.disabled ) {
+				this._setOptionDisabled( this.options.disabled );
+			}
+
+			this._trigger( "create", null, this._getCreateEventData() );
+			this._init();
+		},
+
+		_getCreateOptions: function() {
+			return {};
+		},
+
+		_getCreateEventData: $.noop,
+
+		_create: $.noop,
+
+		_init: $.noop,
+
+		destroy: function() {
+			var that = this;
+
+			this._destroy();
+			$.each( this.classesElementLookup, function( key, value ) {
+				that._removeClass( value, key );
+			} );
+
+			// We can probably remove the unbind calls in 2.0
+			// all event bindings should go through this._on()
+			this.element
+				.off( this.eventNamespace )
+				.removeData( this.widgetFullName );
+			this.widget()
+				.off( this.eventNamespace )
+				.removeAttr( "aria-disabled" );
+
+			// Clean up events and states
+			this.bindings.off( this.eventNamespace );
+		},
+
+		_destroy: $.noop,
+
+		widget: function() {
+			return this.element;
+		},
+
+		option: function( key, value ) {
+			var options = key;
+			var parts;
+			var curOption;
+			var i;
+
+			if ( arguments.length === 0 ) {
+
+				// Don't return a reference to the internal hash
+				return $.widget.extend( {}, this.options );
+			}
+
+			if ( typeof key === "string" ) {
+
+				// Handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
+				options = {};
+				parts = key.split( "." );
+				key = parts.shift();
+				if ( parts.length ) {
+					curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
+					for ( i = 0; i < parts.length - 1; i++ ) {
+						curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
+						curOption = curOption[ parts[ i ] ];
+					}
+					key = parts.pop();
+					if ( arguments.length === 1 ) {
+						return curOption[ key ] === undefined ? null : curOption[ key ];
+					}
+					curOption[ key ] = value;
+				} else {
+					if ( arguments.length === 1 ) {
+						return this.options[ key ] === undefined ? null : this.options[ key ];
+					}
+					options[ key ] = value;
+				}
+			}
+
+			this._setOptions( options );
+
+			return this;
+		},
+
+		_setOptions: function( options ) {
+			var key;
+
+			for ( key in options ) {
+				this._setOption( key, options[ key ] );
+			}
+
+			return this;
+		},
+
+		_setOption: function( key, value ) {
+			if ( key === "classes" ) {
+				this._setOptionClasses( value );
+			}
+
+			this.options[ key ] = value;
+
+			if ( key === "disabled" ) {
+				this._setOptionDisabled( value );
+			}
+
+			return this;
+		},
+
+		_setOptionClasses: function( value ) {
+			var classKey, elements, currentElements;
+
+			for ( classKey in value ) {
+				currentElements = this.classesElementLookup[ classKey ];
+				if ( value[ classKey ] === this.options.classes[ classKey ] ||
+						!currentElements ||
+						!currentElements.length ) {
+					continue;
+				}
+
+				// We are doing this to create a new jQuery object because the _removeClass() call
+				// on the next line is going to destroy the reference to the current elements being
+				// tracked. We need to save a copy of this collection so that we can add the new classes
+				// below.
+				elements = $( currentElements.get() );
+				this._removeClass( currentElements, classKey );
+
+				// We don't use _addClass() here, because that uses this.options.classes
+				// for generating the string of classes. We want to use the value passed in from
+				// _setOption(), this is the new value of the classes option which was passed to
+				// _setOption(). We pass this value directly to _classes().
+				elements.addClass( this._classes( {
+					element: elements,
+					keys: classKey,
+					classes: value,
+					add: true
+				} ) );
+			}
+		},
+
+		_setOptionDisabled: function( value ) {
+			this._toggleClass( this.widget(), this.widgetFullName + "-disabled", null, !!value );
+
+			// If the widget is becoming disabled, then nothing is interactive
+			if ( value ) {
+				this._removeClass( this.hoverable, null, "ui-state-hover" );
+				this._removeClass( this.focusable, null, "ui-state-focus" );
+			}
+		},
+
+		enable: function() {
+			return this._setOptions( { disabled: false } );
+		},
+
+		disable: function() {
+			return this._setOptions( { disabled: true } );
+		},
+
+		_classes: function( options ) {
+			var full = [];
+			var that = this;
+
+			options = $.extend( {
+				element: this.element,
+				classes: this.options.classes || {}
+			}, options );
+
+			function processClassString( classes, checkOption ) {
+				var current, i;
+				for ( i = 0; i < classes.length; i++ ) {
+					current = that.classesElementLookup[ classes[ i ] ] || $();
+					if ( options.add ) {
+						current = $( $.unique( current.get().concat( options.element.get() ) ) );
+					} else {
+						current = $( current.not( options.element ).get() );
+					}
+					that.classesElementLookup[ classes[ i ] ] = current;
+					full.push( classes[ i ] );
+					if ( checkOption && options.classes[ classes[ i ] ] ) {
+						full.push( options.classes[ classes[ i ] ] );
+					}
+				}
+			}
+
+			if ( options.keys ) {
+				processClassString( options.keys.match( /\S+/g ) || [], true );
+			}
+			if ( options.extra ) {
+				processClassString( options.extra.match( /\S+/g ) || [] );
+			}
+
+			return full.join( " " );
+		},
+
+		_removeClass: function( element, keys, extra ) {
+			return this._toggleClass( element, keys, extra, false );
+		},
+
+		_addClass: function( element, keys, extra ) {
+			return this._toggleClass( element, keys, extra, true );
+		},
+
+		_toggleClass: function( element, keys, extra, add ) {
+			add = ( typeof add === "boolean" ) ? add : extra;
+			var shift = ( typeof element === "string" || element === null ),
+				options = {
+					extra: shift ? keys : extra,
+					keys: shift ? element : keys,
+					element: shift ? this.element : element,
+					add: add
+				};
+			options.element.toggleClass( this._classes( options ), add );
+			return this;
+		},
+
+		_on: function( suppressDisabledCheck, element, handlers ) {
+			var delegateElement;
+			var instance = this;
+
+			// No suppressDisabledCheck flag, shuffle arguments
+			if ( typeof suppressDisabledCheck !== "boolean" ) {
+				handlers = element;
+				element = suppressDisabledCheck;
+				suppressDisabledCheck = false;
+			}
+
+			// No element argument, shuffle and use this.element
+			if ( !handlers ) {
+				handlers = element;
+				element = this.element;
+				delegateElement = this.widget();
+			} else {
+				element = delegateElement = $( element );
+				this.bindings = this.bindings.add( element );
+			}
+
+			$.each( handlers, function( event, handler ) {
+				function handlerProxy() {
+
+					// Allow widgets to customize the disabled handling
+					// - disabled as an array instead of boolean
+					// - disabled class as method for disabling individual parts
+					if ( !suppressDisabledCheck &&
+							( instance.options.disabled === true ||
+							$( this ).hasClass( "ui-state-disabled" ) ) ) {
+						return;
+					}
+					return ( typeof handler === "string" ? instance[ handler ] : handler )
+						.apply( instance, arguments );
+				}
+
+				// Copy the guid so direct unbinding works
+				if ( typeof handler !== "string" ) {
+					handlerProxy.guid = handler.guid =
+						handler.guid || handlerProxy.guid || $.guid++;
+				}
+
+				var match = event.match( /^([\w:-]*)\s*(.*)$/ );
+				var eventName = match[ 1 ] + instance.eventNamespace;
+				var selector = match[ 2 ];
+
+				if ( selector ) {
+					delegateElement.on( eventName, selector, handlerProxy );
+				} else {
+					element.on( eventName, handlerProxy );
+				}
+			} );
+		},
+
+		_off: function( element, eventName ) {
+			eventName = ( eventName || "" ).split( " " ).join( this.eventNamespace + " " ) +
+				this.eventNamespace;
+			element.off( eventName ).off( eventName );
+
+			// Clear the stack to avoid memory leaks (#10056)
+			this.bindings = $( this.bindings.not( element ).get() );
+			this.focusable = $( this.focusable.not( element ).get() );
+			this.hoverable = $( this.hoverable.not( element ).get() );
+		},
+
+		_delay: function( handler, delay ) {
+			function handlerProxy() {
+				return ( typeof handler === "string" ? instance[ handler ] : handler )
+					.apply( instance, arguments );
+			}
+			var instance = this;
+			return setTimeout( handlerProxy, delay || 0 );
+		},
+
+		_hoverable: function( element ) {
+			this.hoverable = this.hoverable.add( element );
+			this._on( element, {
+				mouseenter: function( event ) {
+					this._addClass( $( event.currentTarget ), null, "ui-state-hover" );
+				},
+				mouseleave: function( event ) {
+					this._removeClass( $( event.currentTarget ), null, "ui-state-hover" );
+				}
+			} );
+		},
+
+		_focusable: function( element ) {
+			this.focusable = this.focusable.add( element );
+			this._on( element, {
+				focusin: function( event ) {
+					this._addClass( $( event.currentTarget ), null, "ui-state-focus" );
+				},
+				focusout: function( event ) {
+					this._removeClass( $( event.currentTarget ), null, "ui-state-focus" );
+				}
+			} );
+		},
+
+		_trigger: function( type, event, data ) {
+			var prop, orig;
+			var callback = this.options[ type ];
+
+			data = data || {};
+			event = $.Event( event );
+			event.type = ( type === this.widgetEventPrefix ?
+				type :
+				this.widgetEventPrefix + type ).toLowerCase();
+
+			// The original event may come from any element
+			// so we need to reset the target on the new event
+			event.target = this.element[ 0 ];
+
+			// Copy original event properties over to the new event
+			orig = event.originalEvent;
+			if ( orig ) {
+				for ( prop in orig ) {
+					if ( !( prop in event ) ) {
+						event[ prop ] = orig[ prop ];
+					}
+				}
+			}
+
+			this.element.trigger( event, data );
+			return !( $.isFunction( callback ) &&
+				callback.apply( this.element[ 0 ], [ event ].concat( data ) ) === false ||
+				event.isDefaultPrevented() );
+		}
+	};
+
+	$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
+		$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+			if ( typeof options === "string" ) {
+				options = { effect: options };
+			}
+
+			var hasOptions;
+			var effectName = !options ?
+				method :
+				options === true || typeof options === "number" ?
+					defaultEffect :
+					options.effect || defaultEffect;
+
+			options = options || {};
+			if ( typeof options === "number" ) {
+				options = { duration: options };
+			}
+
+			hasOptions = !$.isEmptyObject( options );
+			options.complete = callback;
+
+			if ( options.delay ) {
+				element.delay( options.delay );
+			}
+
+			if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
+				element[ method ]( options );
+			} else if ( effectName !== method && element[ effectName ] ) {
+				element[ effectName ]( options.duration, options.easing, callback );
+			} else {
+				element.queue( function( next ) {
+					$( this )[ method ]();
+					if ( callback ) {
+						callback.call( element[ 0 ] );
+					}
+					next();
+				} );
+			}
+		};
+	} );
+
+	return $.widget;
+
+	} ) );
+
+
+/***/ },
+/* 334 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;( function( factory ) {
+		if ( true ) {
+
+			// AMD. Register as an anonymous module.
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(296) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+
+			// Browser globals
+			factory( jQuery );
+		}
+	} ( function( $ ) {
+
+	$.ui = $.ui || {};
+
+	return $.ui.version = "1.12.0";
+
+	} ) );
+
+
+/***/ },
+/* 335 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var Directory = __webpack_require__(336);
+
+	// --------------------
+
+	var WebPanel = React.createClass({
+	    displayName: "WebPanel",
+
+	    render: function render() {
+	        var renderedDirs = this.props.dirs.map(function (dir) {
+	            return React.createElement(Directory, {
+	                dir: dir.name,
+	                key: dir.name });
+	        });
+	        return React.createElement(
+	            "div",
+	            { className: "web-panel" },
+	            renderedDirs
+	        );
+	    }
+	});
+
+	module.exports = WebPanel;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "web-panel.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var Page = __webpack_require__(337);
+
+	// ------------------
+
+	var Directory = React.createClass({
+	    displayName: "Directory",
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "directory" },
+	            this.props.dir
+	        );
+	    }
+	});
+
+	module.exports = Directory;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "directory.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 337 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var Page = React.createClass({
+	    displayName: "Page",
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "page" },
+	            this.props.name
+	        );
+	    }
+	});
+
+	module.exports = Page;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 338 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var Bookmarks = React.createClass({
+	    displayName: "Bookmarks",
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "" },
+	            "Bookmarks..."
+	        );
+	    }
+	});
+
+	module.exports = Bookmarks;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "bookmarks.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var $ = __webpack_require__(296);
+
+	var storage = __webpack_require__(298);
+	var resources = __webpack_require__(297);
+
+	// --------------------------------
+
+	function ajaxLog(message) {
+	    console.log("[APP] [AJAX CALL] [GET DIRECTORIES] " + message);
+	}
+
+	function getDirectories(userId, placement, callbacks) {
+	    callbacks.onStart();
+	    ajaxLog("starts with userId:" + userId + ", place:" + placement);
+	    $.ajax({
+	        url: resources.directories.getAllInPlace.url(userId, placement),
+	        method: resources.directories.getAllInPlace.method,
+	        dataType: 'json',
+	        cache: false,
+	        beforeSend: function beforeSend(xhr) {
+	            xhr.setRequestHeader('Authentication', 'Bearer ' + storage.getJwt());
+	        },
+	        statusCode: {
+	            200: function _(data, statusText, xhr) {
+	                ajaxLog(placement + " get...");
+	                callbacks.onSuccess(data);
+	            },
+	            400: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("bad request : " + JSON.parse(xhr.responseText).message);
+	                callbacks.onFail(JSON.parse(xhr.responseText).message);
+	            },
+	            401: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("not authorized : " + errorThrown);
+	                callbacks.onUnauthenticated();
+	            },
+	            404: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("resource not found : " + errorThrown);
+	                callbacks.onFail("Resource not found.");
+	            },
+	            500: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("internal server error : " + JSON.parse(xhr.responseText).message);
+	                callbacks.onServerError(JSON.parse(xhr.responseText).message);
+	            }
+	        }
+	    });
+	}
+
+	module.exports = getDirectories;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "directories-get-all-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var connect = __webpack_require__(257).connect;
+
+	var actionDispatchers = __webpack_require__(293);
+	var LandingPage = __webpack_require__(341);
+
+	function mapStateToProps(state) {
+	    return {
+	        goToLogin: actionDispatchers.app.dispatchGoToLoginAction,
+	        goToRegistration: actionDispatchers.app.dispatchGoToRegisterAction
+	    };
+	}
+
+	var LandingPageContainer = connect(mapStateToProps)(LandingPage);
+
+	module.exports = LandingPageContainer;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "landing-page-container.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var LandingPage = React.createClass({
+	    displayName: "LandingPage",
+
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "landing-page" },
+	            React.createElement(
+	                "button",
+	                { type: "button",
+	                    className: "go-tologin-button-on-landing-page",
+	                    onClick: this.props.goToLogin },
+	                "Login"
+	            ),
+	            React.createElement(
+	                "button",
+	                { type: "button",
+	                    className: "go-to-registration-button-on-landing-page",
+	                    onClick: this.props.goToRegistration },
+	                "Registration"
+	            ),
+	            React.createElement("br", null),
+	            "Landing page."
+	        );
+	    }
+	});
+
+	module.exports = LandingPage;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "landing-page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var connect = __webpack_require__(257).connect;
+
+	var storage = __webpack_require__(298);
+	var LoginPage = __webpack_require__(343);
+	var actionDispatchers = __webpack_require__(293);
+	var loginAjaxCall = __webpack_require__(349);
+	var validateNickNameAjaxCall = __webpack_require__(350);
+	var validatePasswordAjaxCall = __webpack_require__(351);
+
+	// ----------------------
+
+	var passwordValidationDelay;
+	var nickNameValidationDelay;
+
+	function beginDelayedPasswordValidation(newPassword) {
+	    var passwordAjaxValidationCallbacks = {
+	        onStart: actionDispatchers.login.dispatchPasswordValidationBeginsAction,
+	        onValid: function onValid() {
+	            actionDispatchers.login.dispatchPasswordValidAction();
+	            actionDispatchers.login.dispatchAssessIfLoginAllowedAction();
+	        },
+	        onInvalid: actionDispatchers.login.dispatchPasswordInvalidAction
+	    };
+	    validatePasswordAjaxCall(newPassword, passwordAjaxValidationCallbacks);
+	}
+
+	function beginDelayedNickNameValidation(newNickName) {
+	    var nickNameAjaxValidationCallbacks = {
+	        onStart: actionDispatchers.login.dispatchNickNameValidationBeginsAction,
+	        onValid: function onValid() {
+	            actionDispatchers.login.dispatchNickNameValidAction();
+	            actionDispatchers.login.dispatchAssessIfLoginAllowedAction();
+	        },
+	        onInvalid: actionDispatchers.login.dispatchNickNameInvalidAction
+	    };
+	    validateNickNameAjaxCall(newNickName, nickNameAjaxValidationCallbacks);
+	}
+
+	function passwordChanged(newPassword) {
+	    window.clearTimeout(passwordValidationDelay);
+	    actionDispatchers.login.dispatchPasswordChangedAction(newPassword);
+	    passwordValidationDelay = window.setTimeout(beginDelayedPasswordValidation, 700, newPassword);
+	}
+
+	function nickNameChanged(newNickName) {
+	    window.clearTimeout(nickNameValidationDelay);
+	    actionDispatchers.login.dispatchNickNameChangedAction(newNickName);
+	    nickNameValidationDelay = window.setTimeout(beginDelayedNickNameValidation, 700, newNickName);
+	}
+
+	function goToRegistration() {
+	    actionDispatchers.app.dispatchGoToRegisterAction();
+	}
+
+	function _tryToLogin(loginData) {
+	    var loginAjaxCallbacks = {
+	        onCallStart: actionDispatchers.login.dispatchLoginAttemptBegins,
+	        onCallSuccess: function onCallSuccess(jwtString) {
+	            actionDispatchers.login.dispatchLoginSuccessAction(storage.saveAndParseJwt(jwtString));
+	        },
+	        onUnauthorized: actionDispatchers.login.dispatchLoginFailedAction,
+	        onBadRequest: actionDispatchers.login.dispatchLoginFailedAction
+	    };
+	    loginAjaxCall(loginData, loginAjaxCallbacks);
+	}
+
+	function mapStateToProps(state) {
+	    return {
+	        nickName: state.loginPage.nickName,
+	        nickNameValid: state.loginPage.nickNameValid,
+	        nickNameInvalidMessage: state.loginPage.nickNameInvalidMessage,
+	        nickNameValidationInProgress: state.loginPage.nickNameValidationInProgress,
+
+	        password: state.loginPage.password,
+	        passwordValid: state.loginPage.passwordValid,
+	        passwordInvalidMessage: state.loginPage.passwordInvalidMessage,
+	        passwordValidationInProgress: state.loginPage.passwordValidationInProgress,
+
+	        loginFailureMessage: state.loginPage.loginFailureMessage,
+
+	        loginAllowed: state.loginPage.loginAllowed,
+
+	        goToLanding: actionDispatchers.app.dispatchGoToLandingPageAction,
+	        goToRegistration: goToRegistration,
+	        tryToLogin: function tryToLogin() {
+	            if (state.loginPage.loginAllowed) {
+	                var loginData = {
+	                    "nickName": state.loginPage.nickName,
+	                    "password": state.loginPage.password
+	                };
+	                _tryToLogin(loginData);
+	            }
+	        },
+	        nickNameChanged: nickNameChanged,
+	        passwordChanged: passwordChanged
+	    };
+	}
+
+	var LoginPageContainer = connect(mapStateToProps)(LoginPage);
+
+	module.exports = LoginPageContainer;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "login-page-container.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var React = __webpack_require__(155);
+
+	var LoginForm = __webpack_require__(344);
+	var FormFailureMessage = __webpack_require__(348);
+
+	var LoginPage = React.createClass({
+	    displayName: "LoginPage",
+
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            { className: "login-page" },
+	            "Login page",
+	            React.createElement(
+	                "button",
+	                {
+	                    type: "button",
+	                    className: "go-to-registration-button-on-login",
+	                    onClick: this.props.goToRegistration },
+	                "Registration"
+	            ),
+	            React.createElement(
+	                "button",
+	                {
+	                    type: "button",
+	                    className: "go-to-landing-button-on-login",
+	                    onClick: this.props.goToLanding },
+	                "Back"
+	            ),
+	            React.createElement("br", null),
+	            React.createElement(LoginForm, {
+	                nickName: this.props.nickName,
+	                nickNameValid: this.props.nickNameValid,
+	                nickNameInvalidMessage: this.props.nickNameInvalidMessage,
+	                nickNameValidationInProgress: this.props.nickNameValidationInProgress,
+
+	                password: this.props.password,
+	                passwordValid: this.props.passwordValid,
+	                passwordInvalidMessage: this.props.passwordInvalidMessage,
+	                passwordValidationInProgress: this.props.passwordValidationInProgress,
+
+	                loginAllowed: this.props.loginAllowed,
+	                loginAction: this.props.tryToLogin,
+	                nickNameChanged: this.props.nickNameChanged,
+	                passwordChanged: this.props.passwordChanged }),
+	            React.createElement(FormFailureMessage, {
+	                message: this.props.loginFailureMessage })
+	        );
+	    }
+	});
+
+	module.exports = LoginPage;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "login-page.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 344 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	var React = __webpack_require__(155);
+
+	var inlineStyles = __webpack_require__(326);
+	var AcceptedSign = __webpack_require__(345);
+	var FormFieldInvalidMessage = __webpack_require__(346);
+	var Spinner = __webpack_require__(347);
+
+	var LoginForm = React.createClass({
+	    displayName: 'LoginForm',
+
+
+	    nickNameInputChanged: function nickNameInputChanged(event) {
+	        this.props.nickNameChanged(event.target.value);
+	    },
+
+	    passwordInputChanged: function passwordInputChanged(event) {
+	        this.props.passwordChanged(event.target.value);
+	    },
+
+	    getLoginButtonStyle: function getLoginButtonStyle() {
+	        if (this.props.loginAllowed) {
+	            return inlineStyles.loginButtonActiveStyle;
+	        } else {
+	            return inlineStyles.loginButtonInactiveStyle;
+	        }
+	    },
+
+	    getNickNameInputStyle: function getNickNameInputStyle() {
+	        return inlineStyles.getInputStyle(this.props.nickNameValid);
+	    },
+
+	    getPasswordInputStyle: function getPasswordInputStyle() {
+	        return inlineStyles.getInputStyle(this.props.passwordValid);
+	    },
+
+	    isNickNameAccepted: function isNickNameAccepted() {
+	        return this.props.nickNameValid && this.props.nickName != "" && !this.props.nickNameValidationInProgress;
+	    },
+
+	    isPasswordAccepted: function isPasswordAccepted() {
+	        return this.props.passwordValid && this.props.password != "" && !this.props.passwordValidationInProgress;
+	    },
+
+	    render: function render() {
+	        var loginButtonStyle = this.getLoginButtonStyle();
+	        var nickNameInputStyle = this.getNickNameInputStyle();
+	        var passwordInputStyle = this.getPasswordInputStyle();
+	        return React.createElement(
+	            'div',
+	            { className: 'login-form' },
+	            React.createElement(
+	                'form',
+	                null,
+	                React.createElement(
+	                    'fieldset',
+	                    null,
+	                    React.createElement(
+	                        'label',
+	                        { className: 'login-form-label' },
+	                        'Nickname:'
+	                    ),
+	                    React.createElement('br', null),
+	                    React.createElement('input', { type: 'text',
+	                        className: 'login-form-input',
+	                        placeholder: 'nick_name',
+	                        style: nickNameInputStyle,
+	                        value: this.props.nickName,
+	                        onChange: this.nickNameInputChanged }),
+	                    React.createElement(AcceptedSign, { accepted: this.isNickNameAccepted() }),
+	                    React.createElement(FormFieldInvalidMessage, { message: this.props.nickNameInvalidMessage }),
+	                    React.createElement('br', null),
+	                    React.createElement(
+	                        'label',
+	                        { className: 'login-form-label' },
+	                        'Password:'
+	                    ),
+	                    React.createElement('br', null),
+	                    React.createElement('input', { type: 'password',
+	                        className: 'login-form-input',
+	                        style: passwordInputStyle,
+	                        value: this.props.password,
+	                        onChange: this.passwordInputChanged }),
+	                    React.createElement(AcceptedSign, { accepted: this.isPasswordAccepted() }),
+	                    React.createElement(FormFieldInvalidMessage, { message: this.props.passwordInvalidMessage }),
+	                    React.createElement('br', null)
+	                )
+	            ),
+	            React.createElement(
+	                'button',
+	                { type: 'button',
+	                    className: 'login-button',
+	                    style: loginButtonStyle,
+	                    onClick: this.props.loginAction },
+	                'Login'
+	            )
+	        );
+	    }
+	});
+
+	module.exports = LoginForm;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "login-form.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44354,7 +47782,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 316 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44363,14 +47791,14 @@
 
 	var React = __webpack_require__(155);
 
-	var FormFieldInvalidMessage = React.createClass({
-	    displayName: "FormFieldInvalidMessage",
+	var FormFieldInvalidInlineMessage = React.createClass({
+	    displayName: "FormFieldInvalidInlineMessage",
 
 	    render: function render() {
 	        if (this.props.message != "") {
 	            return React.createElement(
 	                "span",
-	                { className: "form-field-invalid-message" },
+	                { className: "form-field-invalid-inline-message" },
 	                React.createElement(
 	                    "b",
 	                    null,
@@ -44383,13 +47811,13 @@
 	    }
 	});
 
-	module.exports = FormFieldInvalidMessage;
+	module.exports = FormFieldInvalidInlineMessage;
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "form-field-invalid-message.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "form-field-invalid-inline-message.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 317 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44424,7 +47852,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 318 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44455,16 +47883,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 319 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var $ = __webpack_require__(296);
 
-	var resources = __webpack_require__(294);
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 
@@ -44489,7 +47917,7 @@
 	            },
 	            401: function _(xhr, statusText, errorThrown) {
 	                ajaxLog("fail, unauthorized with : " + JSON.parse(xhr.responseText).message);
-	                callbacks.onUnauthorized(JSON.parse(xhr.responseText).message);
+	                callbacks.onUnauthenticated(JSON.parse(xhr.responseText).message);
 	            },
 	            400: function _(xhr, statusText, errorThrown) {
 	                ajaxLog("fail, bad request with : " + JSON.parse(xhr.responseText).message);
@@ -44505,16 +47933,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 320 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var $ = __webpack_require__(296);
 
-	var resources = __webpack_require__(294);
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 
@@ -44553,16 +47981,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 321 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var $ = __webpack_require__(296);
 
-	var resources = __webpack_require__(294);
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 
@@ -44601,7 +48029,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 322 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44610,10 +48038,12 @@
 
 	var connect = __webpack_require__(257).connect;
 
-	var ErrorPage = __webpack_require__(323);
+	var ErrorPage = __webpack_require__(353);
 
 	function mapStateToProps(state) {
-	    return {};
+	    return {
+	        message: state.errorPage.message
+	    };
 	}
 
 	var ErrorPageContainer = connect(mapStateToProps)(ErrorPage);
@@ -44624,7 +48054,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 323 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44641,7 +48071,16 @@
 	        return React.createElement(
 	            'div',
 	            null,
-	            'Error page.'
+	            React.createElement(
+	                'h1',
+	                null,
+	                'Error occured :('
+	            ),
+	            React.createElement('br', null),
+	            '____________________',
+	            React.createElement('br', null),
+	            React.createElement('br', null),
+	            this.props.message
 	        );
 	    }
 	});
@@ -44652,7 +48091,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 324 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44661,14 +48100,14 @@
 
 	var connect = __webpack_require__(257).connect;
 
-	var storage = __webpack_require__(299);
-	var RegistrationPage = __webpack_require__(325);
-	var actionDispatchers = __webpack_require__(296);
-	var registrationAjaxCall = __webpack_require__(327);
-	var validateNickNameAjaxCall = __webpack_require__(320);
-	var validateNameAjaxCall = __webpack_require__(328);
-	var validateEmailAjaxCall = __webpack_require__(329);
-	var validatePasswordAjaxCall = __webpack_require__(321);
+	var storage = __webpack_require__(298);
+	var RegistrationPage = __webpack_require__(355);
+	var actionDispatchers = __webpack_require__(293);
+	var registrationAjaxCall = __webpack_require__(357);
+	var validateNickNameAjaxCall = __webpack_require__(358);
+	var validateNameAjaxCall = __webpack_require__(359);
+	var validateEmailAjaxCall = __webpack_require__(360);
+	var validatePasswordAjaxCall = __webpack_require__(351);
 
 	//---------------------
 
@@ -44883,7 +48322,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 325 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44892,8 +48331,8 @@
 
 	var React = __webpack_require__(155);
 
-	var RegistrationForm = __webpack_require__(326);
-	var FormFailureMessage = __webpack_require__(318);
+	var RegistrationForm = __webpack_require__(356);
+	var FormFailureMessage = __webpack_require__(348);
 
 	var RegistrationPage = React.createClass({
 	    displayName: "RegistrationPage",
@@ -44970,7 +48409,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 326 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -44979,9 +48418,9 @@
 
 	var React = __webpack_require__(155);
 
-	var inlineStyles = __webpack_require__(314);
-	var AcceptedSign = __webpack_require__(315);
-	var FormFieldInvalidMessage = __webpack_require__(316);
+	var inlineStyles = __webpack_require__(326);
+	var AcceptedSign = __webpack_require__(345);
+	var FormFieldInvalidMessage = __webpack_require__(346);
 
 	// -------------------------
 
@@ -45190,16 +48629,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 327 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var $ = __webpack_require__(296);
 
-	var resources = __webpack_require__(294);
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 
@@ -45229,7 +48668,7 @@
 	            },
 	            401: function _(xhr, statusText, errorThrown) {
 	                ajaxLog("fail, unauthorized with : " + JSON.parse(xhr.responseText).message);
-	                callbacks.onUnauthorized(JSON.parse(xhr.responseText).message);
+	                callbacks.onUnauthenticated(JSON.parse(xhr.responseText).message);
 	            }
 	        }
 	    });
@@ -45241,16 +48680,68 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 328 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var $ = __webpack_require__(296);
 
-	var resources = __webpack_require__(294);
+	var resources = __webpack_require__(297);
+
+	// --------------------------------
+
+	function ajaxLog(message) {
+	    console.log("[APP] [AJAX CALL] [NICK-FREE VALIDATION] " + message);
+	}
+
+	function validateNickName(newNickName, callbacks) {
+	    callbacks.onStart();
+	    ajaxLog("starts...");
+	    console.log(newNickName);
+	    var payload = { "payload": newNickName };
+	    $.ajax({
+	        url: resources.validation.freeNickNames.url,
+	        method: resources.validation.freeNickNames.method,
+	        dataType: "json",
+	        contentType: "application/json; charset=utf-8",
+	        data: JSON.stringify(payload),
+	        cache: false,
+	        statusCode: {
+	            200: function _() {
+	                ajaxLog("valid.");
+	                callbacks.onValid();
+	            },
+	            302: function _() {
+	                ajaxLog("nickName is not free.");
+	                callbacks.onInvalid("this nick is not free.");
+	            },
+	            400: function _(xhr, statusText, errorThrown) {
+	                ajaxLog("invalid : " + JSON.parse(xhr.responseText).message);
+	                callbacks.onInvalid(JSON.parse(xhr.responseText).message);
+	            }
+	        }
+	    });
+	}
+
+	module.exports = validateNickName;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(283); if (makeExportsHot(module, __webpack_require__(155))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "validate-nick-name-free-call.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 359 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	var $ = __webpack_require__(296);
+
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 
@@ -45289,16 +48780,16 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 329 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(77), RootInstanceProvider = __webpack_require__(85), ReactMount = __webpack_require__(87), React = __webpack_require__(155); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
 	"use strict";
 
-	var $ = __webpack_require__(293);
+	var $ = __webpack_require__(296);
 
-	var resources = __webpack_require__(294);
+	var resources = __webpack_require__(297);
 
 	// --------------------------------
 

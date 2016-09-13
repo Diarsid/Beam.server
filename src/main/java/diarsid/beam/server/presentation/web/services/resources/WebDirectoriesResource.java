@@ -109,6 +109,6 @@ public class WebDirectoriesResource {
             }
         } else {
             return composeResponseFrom(SC_BAD_REQUEST, place + " is invalid placement name.");
-        }        
+        } 
     }
 }

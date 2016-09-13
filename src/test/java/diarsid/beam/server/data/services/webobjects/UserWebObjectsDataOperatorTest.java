@@ -26,7 +26,7 @@ import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
 import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
 import diarsid.beam.server.domain.services.exceptions.BadDataRequestArgumentsException;
-import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperatorWorker;
+import diarsid.beam.server.domain.services.webobjects.UserWebObjectsDataOperator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,6 +34,7 @@ import static org.junit.Assert.fail;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 
 import static diarsid.beam.server.domain.entities.WebPlacement.BOOKMARKS;
+import static diarsid.beam.server.domain.entities.WebPlacement.WEBPANEL;
 
 import static util.FakeUserProducer.newFakeUser;
 import static util.FakeWebDirsProducer.DIR_NAME_TEMPLATE;
@@ -42,15 +43,13 @@ import static util.FakeWebDirsProducer.newFakeDirs;
 import static util.FakeWebPagesProducer.PAGE_NAME_TEMPLATE;
 import static util.FakeWebPagesProducer.newFakePages;
 
-import static diarsid.beam.server.domain.entities.WebPlacement.WEBPANEL;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppTestConfig.class})
 @Transactional
-public class UserWebObjectsDataOperatorWorkerTest {
+public class UserWebObjectsDataOperatorTest {
     
     @Autowired
-    private UserWebObjectsDataOperatorWorker dataOperator;
+    private UserWebObjectsDataOperator dataOperator;
         
     @Autowired
     private RepositoryUsers usersRepo;
@@ -62,7 +61,7 @@ public class UserWebObjectsDataOperatorWorkerTest {
     private JdbcTemplate jdbcTemplate;
     
     @Autowired
-    public UserWebObjectsDataOperatorWorkerTest() {       
+    public UserWebObjectsDataOperatorTest() {       
     }
     
 //    @Before
