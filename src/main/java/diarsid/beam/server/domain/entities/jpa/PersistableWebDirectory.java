@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import diarsid.beam.server.domain.entities.OrderableWebObject;
 import diarsid.beam.server.domain.entities.OrderableWebObjectsCollection;
+import diarsid.beam.server.domain.entities.WebPlacement;
 
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.CascadeType.MERGE;
@@ -30,6 +31,8 @@ import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import static diarsid.beam.server.domain.entities.WebPlacement.placementOf;
 
 /**
  *
@@ -103,8 +106,8 @@ public class PersistableWebDirectory
         return (List<? extends OrderableWebObject>) this.pages;
     }
 
-    public String getPlace() {
-        return place;
+    public WebPlacement getPlace() {
+        return placementOf(place);
     }
 
     public List<PersistableWebPage> getPages() {
@@ -121,8 +124,8 @@ public class PersistableWebDirectory
         this.order = order;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setPlace(WebPlacement place) {
+        this.place = place.name();
     }
 
     public void setPages(List<PersistableWebPage> pages) {

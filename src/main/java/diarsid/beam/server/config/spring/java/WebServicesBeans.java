@@ -20,9 +20,11 @@ import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
 import diarsid.beam.server.presentation.web.services.filters.AuthenticationFilter;
 import diarsid.beam.server.presentation.web.services.resources.AuthenticationResource;
 import diarsid.beam.server.presentation.web.services.resources.SingleWebDirectoryResource;
+import diarsid.beam.server.presentation.web.services.resources.SingleWebPageResource;
 import diarsid.beam.server.presentation.web.services.resources.UsersValidationResource;
 import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
 import diarsid.beam.server.presentation.web.services.resources.WebObjectsValidationResource;
+import diarsid.beam.server.presentation.web.services.resources.WebPagesResource;
 
 /**
  *
@@ -64,11 +66,22 @@ public class WebServicesBeans {
     }
     
     @Bean
-    public WebDirectoriesResource webDirectoriesResource(
-            UserWebObjectsService webObjects, 
-            UsersService users, 
+    public WebPagesResource webPagesResource(
+            UserWebObjectsService webObjects,
             JavaObjectToJsonConverter toJsonConverter) {
-        return new WebDirectoriesResource(webObjects, users, toJsonConverter);
+        return new WebPagesResource(webObjects, toJsonConverter);
+    }
+    
+    @Bean
+    public SingleWebPageResource singleWebPageResource(
+            UserWebObjectsService webObjects, JavaObjectToJsonConverter toJsonConverter) {
+        return new SingleWebPageResource(webObjects, toJsonConverter);
+    }
+    
+    @Bean
+    public WebDirectoriesResource webDirectoriesResource(
+            UserWebObjectsService webObjects, JavaObjectToJsonConverter toJsonConverter) {
+        return new WebDirectoriesResource(webObjects, toJsonConverter);
     }
     
     @Bean

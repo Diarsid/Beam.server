@@ -6,8 +6,8 @@
 
 package util;
 
-import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
-import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 
 /**
  *
@@ -18,17 +18,17 @@ public class FakeUserDataProducer {
     private FakeUserDataProducer() {
     }
     
-    public static UserRegistrationRequestData fakeRegistration(String name, String surname, String nick, String email, String pass) {
-        return new UserRegistrationRequestData(name, surname, nick, email, pass);
+    public static JsonUserRegistration fakeRegistration(String name, String surname, String nick, String email, String pass) {
+        return new JsonUserRegistration(name, surname, nick, email, pass);
     }
     
-    public static UserLoginRequestData fakeLogin(String nick, String pass) {
-        return new UserLoginRequestData(nick, pass);
+    public static JsonUserLogin fakeLogin(String nick, String pass) {
+        return new JsonUserLogin(nick, pass);
     }
     
-//    public static UserRegistrationRequestData fakeRegistrationWithInvalid(String field) {
+//    public static JsonUserRegistration fakeRegistrationWithInvalid(String field) {
 //        field = field.trim().toLowerCase();
-//        UserRegistrationRequestData registration;
+//        JsonUserRegistration registration;
 //        switch ( field ) {
 //            case "name" : {
 //                

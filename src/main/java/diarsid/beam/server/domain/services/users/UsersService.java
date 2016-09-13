@@ -8,8 +8,8 @@ package diarsid.beam.server.domain.services.users;
 import org.springframework.transaction.annotation.Transactional;
 
 import diarsid.beam.server.domain.entities.jpa.PersistableUser;
-import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
-import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 import diarsid.beam.server.presentation.web.services.auth.UserRole;
 
 /**
@@ -26,9 +26,9 @@ public interface UsersService {
     
     PersistableUser findBy(int userId);
     
-    PersistableUser findBy(UserLoginRequestData login);
+    PersistableUser findBy(JsonUserLogin login);
     
-    PersistableUser createUserBy(UserRegistrationRequestData registration); 
+    PersistableUser createUserBy(JsonUserRegistration registration); 
     
     boolean isNicknameFree(String nick);
 }

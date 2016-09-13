@@ -13,6 +13,7 @@ import diarsid.beam.server.domain.services.exceptions.UserRegistrationInvalidExc
 import diarsid.beam.server.domain.services.exceptions.UsersServiceUnknownLogicException;
 import diarsid.beam.server.domain.services.exceptions.WebObjectNameInvalidException;
 import diarsid.beam.server.domain.services.exceptions.WebObjectUrlInvalidException;
+import diarsid.beam.server.domain.services.exceptions.WebPlacementNameInvalidException;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
@@ -47,6 +48,9 @@ public class DomainExceptionOnHttpStatusMapper {
             return SC_BAD_REQUEST;
         }
         if ( e instanceof WebObjectUrlInvalidException ) {
+            return SC_BAD_REQUEST;
+        }
+        if ( e instanceof WebPlacementNameInvalidException ) {
             return SC_BAD_REQUEST;
         }
         return SC_INTERNAL_SERVER_ERROR;

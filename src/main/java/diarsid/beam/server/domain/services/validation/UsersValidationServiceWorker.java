@@ -11,14 +11,20 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
-import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 
 import static org.apache.commons.validator.routines.EmailValidator.getInstance;
 
 import static diarsid.beam.server.domain.services.validation.ValidationResultImpl.validationFailsWith;
 import static diarsid.beam.server.domain.services.validation.ValidationResultImpl.validationOk;
 
+import static org.apache.commons.validator.routines.EmailValidator.getInstance;
+import static org.apache.commons.validator.routines.EmailValidator.getInstance;
+import static org.apache.commons.validator.routines.EmailValidator.getInstance;
+import static org.apache.commons.validator.routines.EmailValidator.getInstance;
+import static org.apache.commons.validator.routines.EmailValidator.getInstance;
+import static org.apache.commons.validator.routines.EmailValidator.getInstance;
 import static org.apache.commons.validator.routines.EmailValidator.getInstance;
 
 /**
@@ -66,7 +72,7 @@ public class UsersValidationServiceWorker implements UsersValidationService {
     }
     
     @Override
-    public ValidationResult validateRegistrationInfo(UserRegistrationRequestData registration) {
+    public ValidationResult validateRegistrationInfo(JsonUserRegistration registration) {
         ValidationResult result;
         result = this.validateName(registration.getName());
         if ( ! result.isOk() ) {
@@ -92,7 +98,7 @@ public class UsersValidationServiceWorker implements UsersValidationService {
     }
     
     @Override
-    public ValidationResult validateLoginInfo(UserLoginRequestData login) {
+    public ValidationResult validateLoginInfo(JsonUserLogin login) {
         ValidationResult result;
         result = this.validateNick(login.getNickName());
         if ( ! result.isOk() ) {

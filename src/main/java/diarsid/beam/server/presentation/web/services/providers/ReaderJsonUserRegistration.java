@@ -20,24 +20,25 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 
 /**
  *
  * @author Diarsid
  */
 
-@Component
 @Provider
 @Consumes(APPLICATION_JSON)
-public class ReaderUserLoginData implements MessageBodyReader<UserLoginRequestData> {
+@Component
+public class ReaderJsonUserRegistration implements MessageBodyReader<JsonUserRegistration>{
     
     private final JsonToJavaObjectConverter converter;
     
-    public ReaderUserLoginData(JsonToJavaObjectConverter converter) {
+    public ReaderJsonUserRegistration(JsonToJavaObjectConverter converter) {
         this.converter = converter;
     }
     
@@ -45,12 +46,12 @@ public class ReaderUserLoginData implements MessageBodyReader<UserLoginRequestDa
     public boolean isReadable(
             Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         
-        return type.equals(UserLoginRequestData.class);
+        return type.equals(JsonUserRegistration.class);
     }
 
     @Override
-    public UserLoginRequestData readFrom(
-            Class<UserLoginRequestData> type, 
+    public JsonUserRegistration readFrom(
+            Class<JsonUserRegistration> type, 
             Type genericType, 
             Annotation[] annotations, 
             MediaType mediaType, 
@@ -58,7 +59,7 @@ public class ReaderUserLoginData implements MessageBodyReader<UserLoginRequestDa
             InputStream entityStream)
             throws IOException, WebApplicationException {
         
-        return (UserLoginRequestData) this.converter
-                .objectivize(entityStream, UserLoginRequestData.class);
+        return (JsonUserRegistration) this.converter
+                .objectivize(entityStream, JsonUserRegistration.class);
     }
 }

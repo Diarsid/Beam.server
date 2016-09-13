@@ -5,8 +5,8 @@
  */
 package diarsid.beam.server.domain.services.validation;
 
-import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
-import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 
 /**
  *
@@ -16,7 +16,7 @@ public interface UsersValidationService {
 
     ValidationResult validateEmail(String email);
 
-    ValidationResult validateLoginInfo(UserLoginRequestData login);
+    ValidationResult validateLoginInfo(JsonUserLogin login);
 
     ValidationResult validateName(String name);
 
@@ -24,5 +24,5 @@ public interface UsersValidationService {
 
     ValidationResult validatePassword(String pass);
 
-    ValidationResult validateRegistrationInfo(UserRegistrationRequestData registration);    
+    ValidationResult validateRegistrationInfo(JsonUserRegistration registration);    
 }

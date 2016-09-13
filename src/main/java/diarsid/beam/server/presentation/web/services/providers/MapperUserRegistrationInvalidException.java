@@ -12,6 +12,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import diarsid.beam.server.domain.services.exceptions.UserRegistrationInvalidException;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 
 /**
  *

@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import diarsid.beam.server.domain.entities.WebPlacement;
 import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
 
 /**
@@ -21,29 +20,29 @@ import diarsid.beam.server.domain.entities.jpa.PersistableWebDirectory;
 public interface UserWebObjectsService {
     
     boolean reorderUserWebDirectory(
-            int userId, WebPlacement place, String dirName, int newOrder);
+            int userId, String place, String dirName, int newOrder);
     
     boolean reorderUserWebPageOrder(
-            int userId, WebPlacement place, String dirName, String pageName, int newOrder);
+            int userId, String place, String dirName, String pageName, int newOrder);
     
     boolean renameUserWebPage(
-            int userId, WebPlacement place, String dirName, String oldPageName, String newPageName);
+            int userId, String place, String dirName, String oldPageName, String newPageName);
     
     boolean redirectUserWebPageUrl(
-            int userId, WebPlacement place, String dirName, String pageName, String newUrl);
+            int userId, String place, String dirName, String pageName, String newUrl);
     
     boolean renameUserWebDirectory(
-            int userId, WebPlacement place, String oldDirName, String newDirName);
+            int userId, String place, String oldDirName, String newDirName);
     
     boolean moveUserWebDirectoryIntoPlace(
-            int userId, WebPlacement oldPlace, WebPlacement newPlace, String dirName);
+            int userId, String oldPlace, String newPlace, String dirName);
     
     boolean moveUserWebPageIntoDirectory(
-            int userId, WebPlacement place, String oldDirName, String newDirName, String pageName);
+            int userId, String place, String oldDirName, String newDirName, String pageName);
     
     boolean moveUserWebPageIntoDirectoryAndOrder(
             int userId, 
-            WebPlacement place, 
+            String place, 
             String oldDirName, 
             String newDirName, 
             String pageName, 
@@ -51,27 +50,27 @@ public interface UserWebObjectsService {
     
     boolean moveUserWebPageIntoDirectoryAndPlace(
             int userId, 
-            WebPlacement oldPlace, 
-            WebPlacement newPlace, 
+            String oldPlace, 
+            String newPlace, 
             String oldDirName, 
             String newDirName, 
             String pageName);
     
     boolean deleteUserWebDirectory(
-            int userId, WebPlacement place, String dirName);
+            int userId, String place, String dirName);
     
     boolean deleteUserWebPage(
-            int userId, WebPlacement place, String dirName, String pageName);
+            int userId, String place, String dirName, String pageName);
     
     boolean createUserWebPage(
-            int userId, WebPlacement place, String dirName, String pageName, String pageUrl);
+            int userId, String place, String dirName, String pageName, String pageUrl);
     
     boolean createUserWebDirectory(
-            int userId, WebPlacement place, String dirName);
+            int userId, String place, String dirName);
     
-    List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, WebPlacement place);
+    List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, String place);
     
-    PersistableWebDirectory getUserWebDirectory(int userId, WebPlacement place, String dirName) ;
+    PersistableWebDirectory getUserWebDirectory(int userId, String place, String dirName) ;
     
     List<PersistableWebDirectory> getUserAllWebDirectories(int userId);
 }

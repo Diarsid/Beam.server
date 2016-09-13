@@ -20,6 +20,8 @@ import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
 
 import static java.util.Collections.sort;
 
+import static diarsid.beam.server.domain.entities.WebPlacement.placementOf;
+
 /**
  *
  * @author Diarsid
@@ -48,10 +50,10 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
 
     @Override
     public boolean reorderUserWebDirectory(
-            int userId, WebPlacement place, String dirName, int newOrder) {
+            int userId, String place, String dirName, int newOrder) {
         this.dataOperator.checkUser(userId);
         List<PersistableWebDirectory> dirs = 
-                this.dataOperator.findWebDirectoriesNotEmpty(place, userId);
+                this.dataOperator.findWebDirectoriesNotEmpty(placementOf(place), userId);
         PersistableWebDirectory reorderedDir = 
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(dirs, dirName);
         this.orderer.reorderWebItemsAccordingToNewOrder(dirs, reorderedDir.getOrder(), newOrder);        
@@ -66,10 +68,9 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
 
     @Override
     public boolean reorderUserWebPageOrder(
-            int userId, WebPlacement place, String dirName, String pageName, int newOrder) {
+            int userId, String place, String dirName, String pageName, int newOrder) {
         this.dataOperator.checkUser(userId);
-        PersistableWebDirectory dir = 
-                this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, place, userId);        
+        PersistableWebDirectory dir = this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, placementOf(place), userId);        
         PersistableWebPage reorderedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), pageName);
         
@@ -88,12 +89,11 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
 
     @Override
     public boolean renameUserWebPage(
-            int userId, WebPlacement place, String dirName, String oldPageName, String newPageName) {
+            int userId, String place, String dirName, String oldPageName, String newPageName) {
         
         this.dataOperator.checkUser(userId);
         
-        PersistableWebDirectory dir = 
-                this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, place, userId);
+        PersistableWebDirectory dir = this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, placementOf(place), userId);
         PersistableWebPage renamedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), oldPageName);
         
@@ -109,11 +109,10 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     
     @Override
     public boolean redirectUserWebPageUrl(
-            int userId, WebPlacement place, String dirName, String pageName, String newUrl) {
+            int userId, String place, String dirName, String pageName, String newUrl) {
         this.dataOperator.checkUser(userId);
         
-        PersistableWebDirectory dir = 
-                this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, place, userId);        
+        PersistableWebDirectory dir = this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, placementOf(place), userId);        
         PersistableWebPage redirectedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), pageName);
         
@@ -127,11 +126,11 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
 
     @Override
     public boolean renameUserWebDirectory(
-            int userId, WebPlacement place, String oldDirName, String newDirName) {
+            int userId, String place, String oldDirName, String newDirName) {
         this.dataOperator.checkUser(userId);
         
         List<PersistableWebDirectory> dirs = 
-                this.dataOperator.findWebDirectoriesNotEmpty(place, userId);
+                this.dataOperator.findWebDirectoriesNotEmpty(placementOf(place), userId);
         PersistableWebDirectory renamedDir = 
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(dirs, oldDirName);
         newDirName = this.nameIncrementor.incrementName(dirs, newDirName);
@@ -143,33 +142,34 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     
     @Override
     public boolean moveUserWebDirectoryIntoPlace(
-            int userId, WebPlacement oldPlace, WebPlacement newPlace, String dirName) {
+            int userId, String oldPlace, String newPlace, String dirName) {
         this.dataOperator.checkUser(userId);
         if ( oldPlace.equals(newPlace) ) {
             return true;
         }
         List<PersistableWebDirectory> oldPlaceDirs = 
-                this.dataOperator.findWebDirectoriesNotEmpty(oldPlace, userId);
+                this.dataOperator.findWebDirectoriesNotEmpty(placementOf(oldPlace), userId);
         PersistableWebDirectory movedDir = 
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(oldPlaceDirs, dirName);
         List<PersistableWebDirectory> newPlaceDirs = 
-                this.dataOperator.findWebDirectories(newPlace, userId);
+                this.dataOperator.findWebDirectories(placementOf(newPlace), userId);
         dirName = this.nameIncrementor.incrementName(newPlaceDirs, movedDir.getName());
         movedDir.setName(dirName);
         this.orderer.reorderToExtractWebItemLater(oldPlaceDirs, movedDir.getOrder());
-        movedDir.setPlace(newPlace.name());
+        movedDir.setPlace(placementOf(newPlace));
         movedDir.setOrder(newPlaceDirs.size());
         List<PersistableWebDirectory> savedDirs = 
                 this.dataOperator.saveModifiedDirectories(oldPlaceDirs);
         PersistableWebDirectory savedDir = 
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(savedDirs, dirName);
-        return ( savedDir.getPlace().equals(newPlace.name()) );
+        return ( savedDir.getPlace().equals(placementOf(newPlace)) );
     }
 
     @Override
     public boolean moveUserWebPageIntoDirectory(
-            int userId, WebPlacement place, String oldDirName, String newDirName, String pageName) {
-        return this.movePageToDirAndPlace(oldDirName, place, place, userId, pageName, newDirName);
+            int userId, String place, String oldDirName, String newDirName, String pageName) {
+        return this.movePageToDirAndPlace(
+                oldDirName, placementOf(place), placementOf(place), userId, pageName, newDirName);
     }
 
     private boolean movePageToDirAndPlace(
@@ -211,18 +211,18 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     @Override
     public boolean moveUserWebPageIntoDirectoryAndOrder(
             int userId, 
-            WebPlacement place, 
+            String place, 
             String oldDirName, 
             String newDirName, 
             String pageName, 
             int movedPageNewOrder) {
         this.dataOperator.checkUser(userId);
-        PersistableWebDirectory oldDir = 
-                this.dataOperator.findWebDirectoryNotNullNotEmpty(oldDirName, place, userId);        
+        PersistableWebDirectory oldDir = this.dataOperator.findWebDirectoryNotNullNotEmpty(
+                oldDirName, placementOf(place), userId);        
         PersistableWebPage movedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(oldDir.getPages(), pageName);
         PersistableWebDirectory newDir = 
-                this.dataOperator.findWebDirectoryNotNull(newDirName, place, userId);
+                this.dataOperator.findWebDirectoryNotNull(newDirName, placementOf(place), userId);
         
         pageName = this.nameIncrementor.incrementName(newDir.getPages(), pageName);
         
@@ -250,22 +250,27 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     @Override
     public boolean moveUserWebPageIntoDirectoryAndPlace(
             int userId, 
-            WebPlacement oldPlace, 
-            WebPlacement newPlace, 
+            String oldPlace, 
+            String newPlace, 
             String oldDirName, 
             String newDirName, 
             String pageName) {
         return this.movePageToDirAndPlace(
-                oldDirName, oldPlace, newPlace, userId, pageName, newDirName);
+                oldDirName, 
+                placementOf(oldPlace), 
+                placementOf(newPlace), 
+                userId, 
+                pageName, 
+                newDirName);
     }
 
     @Override
-    public boolean deleteUserWebDirectory(int userId, WebPlacement place, String dirName) {
+    public boolean deleteUserWebDirectory(int userId, String place, String dirName) {
         
         this.dataOperator.checkUser(userId);
         
         List<PersistableWebDirectory> dirs = 
-                this.dataOperator.findWebDirectoriesNotEmpty(place, userId);
+                this.dataOperator.findWebDirectoriesNotEmpty(placementOf(place), userId);
         PersistableWebDirectory deletedDir = 
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(dirs, dirName);
         
@@ -277,12 +282,12 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
 
     @Override
     public boolean deleteUserWebPage(
-            int userId, WebPlacement place, String dirName, String pageName) {
+            int userId, String place, String dirName, String pageName) {
         
         this.dataOperator.checkUser(userId);
         
-        PersistableWebDirectory dir = 
-                this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, place, userId);
+        PersistableWebDirectory dir = this.dataOperator.findWebDirectoryNotNullNotEmpty(
+                dirName, placementOf(place), userId);
         PersistableWebPage deletedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), pageName);
         
@@ -296,12 +301,12 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
 
     @Override
     public boolean createUserWebPage(
-            int userId, WebPlacement place, String dirName, String pageName, String pageUrl) {
+            int userId, String place, String dirName, String pageName, String pageUrl) {
         
         this.dataOperator.checkUser(userId);
         
         PersistableWebDirectory dir = 
-                this.dataOperator.findWebDirectoryNotNull(dirName, place, userId);
+                this.dataOperator.findWebDirectoryNotNull(dirName, placementOf(place), userId);
         PersistableWebPage newPage = new PersistableWebPage();
         pageName = this.nameIncrementor.incrementName(dir.getPages(), pageName);
         
@@ -322,17 +327,18 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     }
 
     @Override
-    public boolean createUserWebDirectory(int userId, WebPlacement place, String dirName) {
+    public boolean createUserWebDirectory(int userId, String place, String dirName) {
         
         PersistableUser user = this.dataOperator.findUserNotNull(userId);        
-        List<PersistableWebDirectory> dirs = this.dataOperator.findWebDirectories(place, userId);        
+        List<PersistableWebDirectory> dirs = 
+                this.dataOperator.findWebDirectories(placementOf(place), userId);        
         dirName = this.nameIncrementor.incrementName(dirs, dirName);
         
         PersistableWebDirectory newDirectory = new PersistableWebDirectory();
         newDirectory.setName(dirName);
         newDirectory.setOrder(dirs.size());
         newDirectory.setUser(user);
-        newDirectory.setPlace(place.name());
+        newDirectory.setPlace(placementOf(place));
         newDirectory.setPages(new ArrayList<>());
         
         PersistableWebDirectory savedDir = this.dataOperator.saveModifiedDirectory(newDirectory);
@@ -341,16 +347,16 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     }
 
     @Override
-    public List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, WebPlacement place) {
+    public List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, String place) {
         this.dataOperator.checkUser(userId);
-        return this.dataOperator.findWebDirectories(place, userId);
+        return this.dataOperator.findWebDirectories(placementOf(place), userId);
     }
 
     @Override
     public PersistableWebDirectory getUserWebDirectory(
-            int userId, WebPlacement place, String dirName) {
+            int userId, String place, String dirName) {
         this.dataOperator.checkUser(userId);
-        return this.dataOperator.findWebDirectoryNotNull(dirName, place, userId);
+        return this.dataOperator.findWebDirectoryNotNull(dirName, placementOf(place), userId);
     }
 
     @Override

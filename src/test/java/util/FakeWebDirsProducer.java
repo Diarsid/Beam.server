@@ -36,7 +36,7 @@ public class FakeWebDirsProducer {
             newDir.setUser(owner);
             newDir.setName(DIR_NAME_TEMPLATE + nameIncrementor);
             newDir.setOrder(i);
-            newDir.setPlace(place.name());
+            newDir.setPlace(place);
             nameIncrementor++;         
             newDirs.add(newDir);
         }
@@ -49,7 +49,7 @@ public class FakeWebDirsProducer {
         newDir.setUser(owner);
         newDir.setName(DIR_NAME_TEMPLATE + nameIncrementor);
         newDir.setOrder(0);
-        newDir.setPlace(place.name());
+        newDir.setPlace(place);
         return newDir;
     }
 }

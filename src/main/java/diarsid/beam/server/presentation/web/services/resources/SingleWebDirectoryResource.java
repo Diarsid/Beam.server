@@ -6,8 +6,6 @@
 
 package diarsid.beam.server.presentation.web.services.resources;
 
-import java.util.Optional;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,19 +19,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.domain.entities.WebPlacement;
 import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
-import diarsid.beam.server.presentation.web.json.dto.entities.JsonWebDirectory;
+import diarsid.beam.server.presentation.web.json.dto.JsonWebDirectory;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
 
 import static java.lang.Integer.valueOf;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import static diarsid.beam.server.domain.entities.WebPlacement.valueOfIgnoreCase;
+import static diarsid.beam.server.domain.entities.WebPlacement.placementOf;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeOkResponse;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeOkResponseWithJson;
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 
 /**
@@ -62,18 +60,13 @@ public class SingleWebDirectoryResource {
             @PathParam("id") int userId, 
             @PathParam("place") String place,
             @PathParam("name") String name) {
-        Optional<WebPlacement> placement = valueOfIgnoreCase(place);
-        if ( placement.isPresent() ) {
-            logger.info("get dir -> " +
-                    "user:" + userId +
-                    ", dir:" + name +
-                    ", place:" + place);
-            JsonWebDirectory dir = new JsonWebDirectory(
-                    this.webObjects.getUserWebDirectory(userId, placement.get(), name));
-            return Response.ok(this.toJsonConverter.jsonizeToString(dir), APPLICATION_JSON).build();
-        } else {
-            return composeResponseFrom(SC_BAD_REQUEST, place + " is invalid placement name.");
-        }
+        logger.info("get dir -> " +
+                "user:" + userId +
+                ", dir:" + name +
+                ", place:" + place);
+        JsonWebDirectory dir = new JsonWebDirectory(
+                this.webObjects.getUserWebDirectory(userId, place, name));
+        return composeOkResponseWithJson(this.toJsonConverter.jsonizeToString(dir));
     }
     
     @PUT
@@ -85,27 +78,22 @@ public class SingleWebDirectoryResource {
             @PathParam("place") String place, 
             @PathParam("name") String name,
             JsonPayload payload) {
-        Optional<WebPlacement> placement = valueOfIgnoreCase(place);
-        if ( placement.isPresent() ) {
-            boolean done = false;
-            logger.info("rename dir -> " + 
-                    "user:" + userId +
-                    ", dir:" + name +
-                    ", place:" + place);
-            logger.info("...to name: " + payload.get());
-            done = this.webObjects.renameUserWebDirectory(
-                    userId, placement.get(), name, payload.get());
-            if ( done ) {
-                logger.info("...rename ok.");
-                return Response.ok().build();
-            } else {
-                logger.info("...dir renaming fails.");
-                return composeResponseFrom(
-                        SC_INTERNAL_SERVER_ERROR, 
-                        "Directory renaming fails due to unknown reason.");                
-            }
+        boolean done = false;
+        logger.info("rename dir -> " + 
+                "user:" + userId +
+                ", dir:" + name +
+                ", place:" + place);
+        logger.info("...to name: " + payload.get());
+        done = this.webObjects.renameUserWebDirectory(
+                userId, place, name, payload.get());
+        if ( done ) {
+            logger.info("...rename ok.");
+            return composeOkResponse();
         } else {
-            return composeResponseFrom(SC_BAD_REQUEST, place + " is invalid placement name.");
+            logger.info("...dir renaming fails.");
+            return composeResponseFrom(
+                    SC_INTERNAL_SERVER_ERROR, 
+                    "Directory renaming fails due to unknown reason.");                
         }
     }
     
@@ -118,32 +106,22 @@ public class SingleWebDirectoryResource {
             @PathParam("place") String place, 
             @PathParam("name") String name,
             JsonPayload payload) {
-        Optional<WebPlacement> oldPlacement = valueOfIgnoreCase(place);
-        if ( oldPlacement.isPresent() ) {
-            Optional<WebPlacement> newPlacement = valueOfIgnoreCase(payload.get());
-            if ( newPlacement.isPresent() ) {
-                boolean done = false;
-                logger.info("move dir -> " + 
-                        "user:" + userId +
-                        ", dir:" + name +
-                        ", place:" + place);
-                logger.info("...to placement: " + valueOfIgnoreCase(payload.get()));
-                done = this.webObjects.moveUserWebDirectoryIntoPlace(
-                        userId, oldPlacement.get(), newPlacement.get(), name);
-                if ( done ) {
-                    logger.info("...movement ok.");
-                    return Response.ok().build();
-                } else {
-                    logger.info("...dir movement fails.");
-                return composeResponseFrom(
-                        SC_INTERNAL_SERVER_ERROR, 
-                        "Directory movement fails due to unknown reason.");
-                }
-            } else {
-                return composeResponseFrom(SC_BAD_REQUEST, payload.get() + " is invalid placement name.");
-            }            
+        boolean done = false;
+        logger.info("move dir -> " + 
+                "user:" + userId +
+                ", dir:" + name +
+                ", place:" + place);
+        logger.info("...to placement: " + placementOf(payload.get()));
+        done = this.webObjects.moveUserWebDirectoryIntoPlace(
+                userId, place, payload.get(), name);
+        if ( done ) {
+            logger.info("...movement ok.");
+            return composeOkResponse();
         } else {
-            return composeResponseFrom(SC_BAD_REQUEST, place + " is invalid placement name.");
+            logger.info("...dir movement fails.");
+            return composeResponseFrom(
+                    SC_INTERNAL_SERVER_ERROR, 
+                    "Directory movement fails due to unknown reason.");
         }
     }    
     
@@ -156,27 +134,22 @@ public class SingleWebDirectoryResource {
             @PathParam("place") String place, 
             @PathParam("name") String name,
             JsonPayload payload) {
-        Optional<WebPlacement> placement = valueOfIgnoreCase(place);
-        if ( placement.isPresent() ) {
-            boolean reordered = false;
-            logger.info("Dir reordering -> " +
-                    "user:" + userId +
-                    ", dir:" + name +
-                    ", place:" + place);
-            logger.info("...to new order: " + payload.get());
-            reordered = this.webObjects.reorderUserWebDirectory(
-                    userId, placement.get(), name, valueOf(payload.get()));
-            if ( reordered ) {
-                logger.info("...dir reordering ok.");
-                return Response.ok().build();
-            } else {
-                logger.info("...dir reordering fails.");
-                return composeResponseFrom(
-                        SC_INTERNAL_SERVER_ERROR, 
-                        "Directory reordering fails due to unknown reason.");
-            }
+        boolean reordered = false;
+        logger.info("Dir reordering -> " +
+                "user:" + userId +
+                ", dir:" + name +
+                ", place:" + place);
+        logger.info("...to new order: " + payload.get());
+        reordered = this.webObjects.reorderUserWebDirectory(
+                userId, place, name, valueOf(payload.get()));
+        if ( reordered ) {
+            logger.info("...dir reordering ok.");
+            return composeOkResponse();
         } else {
-            return composeResponseFrom(SC_BAD_REQUEST, place + " is invalid placement name.");
+            logger.info("...dir reordering fails.");
+            return composeResponseFrom(
+                    SC_INTERNAL_SERVER_ERROR, 
+                    "Directory reordering fails due to unknown reason.");
         }
     }
     
@@ -187,25 +160,20 @@ public class SingleWebDirectoryResource {
             @PathParam("id") int userId, 
             @PathParam("place") String place, 
             @PathParam("name") String name) {
-        Optional<WebPlacement> placement = valueOfIgnoreCase(place);
-        if ( placement.isPresent() ) {
-            boolean done = false;
-            logger.info("delete dir -> "+
-                    "user:" + userId +
-                    ", dir:" + name +
-                    ", place:" + place);
-            done = this.webObjects.deleteUserWebDirectory(userId, placement.get(), name);
-            if ( done ) {
-                logger.info("...dir deleted.");
-                return Response.ok().build();
-            } else {
-                logger.info("...dir is not deleted.");
-                return composeResponseFrom(
-                        SC_INTERNAL_SERVER_ERROR, 
-                        "Directory deleting fails due to unknown reason.");
-            }
+        boolean done = false;
+        logger.info("delete dir -> "+
+                "user:" + userId +
+                ", dir:" + name +
+                ", place:" + place);
+        done = this.webObjects.deleteUserWebDirectory(userId, place, name);
+        if ( done ) {
+            logger.info("...dir deleted.");
+            return composeOkResponse();
         } else {
-            return composeResponseFrom(SC_BAD_REQUEST, place + " is invalid placement name.");
+            logger.info("...dir is not deleted.");
+            return composeResponseFrom(
+                    SC_INTERNAL_SERVER_ERROR, 
+                    "Directory deleting fails due to unknown reason.");
         }
     }
 }

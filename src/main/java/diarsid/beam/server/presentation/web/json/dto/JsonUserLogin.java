@@ -10,12 +10,12 @@ package diarsid.beam.server.presentation.web.json.dto;
  *
  * @author Diarsid
  */
-public class UserLoginRequestData {
+public class JsonUserLogin {
     
     private final String nickName;
     private final String password;
     
-    public UserLoginRequestData(String nick, String pass) {
+    public JsonUserLogin(String nick, String pass) {
         this.nickName = nick;
         this.password = pass;
     }

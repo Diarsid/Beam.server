@@ -11,9 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
-import diarsid.beam.server.presentation.web.services.providers.ReaderUserLoginData;
-import diarsid.beam.server.presentation.web.services.providers.ReaderUserRegistrationData;
 import diarsid.beam.server.presentation.web.services.providers.ReaderJsonPayload;
+import diarsid.beam.server.presentation.web.services.providers.ReaderJsonPlacementAndDirectory;
+import diarsid.beam.server.presentation.web.services.providers.ReaderJsonUserLogin;
+import diarsid.beam.server.presentation.web.services.providers.ReaderJsonUserRegistration;
+import diarsid.beam.server.presentation.web.services.providers.ReaderJsonWebPage;
 
 /**
  *
@@ -28,19 +30,31 @@ public class WebServicesEntityReadersBeans {
     }
     
     @Bean
-    public ReaderUserLoginData readerUserLoginData(JsonToJavaObjectConverter toJavaObjectConverter) {
-        return new ReaderUserLoginData(toJavaObjectConverter);
+    public ReaderJsonUserLogin readerUserLoginData(JsonToJavaObjectConverter toJavaObjectConverter) {
+        return new ReaderJsonUserLogin(toJavaObjectConverter);
     }
     
     @Bean
-    public ReaderUserRegistrationData readerUserRegistrationData(
+    public ReaderJsonUserRegistration readerUserRegistrationData(
             JsonToJavaObjectConverter toJavaObjectConverter) {
-        return new ReaderUserRegistrationData(toJavaObjectConverter);
+        return new ReaderJsonUserRegistration(toJavaObjectConverter);
     }
         
     @Bean
     public ReaderJsonPayload readerValidatablePayload(
             JsonToJavaObjectConverter toJavaObjectConverter) {
         return new ReaderJsonPayload(toJavaObjectConverter);
+    }
+    
+    @Bean
+    public ReaderJsonWebPage readerJsonWebPage(
+            JsonToJavaObjectConverter toJavaObjectConverter) {
+        return new ReaderJsonWebPage(toJavaObjectConverter);
+    }
+    
+    @Bean
+    public ReaderJsonPlacementAndDirectory readerJsonPlacementAndDirectory(
+            JsonToJavaObjectConverter toJavaObjectConverter) {
+        return new ReaderJsonPlacementAndDirectory(toJavaObjectConverter);
     }
 }

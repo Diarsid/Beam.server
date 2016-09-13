@@ -20,25 +20,25 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonPlacementAndDirectory;
 import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 
 /**
  *
  * @author Diarsid
  */
 
+@Component
 @Provider
 @Consumes(APPLICATION_JSON)
-@Component
-public class ReaderUserRegistrationData implements MessageBodyReader<UserRegistrationRequestData>{
+public class ReaderJsonPlacementAndDirectory 
+        implements MessageBodyReader<JsonPlacementAndDirectory> {
     
     private final JsonToJavaObjectConverter converter;
     
-    public ReaderUserRegistrationData(JsonToJavaObjectConverter converter) {
+    public ReaderJsonPlacementAndDirectory(JsonToJavaObjectConverter converter) {
         this.converter = converter;
     }
     
@@ -46,12 +46,12 @@ public class ReaderUserRegistrationData implements MessageBodyReader<UserRegistr
     public boolean isReadable(
             Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         
-        return type.equals(UserRegistrationRequestData.class);
+        return type.equals(JsonPlacementAndDirectory.class);
     }
 
     @Override
-    public UserRegistrationRequestData readFrom(
-            Class<UserRegistrationRequestData> type, 
+    public JsonPlacementAndDirectory readFrom(
+            Class<JsonPlacementAndDirectory> type, 
             Type genericType, 
             Annotation[] annotations, 
             MediaType mediaType, 
@@ -59,7 +59,7 @@ public class ReaderUserRegistrationData implements MessageBodyReader<UserRegistr
             InputStream entityStream)
             throws IOException, WebApplicationException {
         
-        return (UserRegistrationRequestData) this.converter
-                .objectivize(entityStream, UserRegistrationRequestData.class);
+        return (JsonPlacementAndDirectory) this.converter
+                .objectivize(entityStream, JsonPlacementAndDirectory.class);
     }
 }

@@ -23,6 +23,14 @@ import static diarsid.beam.server.presentation.web.services.providers.DomainExce
 public class JaxRsResponseComposer {
     
     private JaxRsResponseComposer() {
+    }    
+    
+    public static Response composeOkResponse() {
+        return Response.ok().build();
+    }
+    
+    public static Response composeOkResponseWithJson(String jsonString) {
+        return Response.ok(jsonString, APPLICATION_JSON).build();
     }
     
     public static Response composeResponseFrom(int status, String message) {

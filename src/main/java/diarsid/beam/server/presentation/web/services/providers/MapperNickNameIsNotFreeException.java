@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.domain.services.exceptions.NickNameIsNotFreeException;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 
 /**
  *

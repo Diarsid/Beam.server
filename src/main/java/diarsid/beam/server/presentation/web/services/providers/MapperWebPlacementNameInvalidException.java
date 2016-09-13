@@ -12,7 +12,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.domain.services.exceptions.UserLoginInvalidException;
+import diarsid.beam.server.domain.services.exceptions.WebPlacementNameInvalidException;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
@@ -24,14 +24,14 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 
 @Provider
 @Component
-public class MapperUserLoginInvalidException 
-        implements ExceptionMapper<UserLoginInvalidException> {
+public class MapperWebPlacementNameInvalidException 
+        implements ExceptionMapper<WebPlacementNameInvalidException> {
     
-    public MapperUserLoginInvalidException() {
+    public MapperWebPlacementNameInvalidException() {
     }
-    
+
     @Override
-    public Response toResponse(UserLoginInvalidException e) {
+    public Response toResponse(WebPlacementNameInvalidException e) {
         return composeResponseFrom(e);
     }
 }

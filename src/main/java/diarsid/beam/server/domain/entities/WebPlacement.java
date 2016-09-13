@@ -5,10 +5,7 @@
  */
 package diarsid.beam.server.domain.entities;
 
-import java.util.Optional;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
+import diarsid.beam.server.domain.services.exceptions.WebPlacementNameInvalidException;
 
 /**
  *
@@ -19,15 +16,16 @@ public enum WebPlacement {
     WEBPANEL,
     BOOKMARKS;
     
-    public static Optional<WebPlacement> valueOfIgnoreCase(String name) {
-        if ( name.isEmpty() ) {
-            return empty();
-        } else {
-            try {
-                return of(valueOf(name.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                return empty();
-            } 
-        }               
+    public static void validatePlacementName(String name) {
+        for (WebPlacement place : values()) {
+            if ( place.name().equals(name.toUpperCase()) ) {
+                return;
+            }
+        }
+        throw new WebPlacementNameInvalidException(name + " is invalid placement name.");
+    }
+    
+    public static WebPlacement placementOf(String name) {
+        return valueOf(name.toUpperCase());            
     }
 }

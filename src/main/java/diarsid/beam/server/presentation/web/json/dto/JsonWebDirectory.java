@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.presentation.web.json.dto.entities;
+package diarsid.beam.server.presentation.web.json.dto;
 
 import java.util.List;
 

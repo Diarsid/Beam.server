@@ -19,8 +19,8 @@ import diarsid.beam.server.domain.services.exceptions.UserRegistrationInvalidExc
 import diarsid.beam.server.domain.services.exceptions.UsersServiceUnknownLogicException;
 import diarsid.beam.server.domain.services.validation.UsersValidationService;
 import diarsid.beam.server.domain.services.validation.ValidationResult;
-import diarsid.beam.server.presentation.web.json.dto.UserLoginRequestData;
-import diarsid.beam.server.presentation.web.json.dto.UserRegistrationRequestData;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
+import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 import diarsid.beam.server.presentation.web.services.auth.UserRole;
 
 @Component
@@ -68,7 +68,7 @@ public class UsersServiceWorker implements UsersService {
     }
 
     @Override
-    public PersistableUser findBy(UserLoginRequestData login) {        
+    public PersistableUser findBy(JsonUserLogin login) {        
         ValidationResult result = this.validation.validateLoginInfo(login);
         if ( result.isOk() ) {
             PersistableUser user = this.users.getUserByNicknameAndPassword(
@@ -88,7 +88,7 @@ public class UsersServiceWorker implements UsersService {
     }
 
     @Override
-    public PersistableUser createUserBy(UserRegistrationRequestData registration) {
+    public PersistableUser createUserBy(JsonUserRegistration registration) {
         ValidationResult result = this.validation.validateRegistrationInfo(registration);
         if ( result.isOk() ) {
             if ( ! this.users.isNickNameFree(registration.getNickName()) ) {

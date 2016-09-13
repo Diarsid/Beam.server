@@ -14,7 +14,7 @@ import static diarsid.beam.server.presentation.web.services.auth.UserRole.USER;
  *
  * @author Diarsid
  */
-public class UserRegistrationRequestData {
+public class JsonUserRegistration {
     
     private final String name;
     private final String surname;    
@@ -22,7 +22,7 @@ public class UserRegistrationRequestData {
     private final String password;
     private final String email;
     
-    public UserRegistrationRequestData(
+    public JsonUserRegistration(
             String name, String surname, String nick, String email, String pass) {
         this.nickName = nick;
         this.password = pass;

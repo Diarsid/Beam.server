@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package diarsid.beam.server.presentation.web.json.dto.entities;
+package diarsid.beam.server.presentation.web.json.dto;
 
 import diarsid.beam.server.domain.entities.jpa.PersistableWebPage;
 
@@ -22,5 +22,17 @@ public class JsonWebPage {
         this.name = persistablePage.getName();
         this.url = persistablePage.getUrl();
         this.order = persistablePage.getOrder();
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public int getOrder() {
+        return this.order;
     }
 }
