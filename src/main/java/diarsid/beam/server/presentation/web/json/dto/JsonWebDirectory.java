@@ -19,13 +19,13 @@ import static java.util.stream.Collectors.toList;
 public class JsonWebDirectory {
     
     private final String name;
-    private final int order;
     private final List<JsonWebPage> pages;
     
     public JsonWebDirectory(PersistableWebDirectory persistableDir) {
         this.name = persistableDir.getName();
-        this.order = persistableDir.getOrder();
-        this.pages = persistableDir.getPages().stream()
+        this.pages = persistableDir
+                .getPages()
+                .stream()
                 .map(persistablePage -> new JsonWebPage(persistablePage))
                 .collect(toList());
     }

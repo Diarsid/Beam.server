@@ -16,12 +16,10 @@ public class JsonWebPage {
     
     private final String name;
     private final String url;
-    private final int order;
     
     public JsonWebPage(PersistableWebPage persistablePage) {
         this.name = persistablePage.getName();
         this.url = persistablePage.getUrl();
-        this.order = persistablePage.getOrder();
     }
 
     public String getName() {
@@ -30,9 +28,5 @@ public class JsonWebPage {
 
     public String getUrl() {
         return this.url;
-    }
-
-    public int getOrder() {
-        return this.order;
     }
 }

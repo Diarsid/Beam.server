@@ -1,0 +1,509 @@
+body {
+    background-image: url("http://localhost:8484/local_accesible/images/wild_paintings.jpg");
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    height:100%;
+}
+
+div {
+    padding: 0;
+    margin: 0;
+}
+
+br {
+    clear:both;
+}
+
+*:focus {
+    outline: none;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: black;
+}
+
+.directory-bar {
+    box-sizing: border-box;
+    height: 28px;
+    border: 1px solid rgba(30, 30, 30, 0.2);
+    background-color: rgba(30, 30, 30, 0.1);
+    box-shadow: inset 0px 0px 15px 0px rgba(30, 30, 30, 0.4);
+    -webkit-box-shadow: inset 0px 0px 15px 0px rgba(30, 30, 30, 0.4);
+    -moz-box-shadow: inset 0px 0px 15px 0px rgba(30, 30, 30, 0.4);
+    -o-box-shadow: inset 0px 0px 15px 0px rgba(30, 30, 30, 0.4);
+    margin: 0;
+    padding: 3px 3px 3px 3px;
+}
+
+.directory-bar-empty {
+    border-radius: 10px;
+}
+
+.directory-bar-nonempty {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+@-moz-document url-prefix() {
+    .directory-bar-title {
+        position: relative;
+        top: 1px;
+    }
+}
+
+.directory-bar-title {
+    color: #fafafa;
+    opacity: 0.95;
+    font-family: Verdana;
+    font-size: 15px;
+    margin: 0 0 0 30px;
+}
+
+.directory-bar-button {
+    float: left;
+    position: relative;
+    top: 0;
+    border-radius: 5px;
+    height: 20px;
+    width: 20px;
+    border: 1px solid lightgrey;
+    box-sizing: border-box;
+    opacity: 0.9;
+    background-color: #fafafa;
+    box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -moz-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -o-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    margin-right: 4px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+@-moz-document url-prefix() {
+    .create-page-button-on-directory-bar,
+    .edit-dir-name-button-on-directory-bar {
+        position: relative;
+    }
+}
+
+.directory-bar-button:hover {
+    opacity: 1;
+    background: white;
+    box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -moz-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -o-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.create-page-button-on-directory-bar {
+    background-image: url("./img/create-page-inactive.png");
+}
+.create-page-button-on-directory-bar:hover {
+    background-image: url("./img/create-page-active.png");
+}
+
+.delete-dir-button-on-directory-bar {
+    float: right;
+    position: relative;
+    right: -2px;
+    background-image: url("./img/del-inactive.png");
+}
+.delete-dir-button-on-directory-bar:hover {
+    background-image: url("./img/del-active.png");
+}
+
+.edit-dir-name-button-on-directory-bar {
+    background-image: url("./img/edit-page-inactive.png");
+}
+.edit-dir-name-button-on-directory-bar:hover {
+    background-image: url("./img/edit-page-active.png");
+}
+
+legend {
+    color: #1C1C1C;
+    font-family: Verdana;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+form.create-page-dialog {
+    margin: 0 0 0 0;
+}
+
+.form-label {
+    color: #1C1C1C;
+    font-family: Verdana;
+    font-size: 15px;
+}
+
+.form-input {
+    width: 330px;
+    border-radius: 3px;
+    border: 1px solid lightgrey;
+    color: #1C1C1C;
+    font-family: Verdana;
+    font-size: 15px;
+    box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -moz-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -o-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    padding: 4px 0 4px 8px;
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+
+input[type=text] {
+    color: #1C1C1C;
+    font-family: Verdana;
+    font-size: 15px;
+}
+
+.form-field-underline-message {
+    color: #C98181;
+    font-family: Verdana;
+    font-size: 13px;
+    margin-bottom: 8px;
+    word-wrap: break-word;
+    width: 330px;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.invalid {
+    margin-bottom: 15px;
+    background-color: #FFF8F6;
+    box-shadow: inset 0px 0px 5px 0px #FFD7CE;
+    -webkit-box-shadow: inset 0px 0px 5px 0px #FFD7CE;
+    -moz-box-shadow: inset 0px 0px 5px 0px #FFD7CE;
+    -o-box-shadow: inset 0px 0px 5px 0px #FFD7CE;
+}
+
+fieldset {
+    display: block;
+    border: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+.dialog-button-pane {
+    margin: 15px 0 0 0;
+    padding: 0 0 0 0;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: lightgrey;
+    font-family: Verdana;
+    font-size: 15px;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: lightgrey;
+    opacity: 1;
+    font-family: Verdana;
+    font-size: 15px;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: lightgrey;
+    opacity: 1;
+    font-family: Verdana;
+    font-size: 15px;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: lightgrey;
+    font-family: Verdana;
+    font-size: 15px;
+}
+
+.page-frame {
+    opacity: 0.9;
+    box-shadow: inset 0px 0px 10px 0px lightgrey;
+    -webkit-box-shadow: inset 0px 0px 10px 0px lightgrey;
+    -moz-box-shadow: inset 0px 0px 10px 0px lightgrey;
+    -o-box-shadow: inset 0px 0px 10px 0px lightgrey;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    background-color: #fafafa;
+    height: 120px;
+    width: 120px;
+    float: left;
+    padding: 0;
+    margin: 1vw 1.2vw 1vw 1.2vw;
+}
+
+.page-frame:hover {
+    opacity: 1;
+    box-shadow: 0px 0px 10px 0px lightgrey, inset 0px 0px 5px 0px lightgrey;
+    -webkit-box-shadow: 0px 0px 10px 0px lightgrey, inset 0px 0px 5px 0px lightgrey;
+    -moz-box-shadow: 0px 0px 10px 0px lightgrey, inset 0px 0px 5px 0px lightgrey;
+    -o-box-shadow: 0px 0px 10px 0px lightgrey, inset 0px 0px 5px 0px lightgrey;
+}
+
+.page-menu-trigger {
+    position: relative;
+    top: -128px;
+    left: -8px;
+    border-radius: 6px;
+    height: 20px;
+    width: 20px;
+    border: 1px solid lightgrey;
+    box-sizing: border-box;
+    opacity: 0.9;
+    background-image: url("./img/page-menu-inactive.png");
+    background-color: #fafafa;
+    box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -moz-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -o-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0 0 0 0;
+    z-index: auto;
+}
+
+.page-menu-trigger-hover {
+    opacity: 1;
+    background: white;
+    background-image: url("./img/page-menu-active.png");
+    box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -moz-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -o-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    z-index: 2;
+}
+
+.page-menu-trigger:hover {
+    opacity: 1;
+    background: white;
+    background-image: url("./img/page-menu-active.png");
+    box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -moz-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -o-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    z-index: 2;
+}
+
+.page-menu {
+    position: relative;
+    top: -148px;
+    left: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border: 1px solid lightgrey;
+    box-sizing: border-box;
+    background-color: rgba(250, 250, 250, 0.9);
+    box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -moz-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -o-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    margin: 0;
+    padding: 3px;
+    z-index: 1.9;
+}
+
+.page-menu-item {
+    margin: 3px;
+    padding: 0 0 0 0;
+}
+
+.page-menu-item:hover {
+    background: rgba(255, 255, 255, 1.0);
+    border-radius: 6px;
+    box-shadow: 0px 0px 13px 5px white;
+    -webkit-box-shadow: 0px 0px 13px 5px white;
+    -moz-box-shadow: 0px 0px 13px 5px white;
+    -o-box-shadow: 0px 0px 13px 5px white;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.page-menu-item-icon {
+    position: relative;
+    top: 2px;
+}
+
+.page-menu-item-text {
+    position: relative;
+    top: -3px;
+    color: #1C1C1C;
+    font-family: Verdana;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 6px;
+}
+
+.page-image-frame {
+    box-sizing: border-box;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 90px;
+    width: 120px;
+    padding: 5px;
+}
+
+.page-image {
+    border-radius: 3px;
+    height: 80px;
+    width: 110px;
+}
+
+.page-title {
+    margin: 0;
+    border-top: 1px solid lightgrey;
+    height: 30px;
+    width: 120px;
+}
+
+.title-text {
+    color: #1C1C1C;
+    font-family: Verdana;
+    font-size: 15px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    box-sizing: border-box;
+    padding-top: 0.2em;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.directory {
+    background-color: rgba(30, 30, 30, 0.2);
+    margin: 1vw 2vw 1vw 2vw;
+    border-radius: 10px;
+}
+
+ul.directory-content-list {
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.directory-content {
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.web-panel {
+    position: absolute;
+    width: 100%;
+}
+
+.bookmarks {
+    position: absolute;
+    width: 100%;
+}
+
+.web-panel-content {
+    margin: 0;
+    padding: 0;
+}
+
+.main-page-content {
+    position: relative;
+    left: 40px;
+    width: calc(100% - 40px);
+    margin: 0 0 0 0;
+    padding: 0;
+}
+
+.main-page-bar {
+    position: fixed;
+    top: 0vh;
+    width: 40px;
+    height: 100vh;
+    margin: 0 0 0 0;
+    padding: 0;
+    background: rgba(30, 30, 30, 0.3);
+    box-shadow: 0px 0px 20px 5px rgba(30, 30, 30, 0.5) inset;
+    -webkit-box-shadow: 0px 0px 20px 5px rgba(30, 30, 30, 0.5) inset;
+    -moz-box-shadow: 0px 0px 20px 5px rgba(30, 30, 30, 0.5) inset;
+    -o-box-shadow: 0px 0px 20px 5px rgba(30, 30, 30, 0.5) inset;
+}
+
+.main-page-bar-button {
+    position: relative;
+    top: 0;
+    border-radius: 7px;
+    height: 25px;
+    width: 25px;
+    border: 1px solid lightgrey;
+    box-sizing: border-box;
+    opacity: 0.9;
+    background-color: #fafafa;
+    box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -moz-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    -o-box-shadow: inset 0px 0px 5px 0px lightgrey;
+    margin-top: 7px;
+    margin-left: 7px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.main-page-bar-button:hover {
+    opacity: 1;
+    background: white;
+    box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -moz-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -o-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.logout-button-on-main-page {
+    background-image: url("./img/logout-inactive.png");
+}
+.logout-button-on-main-page:hover {
+    background-image: url("./img/logout-active.png");
+}
+
+.create-directory-button-on-main-page {
+    background-image: url("./img/create-page-inactive.png");
+}
+.create-directory-button-on-main-page:hover {
+    background-image: url("./img/create-page-active.png");
+}
+
+.create-directory-bar-button {
+    border: none;
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    opacity: 0.7;
+}
+
+.create-directory-bar-button:hover {
+    box-shadow: 0px 0px 30px 10px darkslateblue inset;
+    -webkit-box-shadow: 0px 0px 30px 10px darkslateblue inset;
+    -moz-box-shadow: 0px 0px 30px 10px darkslateblue inset;
+    -o-box-shadow: 0px 0px 30px 10px darkslateblue inset;
+}
