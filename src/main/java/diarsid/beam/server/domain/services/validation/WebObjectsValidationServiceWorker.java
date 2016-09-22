@@ -60,7 +60,7 @@ public class WebObjectsValidationServiceWorker implements WebObjectsValidationSe
         if ( URL_VALIDATOR.isValid(url) ) {
             return validationOk();
         } else {
-            return validationFailsWith(this.composeUrlInvalidMessage(url));
+            return validationFailsWith(this.composeUrlInvalidMessage());
         }
     }
         
@@ -82,24 +82,23 @@ public class WebObjectsValidationServiceWorker implements WebObjectsValidationSe
     @Override
     public void validateUrl(String url) {
         if ( ! URL_VALIDATOR.isValid(url) ) {
-            throw new WebObjectUrlInvalidException(this.composeUrlInvalidMessage(url));
+            throw new WebObjectUrlInvalidException(this.composeUrlInvalidMessage());
         }
     }
 
-    private String composeUrlInvalidMessage(String url) {
-        return "WebObject URL " + url + " is invalid. It should be of an acceptable format.";
+    private String composeUrlInvalidMessage() {
+        return "URL is invalid.";
     }  
     
     private String composeNameMinLengthInvalidMessage() {
-        return "WebObject name should have length no less than " + NAME_MIN_LENGTH + ".";
+        return "Should be longer than " + (NAME_MIN_LENGTH-1) + ".";
     }
     
     private String composeNameMaxLengthInvalidMessage() {
-        return "WebObject name should have length and no more than " + NAME_MAX_LENGTH + ".";
+        return "Should be no longer than " + NAME_MAX_LENGTH + ".";
     }
         
     private String composeNameInvalidCharactersMessage() {
-        return "WebObject name can contain only characters a-z, A-Z, 0-9, spaces " +
-                "and following special characters . - _ ( ) [ ] >";
+        return "Can contain only spaces, a-z, A-Z, 0-9, and . - _ ( ) [ ] >";
     }
 }

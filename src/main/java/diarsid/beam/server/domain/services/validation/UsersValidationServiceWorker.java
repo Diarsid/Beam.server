@@ -19,14 +19,6 @@ import static org.apache.commons.validator.routines.EmailValidator.getInstance;
 import static diarsid.beam.server.domain.services.validation.ValidationResultImpl.validationFailsWith;
 import static diarsid.beam.server.domain.services.validation.ValidationResultImpl.validationOk;
 
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-import static org.apache.commons.validator.routines.EmailValidator.getInstance;
-
 /**
  *
  * @author Diarsid
@@ -163,44 +155,42 @@ public class UsersValidationServiceWorker implements UsersValidationService {
     }
     
     private String composePassMaxLengthInvalidMessage() {
-        return "Password length should be no more than " + PASSWORD_MAX_LENGTH + " characters.";
+        return "Should be no longer than " + PASSWORD_MAX_LENGTH + ".";
     }
     
     private String composePassMinLengthInvalidMessage() {
-        return "Password length should be no less than " + PASSWORD_MIN_LENGTH + " characters.";
+        return "Should be longer than " + (PASSWORD_MIN_LENGTH-1) + ".";
     }
     
     private String composePassCharactersInvalidMessage() {
-        return "Password can contain only latin alphabet characters, spaces, numeric " +
-                "and - _ . < > ( ) [ ] characters. ";
+        return "Can contain only spaces, a-z, A-Z, 0-9, and - _ . < > ( ) [ ] characters. ";
     }
 
     private String composeNicknameMinLengthInvalidMessage() {
-        return "Nickname length should be no less than " + NICKNAME_MIN_LENGTH + " characters. ";
+        return "Should be longer than " + (NICKNAME_MIN_LENGTH-1) + ".";
     }
     
     private String composeNicknameMaxLengthInvalidMessage() {
-        return "Nickname length should be no more than " + NICKNAME_MAX_LENGTH + " characters. ";
+        return "Should be no longer than " + NICKNAME_MAX_LENGTH + ".";
     }
     
     private String composeNicknameCharactersInvalidMessage() {
-        return "Nickname can contain only latin alphabet characters, spaces, numeric " +
-                "and - _ . characters. ";
+        return "Can contain only spaces, . - _. a-z, A-Z, 0-9.";
     }
 
     private String composeNameMinLengthInvalidMessage() {
-        return "Name should be no less than " + NAME_MIN_LENGTH + " characters.";
+        return "Should be longer than " + (NAME_MIN_LENGTH-1) + " characters.";
     }
     
     private String composeNameMaxLengthInvalidMessage() {
-        return "Name should be no more than " + NAME_MAX_LENGTH + " characters.";
+        return "Should be no longer than " + NAME_MAX_LENGTH + ".";
     }
     
     private String composeNameCharactersInvalidMessage() {
-        return "Name can contain only latin alphabet characters, spaces and - character. ";
+        return "Can contain only spaces, a-z, A-Z, and -. ";
     }
 
     private String composeEmailInvalidMessage() {
-        return "Email format should satisfy common requirements. ";
+        return "Invalid email format. ";
     }
 }
