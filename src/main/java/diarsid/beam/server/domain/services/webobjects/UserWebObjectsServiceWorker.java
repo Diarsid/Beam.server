@@ -57,9 +57,9 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         PersistableWebDirectory reorderedDir = 
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(dirs, dirName);
         this.orderer.reorderWebItemsAccordingToNewOrder(dirs, reorderedDir.getOrder(), newOrder);        
-        List<PersistableWebDirectory> savedDirs = this.dataOperator.saveModifiedDirectories(dirs);        
+//        List<PersistableWebDirectory> savedDirs = this.dataOperator.saveModifiedDirectories(dirs);        
         PersistableWebDirectory savedDir = 
-                this.dataOperator.findDirectoryFromDirectoriesNotNull(savedDirs, dirName);
+                this.dataOperator.findDirectoryFromDirectoriesNotNull(dirs, dirName);
         return ( 
                 savedDir.getOrder() == newOrder || 
                 savedDir.getOrder() == 0 || 
@@ -77,7 +77,7 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         this.orderer.reorderWebItemsAccordingToNewOrder(
                 dir.getPages(), reorderedPage.getOrder(), newOrder);       
         
-        dir = this.dataOperator.saveModifiedDirectory(dir);
+//        dir = this.dataOperator.saveModifiedDirectory(dir);
         
         PersistableWebPage savedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), pageName);
@@ -117,7 +117,7 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), pageName);
         
         redirectedPage.setUrl(newUrl);
-        dir = dataOperator.saveModifiedDirectory(dir);
+//        dir = dataOperator.saveModifiedDirectory(dir);
         
         redirectedPage = this.dataOperator.findWebPageInDirectoryNotNull(
                         dir.getPages(), pageName);
@@ -135,7 +135,7 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
                 this.dataOperator.findDirectoryFromDirectoriesNotNull(dirs, oldDirName);
         newDirName = this.nameIncrementor.incrementName(dirs, newDirName);
         renamedDir.setName(newDirName);
-        renamedDir = this.dataOperator.saveModifiedDirectory(renamedDir);
+//        renamedDir = this.dataOperator.saveModifiedDirectory(renamedDir);
         
         return ( renamedDir.getName().equals(newDirName) );
     }
@@ -158,10 +158,13 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         this.orderer.reorderToExtractWebItemLater(oldPlaceDirs, movedDir.getOrder());
         movedDir.setPlace(placementOf(newPlace));
         movedDir.setOrder(newPlaceDirs.size());
-        List<PersistableWebDirectory> savedDirs = 
-                this.dataOperator.saveModifiedDirectories(oldPlaceDirs);
+//        List<PersistableWebDirectory> savedDirs = 
+//                this.dataOperator.saveModifiedDirectories(oldPlaceDirs);
+//        PersistableWebDirectory savedDir = 
+//                this.dataOperator.findDirectoryFromDirectoriesNotNull(savedDirs, dirName);
+//        return ( savedDir.getPlace().equals(placementOf(newPlace)) );
         PersistableWebDirectory savedDir = 
-                this.dataOperator.findDirectoryFromDirectoriesNotNull(savedDirs, dirName);
+                this.dataOperator.findWebDirectoryNotNull(dirName, placementOf(newPlace), userId);
         return ( savedDir.getPlace().equals(placementOf(newPlace)) );
     }
 
@@ -199,8 +202,8 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         
         newDir.getPages().add(movedPage);
         oldDir.getPages().remove(movedPage);
-        newDir = this.dataOperator.saveModifiedDirectory(newDir);
-        oldDir = this.dataOperator.saveModifiedDirectory(oldDir);
+//        newDir = this.dataOperator.saveModifiedDirectory(newDir);
+//        oldDir = this.dataOperator.saveModifiedDirectory(oldDir);
         
         return ( 
                 movedPage.getDir().getName().equals(newDirName) && 
@@ -238,8 +241,8 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         
         sort(newDir.getPages());
         
-        newDir = this.dataOperator.saveModifiedDirectory(newDir);
-        oldDir = this.dataOperator.saveModifiedDirectory(oldDir);
+//        newDir = this.dataOperator.saveModifiedDirectory(newDir);
+//        oldDir = this.dataOperator.saveModifiedDirectory(oldDir);
         
         return ( 
                 movedPage.getDir().getName().equals(newDirName) && 
@@ -276,7 +279,7 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         
         this.orderer.reorderToExtractWebItemLater(dirs, deletedDir.getOrder());
         
-        this.dataOperator.saveModifiedDirectories(dirs);
+        //this.dataOperator.saveModifiedDirectories(dirs);
         return this.dataOperator.deleteDirectory(deletedDir);
     }
 
@@ -294,7 +297,7 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         this.orderer.reorderToExtractWebItemLater(dir.getPages(), deletedPage.getOrder());
         
         dir.getPages().remove(deletedPage);
-        dir = this.dataOperator.saveModifiedDirectory(dir);
+//        dir = this.dataOperator.saveModifiedDirectory(dir);
         
         return ( ! dir.getPages().contains(deletedPage) );
     }
@@ -317,10 +320,9 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         
         dir.getPages().add(newPage);
         
-        PersistableWebDirectory savedDir = this.dataOperator.saveModifiedDirectory(dir);
-        
+        //PersistableWebDirectory savedDir = this.dataOperator.saveModifiedDirectory(dir);
         PersistableWebPage savedPage = 
-                this.dataOperator.findWebPageInDirectoryNotNull(savedDir.getPages(), pageName);
+                this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), pageName);
         return ( 
                 savedPage.getName().equals(pageName) && 
                 savedPage.getDir().getName().equals(dirName) );
