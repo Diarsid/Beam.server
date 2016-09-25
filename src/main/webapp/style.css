@@ -26,7 +26,7 @@ a:link, a:visited, a:hover, a:active {
 
 .directory-bar {
     box-sizing: border-box;
-    height: 28px;
+    height: 29px;
     border: 1px solid rgba(30, 30, 30, 0.2);
     background-color: rgba(30, 30, 30, 0.1);
     box-shadow: inset 0px 0px 15px 0px rgba(30, 30, 30, 0.4);
@@ -38,12 +38,12 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .directory-bar-empty {
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .directory-bar-nonempty {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 @-moz-document url-prefix() {
@@ -65,10 +65,10 @@ a:link, a:visited, a:hover, a:active {
     float: left;
     position: relative;
     top: 0;
-    border-radius: 5px;
-    height: 20px;
-    width: 20px;
-    border: 1px solid lightgrey;
+    border-radius: 11px;
+    height: 22px;
+    width: 22px;
+    border: 1px solid #B7B7B7;
     box-sizing: border-box;
     opacity: 0.9;
     background-color: #fafafa;
@@ -104,26 +104,38 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .create-page-button-on-directory-bar {
+    background-origin: content-box;
+    padding: 1px;
     background-image: url("./img/create-page-inactive.png");
 }
 .create-page-button-on-directory-bar:hover {
+    background-origin: content-box;
+    padding: 1px;
     background-image: url("./img/create-page-active.png");
 }
 
 .delete-dir-button-on-directory-bar {
+    background-origin: content-box;
+    padding: 1px;
     float: right;
     position: relative;
     right: -2px;
     background-image: url("./img/del-inactive.png");
 }
 .delete-dir-button-on-directory-bar:hover {
+    background-origin: content-box;
+    padding: 1px;
     background-image: url("./img/del-active.png");
 }
 
 .edit-dir-name-button-on-directory-bar {
+    background-origin: content-box;
+    padding: 1px;
     background-image: url("./img/edit-page-inactive.png");
 }
 .edit-dir-name-button-on-directory-bar:hover {
+    background-origin: content-box;
+    padding: 1px;
     background-image: url("./img/edit-page-active.png");
 }
 
@@ -223,12 +235,13 @@ fieldset {
 
 .page-frame {
     opacity: 0.9;
+    box-sizing: border-box;
     box-shadow: inset 0px 0px 10px 0px lightgrey;
     -webkit-box-shadow: inset 0px 0px 10px 0px lightgrey;
     -moz-box-shadow: inset 0px 0px 10px 0px lightgrey;
     -o-box-shadow: inset 0px 0px 10px 0px lightgrey;
     border: 1px solid darkgray;
-    border-radius: 5px;
+    border-radius: 11px;
     background-color: #fafafa;
     height: 120px;
     width: 120px;
@@ -248,14 +261,16 @@ fieldset {
 .page-menu-trigger {
     position: relative;
     top: -128px;
-    left: -8px;
-    border-radius: 6px;
-    height: 20px;
-    width: 20px;
-    border: 1px solid lightgrey;
+    left: -6px;
+    border-radius: 11px;
+    height: 22px;
+    width: 22px;
+    border: 1px solid #B7B7B7;
     box-sizing: border-box;
     opacity: 0.9;
     background-image: url("./img/page-menu-inactive.png");
+    background-origin: content-box;
+    padding: 1px;
     background-color: #fafafa;
     box-shadow: inset 0px 0px 5px 0px lightgrey;
     -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
@@ -273,6 +288,8 @@ fieldset {
     opacity: 1;
     background: white;
     background-image: url("./img/page-menu-active.png");
+    background-origin: content-box;
+    padding: 1px;
     box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
     -webkit-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
     -moz-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
@@ -288,6 +305,8 @@ fieldset {
     opacity: 1;
     background: white;
     background-image: url("./img/page-menu-active.png");
+    background-origin: content-box;
+    padding: 1px;
     box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
     -webkit-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
     -moz-box-shadow: 0px 0px 10px 0px white, inset 0px 0px 3px 0px lightgrey;
@@ -301,12 +320,12 @@ fieldset {
 
 .page-menu {
     position: relative;
-    top: -148px;
+    top: -138px;
     left: 6px;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border: 1px solid lightgrey;
+    border-bottom-right-radius: 11px;
+    border-bottom-left-radius: 11px;
+    border-top-right-radius: 11px;
+    border: 1px solid darkgray;
     box-sizing: border-box;
     background-color: rgba(250, 250, 250, 0.9);
     box-shadow: inset 0px 0px 5px 0px lightgrey;
@@ -325,7 +344,7 @@ fieldset {
 
 .page-menu-item:hover {
     background: rgba(255, 255, 255, 1.0);
-    border-radius: 6px;
+    border-radius: 11px;
     box-shadow: 0px 0px 13px 5px white;
     -webkit-box-shadow: 0px 0px 13px 5px white;
     -moz-box-shadow: 0px 0px 13px 5px white;
@@ -355,15 +374,15 @@ fieldset {
 
 .page-image-frame {
     box-sizing: border-box;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-top-right-radius: 11px;
+    border-top-left-radius: 11px;
     height: 90px;
-    width: 120px;
-    padding: 5px;
+    width: 118px;
+    padding: 4px;
 }
 
 .page-image {
-    border-radius: 3px;
+    border-radius: 6px;
     height: 80px;
     width: 110px;
 }
@@ -372,7 +391,7 @@ fieldset {
     margin: 0;
     border-top: 1px solid lightgrey;
     height: 30px;
-    width: 120px;
+    width: 118px;
 }
 
 .title-text {
@@ -392,7 +411,7 @@ fieldset {
 .directory {
     background-color: rgba(30, 30, 30, 0.2);
     margin: 1vw 2vw 1vw 2vw;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 ul.directory-content-list {
@@ -447,10 +466,10 @@ ul.directory-content-list {
 .main-page-bar-button {
     position: relative;
     top: 0;
-    border-radius: 7px;
-    height: 25px;
-    width: 25px;
-    border: 1px solid lightgrey;
+    border-radius: 15px;
+    height: 30px;
+    width: 30px;
+    border: 1px solid #B7B7B7;
     box-sizing: border-box;
     opacity: 0.9;
     background-color: #fafafa;
@@ -458,8 +477,8 @@ ul.directory-content-list {
     -webkit-box-shadow: inset 0px 0px 5px 0px lightgrey;
     -moz-box-shadow: inset 0px 0px 5px 0px lightgrey;
     -o-box-shadow: inset 0px 0px 5px 0px lightgrey;
-    margin-top: 7px;
-    margin-left: 7px;
+    margin-top: 5px;
+    margin-left: 5px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -480,30 +499,23 @@ ul.directory-content-list {
 }
 
 .logout-button-on-main-page {
+    background-origin: content-box;
+    padding: 2px;
     background-image: url("./img/logout-inactive.png");
 }
 .logout-button-on-main-page:hover {
+    background-origin: content-box;
+    padding: 2px;
     background-image: url("./img/logout-active.png");
 }
 
 .create-directory-button-on-main-page {
+    background-origin: content-box;
+    padding: 2px;
     background-image: url("./img/create-page-inactive.png");
 }
 .create-directory-button-on-main-page:hover {
+    background-origin: content-box;
+    padding: 2px;
     background-image: url("./img/create-page-active.png");
-}
-
-.create-directory-bar-button {
-    border: none;
-    width: 40px;
-    height: 40px;
-    background-color: black;
-    opacity: 0.7;
-}
-
-.create-directory-bar-button:hover {
-    box-shadow: 0px 0px 30px 10px darkslateblue inset;
-    -webkit-box-shadow: 0px 0px 30px 10px darkslateblue inset;
-    -moz-box-shadow: 0px 0px 30px 10px darkslateblue inset;
-    -o-box-shadow: 0px 0px 30px 10px darkslateblue inset;
 }
