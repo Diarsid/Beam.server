@@ -66,7 +66,7 @@ public class PersistableWebDirectory
     
     @OneToMany(
             mappedBy = "dir",
-            fetch = FetchType.LAZY, 
+            fetch = FetchType.EAGER, 
             cascade = {DETACH, MERGE, PERSIST, REFRESH, REMOVE},
             orphanRemoval = true)
     @OrderBy("page_order")

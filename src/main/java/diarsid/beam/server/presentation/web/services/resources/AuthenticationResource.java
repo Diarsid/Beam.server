@@ -25,7 +25,6 @@ import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
 import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
@@ -96,7 +95,7 @@ public class AuthenticationResource {
                 if ( result.isJwtNotExpired() ) {
                     return Response.status(OK).build();
                 } else {
-                    return Response.status(FOUND).build();
+                    return Response.status(UNAUTHORIZED).build();
                 }
             } else {
                 return Response.status(UNAUTHORIZED).build();

@@ -22,7 +22,6 @@ import diarsid.beam.server.domain.services.jwtauth.JwtUserInfo;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidationResult;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidator;
 
-import static javax.ws.rs.core.Response.Status.FOUND;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ID;
@@ -67,7 +66,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                                 ", role:"+result.getUserInfo().getRole() + 
                                 ", nick:"+result.getUserInfo().getNickName() + ">");
                     } else {
-                        request.abortWith(Response.status(FOUND).build());
+                        request.abortWith(Response.status(UNAUTHORIZED).build());
                         logger.info("auth: JWT expired. Access denied.");
                     }
                 } else {
