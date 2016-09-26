@@ -7,6 +7,7 @@
 package diarsid.beam.server.presentation.web.services.resources;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -19,16 +20,22 @@ import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.domain.entities.jpa.PersistableUser;
 import diarsid.beam.server.domain.services.jwtauth.JwtAuthService;
+import diarsid.beam.server.domain.services.jwtauth.JwtUserInfo;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidationResult;
 import diarsid.beam.server.domain.services.users.UsersService;
 import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
 import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
+import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
+
+import static java.lang.Integer.valueOf;
+import static java.util.Objects.nonNull;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.OK;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import static diarsid.beam.server.domain.services.jwtauth.JwtProducer.JWT_RESPONSE_HEADER;
+import static diarsid.beam.server.presentation.web.services.filters.RequestAdditionalProperties.USER;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.anauthenticatedResponse;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.okResponse;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.okResponseWithJwt;
 
 /**
  *
@@ -63,12 +70,10 @@ public class AuthenticationResource {
         PersistableUser user = this.usersService.findBy(login);
         if ( user != null ) {
             logger.info("login succeed with " + login.getNickName() + ":" + login.getPassword());               
-            return Response.ok().header(
-                    JWT_RESPONSE_HEADER, 
-                    this.jwtAuthService.createJwtFor(user)).build();
+            return okResponseWithJwt(this.jwtAuthService.createJwtFor(user));
         } else {
             logger.info("login failed with " + login.getNickName() + ":" + login.getPassword());
-            return Response.status(UNAUTHORIZED).build();
+            return anauthenticatedResponse();
         }
     }
     
@@ -80,9 +85,7 @@ public class AuthenticationResource {
         logger.info(
                 "user registration succeed: <id:" + user.getId() + 
                         ", nick:" + user.getNickname() + ">");
-        return Response.ok()
-                .header(JWT_RESPONSE_HEADER, this.jwtAuthService.createJwtFor(user))
-                .build();                
+        return okResponseWithJwt(this.jwtAuthService.createJwtFor(user));                
     }
     
     @POST
@@ -93,15 +96,36 @@ public class AuthenticationResource {
         if ( result.isJwtPresent() ) {
             if ( result.isJwtSignVerified() ) {
                 if ( result.isJwtNotExpired() ) {
-                    return Response.status(OK).build();
+                    return okResponse();
                 } else {
-                    return Response.status(UNAUTHORIZED).build();
+                    return anauthenticatedResponse();
                 }
             } else {
-                return Response.status(UNAUTHORIZED).build();
+                return anauthenticatedResponse();
             }
         } else {
-            return Response.status(UNAUTHORIZED).build();
+            return anauthenticatedResponse();
         }        
+    }
+    
+    @GET
+    @Path("/refresh")
+    @AuthenticationRequired
+    public Response refreshJWT(@Context ContainerRequestContext request) {
+        logger.info("jwt refreshing...");
+        PersistableUser user = getUserFromRequestProperty(request);
+        if ( nonNull(user) ) {
+            logger.info("...new jwt for: " + user.getId() + ":" + user.getNickname());               
+            return okResponseWithJwt(this.jwtAuthService.createJwtFor(user));
+        } else {
+            logger.info("...unauthenticated.");
+            return anauthenticatedResponse();
+        }
+    }
+
+    private PersistableUser getUserFromRequestProperty(ContainerRequestContext request) 
+            throws NumberFormatException {
+        JwtUserInfo info = (JwtUserInfo) request.getProperty(USER.getPropertyName());
+        return this.usersService.findBy(valueOf(info.getId()));
     }
 }

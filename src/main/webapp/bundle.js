@@ -51,12 +51,17 @@
 	var Provider = __webpack_require__(163).Provider;
 
 	var appStore = __webpack_require__(186);
-	var actionDispatchers = __webpack_require__(197);
-	var ajaxJwtValidation = __webpack_require__(199);
+	var actionDispatchers = __webpack_require__(204);
+	var ajaxJwtValidation = __webpack_require__(206);
 	var storage = __webpack_require__(202);
-	var RootPageContainer = __webpack_require__(203);
+	var RootPageContainer = __webpack_require__(207);
+	var jwtRefreshing = __webpack_require__(199);
 
 	// --------------------------------------------
+
+	function mainLog(message) {
+	    console.log('[APP] [MAIN] ' + message);
+	}
 
 	var jwtValidationHttpResponseCallbacks = {
 	    onStart: function onStart() {
@@ -64,12 +69,14 @@
 	    },
 	    onJwtValid: function onJwtValid() {
 	        actionDispatchers.initialAuthCheck.dispatchStoredUserInfoValidAction(storage.parseUserFromJwt());
+	        jwtRefreshing.scheduleRefreshing();
 	    },
 	    onJwtInvalid: function onJwtInvalid() {
 	        storage.deleteJwt();
-	        actionDispatchers.app.dispatchGoToRegisterAction();
+	        actionDispatchers.app.dispatchGoToLoginAction();
 	    },
 	    onJwtExpired: function onJwtExpired() {
+	        storage.deleteJwt();
 	        actionDispatchers.app.dispatchGoToLoginAction();
 	    }
 	};
@@ -81,6 +88,7 @@
 	        actionDispatchers.app.dispatchGoToLandingPageAction();
 	    }
 	}
+
 	function renderView() {
 	    ReactDOM.render(React.createElement(
 	        Provider,
@@ -90,7 +98,7 @@
 	}
 
 	function startApp() {
-	    console.log('[APP] [MAIN] start app...');
+	    mainLog("start app...");
 	    actionDispatchers.app.dispatchAppStartsAction();
 	    initialAppUserInfoProcessing();
 	    renderView();
@@ -22079,6 +22087,9 @@
 	var defineRegistrationPageState = __webpack_require__(193);
 	var defineMainPageState = __webpack_require__(194);
 	var defineErrorPageState = __webpack_require__(196);
+	var actionsGlobalInterceptor = __webpack_require__(197);
+
+	// -------------------------
 
 	var appInitialState = {
 	    user: {},
@@ -22093,7 +22104,7 @@
 	    var appState = arguments.length <= 0 || arguments[0] === undefined ? appInitialState : arguments[0];
 	    var action = arguments[1];
 
-
+	    actionsGlobalInterceptor.intercept(action);
 	    return {
 	        user: defineUserState(appState.user, action),
 	        currentPage: defineCurrentPageState(appState.currentPage, action),
@@ -27822,382 +27833,19 @@
 
 	"use strict";
 
-	var dispatch = __webpack_require__(186).dispatch;
-	var actionCreators = __webpack_require__(198);
+	var authInterceptor = __webpack_require__(198);
 
-	function dispatchLog(message) {
-	    console.log("[APP] [ACTION DISPATCHER] " + message);
+	// ----------------------
+
+	function interceptAllActions(action) {
+	    authInterceptor.intercept(action);
 	}
 
-	var actionDispatchers = {
-
-	    app: {
-
-	        dispatchAppStartsAction: function dispatchAppStartsAction() {
-	            dispatchLog("app starts.");
-	            dispatch(actionCreators.app.appStartsAction());
-	        },
-
-	        dispatchGoToLandingPageAction: function dispatchGoToLandingPageAction() {
-	            dispatchLog("go to landing.");
-	            dispatch(actionCreators.app.goToLandingPageAction());
-	        },
-
-	        dispatchGoToLoginAction: function dispatchGoToLoginAction() {
-	            dispatchLog("go to login.");
-	            dispatch(actionCreators.initialAuthCheck.goToLoginAction());
-	        },
-
-	        dispatchGoToRegisterAction: function dispatchGoToRegisterAction() {
-	            dispatchLog("go to register.");
-	            dispatch(actionCreators.initialAuthCheck.goToRegisterAction());
-	        },
-
-	        dispatchLogoutAction: function dispatchLogoutAction() {
-	            dispatchLog("logout.");
-	            dispatch(actionCreators.app.logoutAction());
-	        },
-
-	        dispatchGoToErrorAction: function dispatchGoToErrorAction(message) {
-	            dispatchLog("Error occurs : " + message);
-	            dispatch(actionCreators.app.goToErrorAction(message));
-	        }
-	    },
-
-	    initialAuthCheck: {
-
-	        dispatchStoredUserInfoValidationBeginsAction: function dispatchStoredUserInfoValidationBeginsAction() {
-	            dispatchLog("stored user info validation... ");
-	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidationBeginsAction());
-	        },
-
-	        dispatchStoredUserInfoValidAction: function dispatchStoredUserInfoValidAction(userInfo) {
-	            dispatchLog("stored user info valid, " + userInfo);
-	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidAction(userInfo));
-	        }
-
-	    },
-
-	    login: {
-
-	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
-	            dispatchLog("nickName changed : " + newNickName);
-	            dispatch(actionCreators.login.nickNameChangedAction(newNickName));
-	        },
-
-	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
-	            dispatchLog("nickNameValid");
-	            dispatch(actionCreators.login.nickNameValidAction());
-	        },
-
-	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
-	            dispatchLog("nickName invalid : " + message);
-	            dispatch(actionCreators.login.nickNameInvalidAction(message));
-	        },
-
-	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
-	            dispatchLog("nickName validation begins... ");
-	            dispatch(actionCreators.login.nickNameValidationBeginsAction());
-	        },
-
-	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
-	            dispatchLog("password changed : " + newPassword);
-	            dispatch(actionCreators.login.passwordChangedAction(newPassword));
-	        },
-
-	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
-	            dispatchLog("password valid.");
-	            dispatch(actionCreators.login.passwordValidAction());
-	        },
-
-	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
-	            dispatchLog("password invalid : " + message);
-	            dispatch(actionCreators.login.passwordInvalidAction(message));
-	        },
-
-	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
-	            dispatchLog("password validation begins...");
-	            dispatch(actionCreators.login.passwordValidationBeginsAction());
-	        },
-
-	        dispatchAssessIfLoginAllowedAction: function dispatchAssessIfLoginAllowedAction() {
-	            dispatchLog("is login allowed?");
-	            dispatch(actionCreators.login.assessIfAllowedAction());
-	        },
-
-	        dispatchLoginAttemptBegins: function dispatchLoginAttemptBegins() {
-	            dispatchLog("login call begins...");
-	            dispatch(actionCreators.login.attemptBegins());
-	        },
-
-	        dispatchLoginFailedAction: function dispatchLoginFailedAction(message) {
-	            dispatchLog("login failed : " + message);
-	            dispatch(actionCreators.login.attemptFailedAction(message));
-	        },
-
-	        dispatchLoginSuccessAction: function dispatchLoginSuccessAction(userInfo) {
-	            dispatchLog("login success - " + userInfo);
-	            dispatch(actionCreators.login.attemptSuccessAction(userInfo));
-	        }
-	    },
-
-	    reg: {
-
-	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
-	            dispatchLog("nickName changed : " + newNickName);
-	            dispatch(actionCreators.reg.nickNameChangedAction(newNickName));
-	        },
-
-	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
-	            dispatchLog("nickNameValid");
-	            dispatch(actionCreators.reg.nickNameValidAction());
-	        },
-
-	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
-	            dispatchLog("nickName invalid : " + message);
-	            dispatch(actionCreators.reg.nickNameInvalidAction(message));
-	        },
-
-	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
-	            dispatchLog("nickName validation begins... ");
-	            dispatch(actionCreators.reg.nickNameValidationBeginsAction());
-	        },
-
-	        dispatchNameChangedAction: function dispatchNameChangedAction(newName) {
-	            dispatchLog("name changed : " + newName);
-	            dispatch(actionCreators.reg.nameChangedAction(newName));
-	        },
-
-	        dispatchNameValidAction: function dispatchNameValidAction() {
-	            dispatchLog("nameValid");
-	            dispatch(actionCreators.reg.nameValidAction());
-	        },
-
-	        dispatchNameInvalidAction: function dispatchNameInvalidAction(message) {
-	            dispatchLog("name invalid : " + message);
-	            dispatch(actionCreators.reg.nameInvalidAction(message));
-	        },
-
-	        dispatchNameValidationBeginsAction: function dispatchNameValidationBeginsAction() {
-	            dispatchLog("name validation begins... ");
-	            dispatch(actionCreators.reg.nameValidationBeginsAction());
-	        },
-
-	        dispatchSurnameChangedAction: function dispatchSurnameChangedAction(newSurname) {
-	            dispatchLog("surname changed : " + newSurname);
-	            dispatch(actionCreators.reg.surnameChangedAction(newSurname));
-	        },
-
-	        dispatchSurnameValidAction: function dispatchSurnameValidAction() {
-	            dispatchLog("surname valid");
-	            dispatch(actionCreators.reg.surnameValidAction());
-	        },
-
-	        dispatchSurnameInvalidAction: function dispatchSurnameInvalidAction(message) {
-	            dispatchLog("surname invalid : " + message);
-	            dispatch(actionCreators.reg.surnameInvalidAction(message));
-	        },
-
-	        dispatchSurnameValidationBeginsAction: function dispatchSurnameValidationBeginsAction() {
-	            dispatchLog("surname validation begins... ");
-	            dispatch(actionCreators.reg.surnameValidationBeginsAction());
-	        },
-
-	        dispatchEmailChangedAction: function dispatchEmailChangedAction(newEmail) {
-	            dispatchLog("email changed : " + newEmail);
-	            dispatch(actionCreators.reg.emailChangedAction(newEmail));
-	        },
-
-	        dispatchEmailValidAction: function dispatchEmailValidAction() {
-	            dispatchLog("email valid");
-	            dispatch(actionCreators.reg.emailValidAction());
-	        },
-
-	        dispatchEmailInvalidAction: function dispatchEmailInvalidAction(message) {
-	            dispatchLog("email invalid : " + message);
-	            dispatch(actionCreators.reg.emailInvalidAction(message));
-	        },
-
-	        dispatchEmailValidationBeginsAction: function dispatchEmailValidationBeginsAction() {
-	            dispatchLog("email validation begins... ");
-	            dispatch(actionCreators.reg.emailValidationBeginsAction());
-	        },
-
-	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
-	            dispatchLog("password changed : " + newPassword);
-	            dispatch(actionCreators.reg.passwordChangedAction(newPassword));
-	        },
-
-	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
-	            dispatchLog("password valid.");
-	            dispatch(actionCreators.reg.passwordValidAction());
-	        },
-
-	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
-	            dispatchLog("password invalid : " + message);
-	            dispatch(actionCreators.reg.passwordInvalidAction(message));
-	        },
-
-	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
-	            dispatchLog("password validation begins...");
-	            dispatch(actionCreators.reg.passwordValidationBeginsAction());
-	        },
-
-	        dispatchConfirmPasswordChangedAction: function dispatchConfirmPasswordChangedAction(newConfirmPassword) {
-	            dispatchLog("confirm password changed : " + newConfirmPassword);
-	            dispatch(actionCreators.reg.confirmPasswordChangedAction(newConfirmPassword));
-	        },
-
-	        dispatchConfirmPasswordValidAction: function dispatchConfirmPasswordValidAction() {
-	            dispatchLog("confirm password valid.");
-	            dispatch(actionCreators.reg.confirmPasswordValidAction());
-	        },
-
-	        dispatchConfirmPasswordInvalidAction: function dispatchConfirmPasswordInvalidAction(message) {
-	            dispatchLog("confirm password invalid : " + message);
-	            dispatch(actionCreators.reg.confirmPasswordInvalidAction(message));
-	        },
-
-	        dispatchConfirmPasswordValidationBeginsAction: function dispatchConfirmPasswordValidationBeginsAction() {
-	            dispatchLog("confirm password validation begins...");
-	            dispatch(actionCreators.reg.confirmPasswordValidationBeginsAction());
-	        },
-
-	        dispatchAssessIfRegistrationAllowedAction: function dispatchAssessIfRegistrationAllowedAction() {
-	            dispatchLog("is registr allowed?");
-	            dispatch(actionCreators.reg.assessIfAlowedAction());
-	        },
-
-	        dispatchRegistrationAttemptBegins: function dispatchRegistrationAttemptBegins() {
-	            dispatchLog("registr call begins...");
-	            dispatch(actionCreators.reg.attemptBegins());
-	        },
-
-	        dispatchRegistrationFailedAction: function dispatchRegistrationFailedAction(message) {
-	            dispatchLog("registr failed : " + message);
-	            dispatch(actionCreators.reg.attemptFailedAction(message));
-	        },
-
-	        dispatchRegistrationSuccessAction: function dispatchRegistrationSuccessAction(userInfo) {
-	            dispatchLog("registr success - " + userInfo);
-	            dispatch(actionCreators.reg.attemptSuccessAction(userInfo));
-	        },
-
-	        dispatchPasswordsDifferAction: function dispatchPasswordsDifferAction() {
-	            dispatchLog("passwords differ.");
-	            dispatch(actionCreators.reg.passwordsDifferAction());
-	        },
-
-	        dispatchPasswordsEqualAction: function dispatchPasswordsEqualAction() {
-	            dispatchLog("passwords equal.");
-	            dispatch(actionCreators.reg.passwordsEqualAction());
-	        }
-	    },
-
-	    main: {
-
-	        dispatchToggleMainPageContentViewAction: function dispatchToggleMainPageContentViewAction() {
-	            dispatchLog("toggle main page content view.");
-	            dispatch(actionCreators.main.toggleMainPageContentViewAction());
-	        },
-
-	        dispatchDirectoriesReorderedAction: function dispatchDirectoriesReorderedAction(place, newImtblDirs) {
-	            dispatchLog("directories reordered!");
-	            dispatch(actionCreators.main.directoriesReorderedAction(place, newImtblDirs));
-	        },
-
-	        dispatchPagesReorderedAction: function dispatchPagesReorderedAction(place, newImtblDirs) {
-	            dispatchLog("pages reordered.");
-	            dispatch(actionCreators.main.pagesReorderedAction(place, newImtblDirs));
-	        },
-
-	        dispatchDirectoryCreatedAction: function dispatchDirectoryCreatedAction(currentView, newDirName) {
-	            dispatchLog("directory " + newDirName + " create action.");
-	            dispatch(actionCreators.main.directoryCreatedAction(currentView, newDirName));
-	        },
-
-	        webPanel: {
-
-	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
-	                dispatchLog("webPanel loading begins...");
-	                dispatch(actionCreators.main.webPanel.loadingBegins());
-	            },
-
-	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
-	                dispatchLog("webPanel loaded: ");
-	                console.log(dirs);
-	                dispatch(actionCreators.main.webPanel.loaded(dirs));
-	            },
-
-	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
-	                dispatchLog("webPanel loading fails: " + message);
-	                dispatch(actionCreators.main.webPanel.loadingFailed(message));
-	            }
-	        },
-
-	        bookmarks: {
-	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
-	                dispatchLog("bookmarks loading begins...");
-	                dispatch(actionCreators.main.bookmarks.loadingBegins());
-	            },
-
-	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
-	                dispatchLog("bookmarks loaded: ");
-	                console.log(dirs);
-	                dispatch(actionCreators.main.bookmarks.loaded(dirs));
-	            },
-
-	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
-	                dispatchLog("bookmarks loading fails: " + message);
-	                dispatch(actionCreators.main.bookmarks.loadingFailed(message));
-	            }
-	        },
-
-	        directory: {
-	            dispatchCreationAjaxStartAction: function dispatchCreationAjaxStartAction() {
-	                dispatchLog("directory creation start...");
-	                dispatch(actionCreators.main.directory.creationStartAction());
-	            },
-	            dispatchCreationAjaxSuccessAction: function dispatchCreationAjaxSuccessAction(placement, dirName) {
-	                dispatchLog("directory created : " + placement + "::" + dirName);
-	                dispatch(actionCreators.main.directory.creationSuccessAction(placement, dirName));
-	            },
-	            dispatchCreationAjaxFailAction: function dispatchCreationAjaxFailAction(message) {
-	                dispatchLog("directory creation fails : " + message);
-	                dispatch(actionCreators.main.directory.creationFailAction(message));
-	            },
-	            dispatchRenamedAction: function dispatchRenamedAction(place, dirs) {
-	                dispatchLog(place + " dir renamed.");
-	                dispatch(actionCreators.main.directory.renamedAction(place, dirs));
-	            },
-	            dispatchRemovedAction: function dispatchRemovedAction(place, dirs) {
-	                dispatchLog("dir removed from " + place);
-	                dispatch(actionCreators.main.directory.removedAction(place, dirs));
-	            }
-	        },
-
-	        page: {
-	            dispatchCreatedAction: function dispatchCreatedAction(place, dirs) {
-	                dispatchLog("page created.");
-	                dispatch(actionCreators.main.page.createdAction(place, dirs));
-	            },
-	            dispatchRenamedAction: function dispatchRenamedAction(place, dirs) {
-	                dispatchLog("page renamed.");
-	                dispatch(actionCreators.main.page.renamedAction(place, dirs));
-	            },
-	            dispatchDeletedAction: function dispatchDeletedAction(place, dirs) {
-	                dispatchLog("page removed.");
-	                dispatch(actionCreators.main.page.deletedAction(place, dirs));
-	            },
-	            dispatchUrlChangedAction: function dispatchUrlChangedAction(place, dirs) {
-	                dispatchLog("page url changed.");
-	                dispatch(actionCreators.main.page.urlChangedAction(place, dirs));
-	            }
-	        }
-	    }
+	var actionsGlobalInterceptor = {
+	    intercept: interceptAllActions
 	};
 
-	module.exports = actionDispatchers;
+	module.exports = actionsGlobalInterceptor;
 
 /***/ },
 /* 198 */
@@ -28206,530 +27854,35 @@
 	"use strict";
 
 	var actionTypes = __webpack_require__(190);
+	var jwtRefreshing = __webpack_require__(199);
 
-	function creatorLog(message) {
-	    console.log("[APP] [ACTION CREATOR] " + message);
+	// ---------------------
+
+	function interceptAction(action) {
+	    switch (action.type) {
+
+	        case actionTypes.logout:
+	        case actionTypes.goToRegister:
+	        case actionTypes.goToLogin:
+	        case actionTypes.goToLanding:
+	            jwtRefreshing.stopRefreshing();
+	            break;
+
+	        case actionTypes.loginSuccess:
+	        case actionTypes.regSuccess:
+	            jwtRefreshing.scheduleRefreshing();
+	            break;
+
+	        default:
+	            break;
+	    }
 	}
 
-	var actionCreators = {
-
-	    app: {
-
-	        appStartsAction: function appStartsAction() {
-	            return {
-	                type: actionTypes.appStarts
-	            };
-	        },
-
-	        goToLandingPageAction: function goToLandingPageAction() {
-	            return {
-	                type: actionTypes.goToLanding
-	            };
-	        },
-
-	        logoutAction: function logoutAction() {
-	            return {
-	                type: actionTypes.logout
-	            };
-	        },
-
-	        goToErrorAction: function goToErrorAction(message) {
-	            return {
-	                type: actionTypes.goToError,
-	                message: message
-	            };
-	        }
-	    },
-
-	    main: {
-
-	        toggleMainPageContentViewAction: function toggleMainPageContentViewAction() {
-	            return {
-	                type: actionTypes.toggleMainPageContentView
-	            };
-	        },
-
-	        directoriesReorderedAction: function directoriesReorderedAction(place, newImtblDirs) {
-	            return {
-	                type: actionTypes.directoriesReordered,
-	                place: place,
-	                dirs: newImtblDirs
-	            };
-	        },
-
-	        pagesReorderedAction: function pagesReorderedAction(place, newImtblDirs) {
-	            return {
-	                type: actionTypes.pagesReordered,
-	                place: place,
-	                dirs: newImtblDirs
-	            };
-	        },
-
-	        directoryCreatedAction: function directoryCreatedAction(currentView, newDirName) {
-	            return {
-	                type: actionTypes.directoryCreated,
-	                place: currentView,
-	                name: newDirName
-	            };
-	        },
-
-	        webPanel: {
-
-	            loadingBegins: function loadingBegins() {
-	                return {
-	                    type: actionTypes.webPanelLoadingBegins
-	                };
-	            },
-
-	            loaded: function loaded(dirs) {
-	                return {
-	                    type: actionTypes.webPanelLoaded,
-	                    dirs: dirs
-	                };
-	            },
-
-	            loadingFailed: function loadingFailed(message) {
-	                return {
-	                    type: actionTypes.webPanelLoadingFailed,
-	                    message: message
-	                };
-	            }
-	        },
-
-	        bookmarks: {
-	            loadingBegins: function loadingBegins() {
-	                return {
-	                    type: actionTypes.bookmarksLoadingBegins
-	                };
-	            },
-
-	            loaded: function loaded(dirs) {
-	                return {
-	                    type: actionTypes.bookmarksLoaded,
-	                    dirs: dirs
-	                };
-	            },
-
-	            loadingFailed: function loadingFailed(message) {
-	                return {
-	                    type: actionTypes.bookmarksLoadingFailed,
-	                    message: message
-	                };
-	            }
-	        },
-
-	        directory: {
-
-	            creationStartAction: function creationStartAction() {
-	                return {
-	                    type: actionTypes.directoryCreationAjaxStart
-	                };
-	            },
-
-	            creationSuccessAction: function creationSuccessAction(placement, dirName) {
-	                return {
-	                    type: actionTypes.directoryCreationAjaxSuccess,
-	                    place: placement,
-	                    dirName: dirName
-	                };
-	            },
-
-	            creationFailAction: function creationFailAction(message) {
-	                return {
-	                    type: actionTypes.directoryCreationAjaxFail,
-	                    message: message
-	                };
-	            },
-
-	            renamedAction: function renamedAction(place, dirs) {
-	                return {
-	                    type: actionTypes.directoryRenamed,
-	                    place: place,
-	                    dirs: dirs
-	                };
-	            },
-
-	            removedAction: function removedAction(place, dirs) {
-	                return {
-	                    type: actionTypes.directoryRemoved,
-	                    place: place,
-	                    dirs: dirs
-	                };
-	            }
-	        },
-
-	        page: {
-
-	            createdAction: function createdAction(place, dirs) {
-	                return {
-	                    type: actionTypes.pageCreated,
-	                    place: place,
-	                    dirs: dirs
-	                };
-	            },
-
-	            renamedAction: function renamedAction(place, dirs) {
-	                return {
-	                    type: actionTypes.pageRenamed,
-	                    place: place,
-	                    dirs: dirs
-	                };
-	            },
-
-	            urlChangedAction: function urlChangedAction(place, dirs) {
-	                return {
-	                    type: actionTypes.pageUrlChanged,
-	                    place: place,
-	                    dirs: dirs
-	                };
-	            },
-
-	            deletedAction: function deletedAction(place, dirs) {
-	                return {
-	                    type: actionTypes.pageDeleted,
-	                    place: place,
-	                    dirs: dirs
-	                };
-	            }
-	        }
-	    },
-
-	    initialAuthCheck: {
-
-	        goToLoginAction: function goToLoginAction() {
-	            creatorLog("force to login.");
-	            return {
-	                type: actionTypes.goToLogin
-	            };
-	        },
-
-	        goToRegisterAction: function goToRegisterAction() {
-	            creatorLog("force to register.");
-	            return {
-	                type: actionTypes.goToRegister
-	            };
-	        },
-
-	        storedUserInfoValidationBeginsAction: function storedUserInfoValidationBeginsAction() {
-	            creatorLog("stored user info validation... ");
-	            return {
-	                type: actionTypes.storedUserInfoValidationBegins
-	            };
-	        },
-
-	        storedUserInfoValidAction: function storedUserInfoValidAction(userInfo) {
-	            creatorLog("stored user info valid: " + userInfo);
-	            return {
-	                type: actionTypes.storedUserInfoValid,
-	                userInfo: userInfo
-	            };
-	        }
-	    },
-
-	    login: {
-
-	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
-	            creatorLog("login nickName changed to : " + newNickName);
-	            return {
-	                type: actionTypes.loginNickNameChanged,
-	                newNickName: newNickName
-	            };
-	        },
-
-	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
-	            creatorLog("login nickName validation begins...");
-	            return {
-	                type: actionTypes.loginNickNameValidationBegins
-	            };
-	        },
-
-	        nickNameValidAction: function nickNameValidAction() {
-	            creatorLog("login nickName valid.");
-	            return {
-	                type: actionTypes.loginNickNameValid
-	            };
-	        },
-
-	        nickNameInvalidAction: function nickNameInvalidAction(message) {
-	            creatorLog("login nickName invalid : " + message);
-	            return {
-	                type: actionTypes.loginNickNameInvalid,
-	                message: message
-	            };
-	        },
-
-	        passwordChangedAction: function passwordChangedAction(newPassword) {
-	            creatorLog("login password changed : " + newPassword);
-	            return {
-	                type: actionTypes.loginPasswordChanged,
-	                newPassword: newPassword
-	            };
-	        },
-
-	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
-	            return {
-	                type: actionTypes.loginPasswordValidationBegins
-	            };
-	        },
-
-	        passwordValidAction: function passwordValidAction() {
-	            return {
-	                type: actionTypes.loginPasswordValid
-	            };
-	        },
-
-	        passwordInvalidAction: function passwordInvalidAction(message) {
-	            return {
-	                type: actionTypes.loginPasswordInvalid,
-	                message: message
-	            };
-	        },
-
-	        assessIfAllowedAction: function assessIfAllowedAction() {
-	            return {
-	                type: actionTypes.loginAssessIfAllowed
-	            };
-	        },
-
-	        attemptBegins: function attemptBegins() {
-	            return {
-	                type: actionTypes.loginAttemptBegins
-	            };
-	        },
-
-	        attemptFailedAction: function attemptFailedAction(message) {
-	            return {
-	                type: actionTypes.loginFailed,
-	                message: message
-	            };
-	        },
-
-	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
-	            return {
-	                type: actionTypes.loginSuccess,
-	                userInfo: userInfo
-	            };
-	        }
-	    },
-
-	    reg: {
-
-	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
-	            creatorLog("registr nickName changed to : " + newNickName);
-	            return {
-	                type: actionTypes.regNickNameChanged,
-	                newNickName: newNickName
-	            };
-	        },
-
-	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
-	            creatorLog("registr nickName validation begins...");
-	            return {
-	                type: actionTypes.regNickNameValidationBegins
-	            };
-	        },
-
-	        nickNameValidAction: function nickNameValidAction() {
-	            creatorLog("registr nickName valid.");
-	            return {
-	                type: actionTypes.regNickNameValid
-	            };
-	        },
-
-	        nickNameInvalidAction: function nickNameInvalidAction(message) {
-	            creatorLog("registr nickName invalid : " + message);
-	            return {
-	                type: actionTypes.regNickNameInvalid,
-	                message: message
-	            };
-	        },
-
-	        nameChangedAction: function nameChangedAction(newName) {
-	            creatorLog("registr name changed to : " + newName);
-	            return {
-	                type: actionTypes.regNameChanged,
-	                newName: newName
-	            };
-	        },
-
-	        nameValidationBeginsAction: function nameValidationBeginsAction() {
-	            creatorLog("registr name validation begins...");
-	            return {
-	                type: actionTypes.regNameValidationBegins
-	            };
-	        },
-
-	        nameValidAction: function nameValidAction() {
-	            creatorLog("registr name valid.");
-	            return {
-	                type: actionTypes.regNameValid
-	            };
-	        },
-
-	        nameInvalidAction: function nameInvalidAction(message) {
-	            creatorLog("registr name invalid : " + message);
-	            return {
-	                type: actionTypes.regNameInvalid,
-	                message: message
-	            };
-	        },
-
-	        surnameChangedAction: function surnameChangedAction(newSurname) {
-	            creatorLog("registr surname changed to : " + newSurname);
-	            return {
-	                type: actionTypes.regSurnameChanged,
-	                newSurname: newSurname
-	            };
-	        },
-
-	        surnameValidationBeginsAction: function surnameValidationBeginsAction() {
-	            creatorLog("registr surname validation begins...");
-	            return {
-	                type: actionTypes.regSurnameValidationBegins
-	            };
-	        },
-
-	        surnameValidAction: function surnameValidAction() {
-	            creatorLog("registr surname valid.");
-	            return {
-	                type: actionTypes.regSurnameValid
-	            };
-	        },
-
-	        surnameInvalidAction: function surnameInvalidAction(message) {
-	            creatorLog("registr surname invalid : " + message);
-	            return {
-	                type: actionTypes.regSurnameInvalid,
-	                message: message
-	            };
-	        },
-
-	        emailChangedAction: function emailChangedAction(newEmail) {
-	            creatorLog("registr email changed to : " + newEmail);
-	            return {
-	                type: actionTypes.regEmailChanged,
-	                newEmail: newEmail
-	            };
-	        },
-
-	        emailValidationBeginsAction: function emailValidationBeginsAction() {
-	            creatorLog("registr email validation begins...");
-	            return {
-	                type: actionTypes.regEmailValidationBegins
-	            };
-	        },
-
-	        emailValidAction: function emailValidAction() {
-	            creatorLog("registr email valid.");
-	            return {
-	                type: actionTypes.regEmailValid
-	            };
-	        },
-
-	        emailInvalidAction: function emailInvalidAction(message) {
-	            creatorLog("registr email invalid : " + message);
-	            return {
-	                type: actionTypes.regEmailInvalid,
-	                message: message
-	            };
-	        },
-
-	        passwordChangedAction: function passwordChangedAction(newPassword) {
-	            creatorLog("registr password changed : " + newPassword);
-	            return {
-	                type: actionTypes.regPasswordChanged,
-	                newPassword: newPassword
-	            };
-	        },
-
-	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
-	            return {
-	                type: actionTypes.regPasswordValidationBegins
-	            };
-	        },
-
-	        passwordValidAction: function passwordValidAction() {
-	            return {
-	                type: actionTypes.regPasswordValid
-	            };
-	        },
-
-	        passwordInvalidAction: function passwordInvalidAction(message) {
-	            return {
-	                type: actionTypes.regPasswordInvalid,
-	                message: message
-	            };
-	        },
-
-	        confirmPasswordChangedAction: function confirmPasswordChangedAction(newConfirmPassword) {
-	            creatorLog("registr confirmPassword changed : " + newConfirmPassword);
-	            return {
-	                type: actionTypes.regConfirmPasswordChanged,
-	                newConfirmPassword: newConfirmPassword
-	            };
-	        },
-
-	        confirmPasswordValidationBeginsAction: function confirmPasswordValidationBeginsAction() {
-	            return {
-	                type: actionTypes.regConfirmPasswordValidationBegins
-	            };
-	        },
-
-	        confirmPasswordValidAction: function confirmPasswordValidAction() {
-	            return {
-	                type: actionTypes.regConfirmPasswordValid
-	            };
-	        },
-
-	        confirmPasswordInvalidAction: function confirmPasswordInvalidAction(message) {
-	            return {
-	                type: actionTypes.regConfirmPasswordInvalid,
-	                message: message
-	            };
-	        },
-
-	        assessIfAlowedAction: function assessIfAlowedAction() {
-	            return {
-	                type: actionTypes.regAssessIfAllowed
-	            };
-	        },
-
-	        attemptBegins: function attemptBegins() {
-	            return {
-	                type: actionTypes.regAttemptBegins
-	            };
-	        },
-
-	        attemptFailedAction: function attemptFailedAction(message) {
-	            return {
-	                type: actionTypes.regFailed,
-	                message: message
-	            };
-	        },
-
-	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
-	            return {
-	                type: actionTypes.regSuccess,
-	                userInfo: userInfo
-	            };
-	        },
-
-	        passwordsDifferAction: function passwordsDifferAction() {
-	            return {
-	                type: actionTypes.regPasswordsDiffer
-	            };
-	        },
-
-	        passwordsEqualAction: function passwordsEqualAction() {
-	            return {
-	                type: actionTypes.regPasswordsEqual
-	            };
-	        }
-	    }
-
+	var authActionsInterceptor = {
+	    intercept: interceptAction
 	};
 
-	module.exports = actionCreators;
+	module.exports = authActionsInterceptor;
 
 /***/ },
 /* 199 */
@@ -28737,47 +27890,116 @@
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var ajaxJwtRefresh = __webpack_require__(200);
+	var storage = __webpack_require__(202);
 
-	var resources = __webpack_require__(201);
+	// --------------------------
 
-	// --------------------------------
-
-	function ajaxLog(message) {
-	    console.log("[APP] [AJAX CALL] [JWT] " + message);
+	function jwtRefreshLog(message) {
+	    console.log("[APP] [JWT REFRESH] " + message);
 	}
 
-	function validateJwt(jwtString, callbacks) {
-	    ajaxLog("validation call starts...");
-	    callbacks.onStart();
-	    $.ajax({
-	        method: resources.validation.jwt.method,
-	        url: resources.validation.jwt.url,
-	        cache: false,
-	        beforeSend: function beforeSend(xhr) {
-	            xhr.setRequestHeader('Authentication', 'Bearer ' + jwtString);
-	        },
-	        statusCode: {
-	            200: function _() {
-	                ajaxLog("valid, parse user info and proceed.");
-	                callbacks.onJwtValid();
-	            },
-	            302: function _() {
-	                ajaxLog("valid, but expired, force to login.");
-	                callbacks.onJwtExpired();
-	            },
-	            401: function _() {
-	                ajaxLog("invalid, force to register.");
-	                callbacks.onJwtInvalid();
-	            }
-	        }
-	    });
+	function getCurrentTime() {
+	    var now = new Date();
+	    var dd = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
+	    //January is 0!
+	    var MM = now.getMonth() + 1 < 10 ? "0" + (now.getMonth() + 1) : now.getMonth() + 1;
+	    var yyyy = now.getFullYear();
+	    var HH = now.getHours();
+	    var mm = now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes();
+	    var ss = now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds();
+
+	    return MM + '.' + dd + '.' + yyyy + " " + HH + ":" + mm + ":" + ss;
 	}
 
-	module.exports = validateJwt;
+	var jwtRefreshSchedule;
+	var refreshInterval = 1000 * 60 * 17;
+
+	var jwtRefreshCallbacks = {
+	    onSuccess: function onSuccess(jwt) {
+	        storage.saveJwt(jwt);
+	        jwtRefreshLog("...refreshed.");
+	    },
+	    onUnauthenticated: function onUnauthenticated() {
+	        storage.deleteJwt();
+	        jwtRefreshLog("...refreshing failed: jwt is rejected.");
+	    },
+	    onFail: function onFail(errorMessage) {
+	        jwtRefreshLog("...fail: " + errorMessage);
+	    }
+	};
+
+	function refresh() {
+	    jwtRefreshLog(getCurrentTime() + " refreshing...");
+	    ajaxJwtRefresh(jwtRefreshCallbacks);
+	}
+
+	function scheduleConstantJwtRefreshing() {
+	    jwtRefreshLog("refreshing scheduled!");
+	    window.clearInterval(jwtRefreshSchedule);
+	    jwtRefreshSchedule = window.setInterval(refresh, refreshInterval);
+	}
+
+	function cancelScheduledConstantJwtRefreshing() {
+	    jwtRefreshLog("refreshing stopped.");
+	    window.clearInterval(jwtRefreshSchedule);
+	}
+
+	var jwtRefreshing = {
+	    scheduleRefreshing: scheduleConstantJwtRefreshing,
+	    stopRefreshing: cancelScheduledConstantJwtRefreshing
+	};
+
+	module.exports = jwtRefreshing;
 
 /***/ },
 /* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var $ = __webpack_require__(201);
+
+	var storage = __webpack_require__(202);
+	var resources = __webpack_require__(203);
+
+	// ----------------------
+
+	function ajaxLog(message) {
+	    console.log("[APP] [AJAX CALL] [JWT REFRESH] " + message);
+	}
+
+	function refreshJwtCall(callbacks) {
+	    ajaxLog("starts...");
+	    ajaxLog(" -- not implemented yet -- ");
+	    /*
+	    $.ajax({
+	        url : resources.jwtRefresh.url,
+	        method : resources.jwtRefresh.method,
+	        cache: false,
+	        beforeSend: function ( xhr ) {
+	            xhr.setRequestHeader('Authentication', 'Bearer ' + storage.getJwt());
+	        },
+	        statusCode : {
+	            200 : function ( xhr ) {
+	                ajaxLog("...new jwt: " + xhr.getResponseHeader("jwt"));
+	                callbacks.onSuccess(xhr.getResponseHeader("jwt"));
+	            },
+	            401 : function ( xhr, statusText, errorThrown ) {
+	                callbacks.onUnauthenticated();
+	            },
+	            404 : function ( xhr, statusText, errorThrown ) {
+	                callbacks.onFail("Resource not found.");
+	            }
+	        }
+	    });
+	    */
+	}
+
+	module.exports = refreshJwtCall;
+
+/***/ },
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -38625,7 +37847,80 @@
 
 
 /***/ },
-/* 201 */
+/* 202 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var jwtKey = "beam.server.ui.jwt";
+
+	function decodeJwtClaims(jwt) {
+	    var parts = jwt.split(".");
+	    if (parts.length == 3) {
+	        var claims = JSON.parse(atob(parts[1]));
+	        console.log('[APP] [JWT] [DECODE] obtained claims: ' + claims);
+	        return claims;
+	    } else {
+	        console.log('[APP] [JWT] [DECODE] error:');
+	        var i = 0;
+	        for (; i < parts.length; i++) {
+	            console.log('[APP] [JWT] [DECODE] ' + i + ": " + parts[i]);
+	        }
+	        throw "JWT is not a valid JWT as it contains more than 3 parts, separated by '.' char.";
+	    }
+	}
+
+	var storage = {
+
+	    hasJwt: function hasJwt() {
+	        var jwtExists = localStorage.getItem(jwtKey) != null;
+	        console.log('[APP] [JWT] has jwt? ' + jwtExists);
+	        return jwtExists;
+	    },
+
+	    deleteJwt: function deleteJwt() {
+	        console.log('[APP] [JWT] deleted.');
+	        localStorage.removeItem(jwtKey);
+	    },
+
+	    saveJwt: function saveJwt(jwtString) {
+	        console.log('[APP] [JWT] stored: ' + jwtString);
+	        localStorage.setItem(jwtKey, jwtString);
+	    },
+
+	    saveAndParseJwt: function saveAndParseJwt(jwtString) {
+	        console.log('[APP] [JWT] stored: ' + jwtString);
+	        localStorage.setItem(jwtKey, jwtString);
+	        return this.parseUserFromJwt();
+	    },
+
+	    getJwt: function getJwt() {
+	        if (this.hasJwt()) {
+	            return localStorage.getItem(jwtKey);
+	        } else {
+	            throw "Jwt not found";
+	        }
+	    },
+
+	    parseUserFromJwt: function parseUserFromJwt() {
+	        if (this.hasJwt()) {
+	            var claims = decodeJwtClaims(localStorage.getItem(jwtKey));
+	            console.log('[APP] [JWT] parsed claims: ' + claims);
+	            return {
+	                role: claims.role,
+	                id: claims.id,
+	                nickName: claims.nickName
+	            };
+	        } else {
+	            throw "Jwt not found";
+	        }
+	    }
+	};
+
+	module.exports = storage;
+
+/***/ },
+/* 203 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -38677,6 +37972,12 @@
 	        method: "POST",
 	        success: 200,
 	        unauthorized: 401
+	    },
+
+	    //TODO
+	    jwtRefresh: {
+	        url: serverRootUrl + "/TODO",
+	        method: "GET"
 	    },
 
 	    validation: {
@@ -38816,82 +38117,970 @@
 	module.exports = resources;
 
 /***/ },
-/* 202 */
-/***/ function(module, exports) {
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var jwtKey = "beam.server.ui.jwt";
+	var dispatch = __webpack_require__(186).dispatch;
+	var actionCreators = __webpack_require__(205);
 
-	function decodeJwtClaims(jwt) {
-	    var parts = jwt.split(".");
-	    if (parts.length == 3) {
-	        var claims = JSON.parse(atob(parts[1]));
-	        console.log('[APP] [JWT] [DECODE] obtained claims: ' + claims);
-	        return claims;
-	    } else {
-	        console.log('[APP] [JWT] [DECODE] error:');
-	        var i = 0;
-	        for (; i < parts.length; i++) {
-	            console.log('[APP] [JWT] [DECODE] ' + i + ": " + parts[i]);
-	        }
-	        throw "JWT is not a valid JWT as it contains more than 3 parts, separated by '.' char.";
-	    }
+	function dispatchLog(message) {
+	    console.log("[APP] [ACTION DISPATCHER] " + message);
 	}
 
-	var storage = {
+	var actionDispatchers = {
 
-	    hasJwt: function hasJwt() {
-	        var jwtExists = localStorage.getItem(jwtKey) != null;
-	        console.log('[APP] [JWT] has jwt? ' + jwtExists);
-	        return jwtExists;
-	    },
+	    app: {
 
-	    deleteJwt: function deleteJwt() {
-	        console.log('[APP] [JWT] deleted.');
-	        localStorage.removeItem(jwtKey);
-	    },
+	        dispatchAppStartsAction: function dispatchAppStartsAction() {
+	            dispatchLog("app starts.");
+	            dispatch(actionCreators.app.appStartsAction());
+	        },
 
-	    saveAndParseJwt: function saveAndParseJwt(jwtString) {
-	        console.log('[APP] [JWT] stored: ' + jwtString);
-	        localStorage.setItem(jwtKey, jwtString);
-	        return this.parseUserFromJwt();
-	    },
+	        dispatchGoToLandingPageAction: function dispatchGoToLandingPageAction() {
+	            dispatchLog("go to landing.");
+	            dispatch(actionCreators.app.goToLandingPageAction());
+	        },
 
-	    getJwt: function getJwt() {
-	        if (this.hasJwt()) {
-	            return localStorage.getItem(jwtKey);
-	        } else {
-	            throw "Jwt not found";
+	        dispatchGoToLoginAction: function dispatchGoToLoginAction() {
+	            dispatchLog("go to login.");
+	            dispatch(actionCreators.initialAuthCheck.goToLoginAction());
+	        },
+
+	        dispatchGoToRegisterAction: function dispatchGoToRegisterAction() {
+	            dispatchLog("go to register.");
+	            dispatch(actionCreators.initialAuthCheck.goToRegisterAction());
+	        },
+
+	        dispatchLogoutAction: function dispatchLogoutAction() {
+	            dispatchLog("logout.");
+	            dispatch(actionCreators.app.logoutAction());
+	        },
+
+	        dispatchGoToErrorAction: function dispatchGoToErrorAction(message) {
+	            dispatchLog("Error occurs : " + message);
+	            dispatch(actionCreators.app.goToErrorAction(message));
 	        }
 	    },
 
-	    parseUserFromJwt: function parseUserFromJwt() {
-	        if (this.hasJwt()) {
-	            var claims = decodeJwtClaims(localStorage.getItem(jwtKey));
-	            console.log('[APP] [JWT] parsed claims: ' + claims);
-	            return {
-	                role: claims.role,
-	                id: claims.id,
-	                nickName: claims.nickName
-	            };
-	        } else {
-	            throw "Jwt not found";
+	    initialAuthCheck: {
+
+	        dispatchStoredUserInfoValidationBeginsAction: function dispatchStoredUserInfoValidationBeginsAction() {
+	            dispatchLog("stored user info validation... ");
+	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidationBeginsAction());
+	        },
+
+	        dispatchStoredUserInfoValidAction: function dispatchStoredUserInfoValidAction(userInfo) {
+	            dispatchLog("stored user info valid, " + userInfo);
+	            dispatch(actionCreators.initialAuthCheck.storedUserInfoValidAction(userInfo));
+	        }
+
+	    },
+
+	    login: {
+
+	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
+	            dispatchLog("nickName changed : " + newNickName);
+	            dispatch(actionCreators.login.nickNameChangedAction(newNickName));
+	        },
+
+	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
+	            dispatchLog("nickNameValid");
+	            dispatch(actionCreators.login.nickNameValidAction());
+	        },
+
+	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
+	            dispatchLog("nickName invalid : " + message);
+	            dispatch(actionCreators.login.nickNameInvalidAction(message));
+	        },
+
+	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
+	            dispatchLog("nickName validation begins... ");
+	            dispatch(actionCreators.login.nickNameValidationBeginsAction());
+	        },
+
+	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
+	            dispatchLog("password changed : " + newPassword);
+	            dispatch(actionCreators.login.passwordChangedAction(newPassword));
+	        },
+
+	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
+	            dispatchLog("password valid.");
+	            dispatch(actionCreators.login.passwordValidAction());
+	        },
+
+	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
+	            dispatchLog("password invalid : " + message);
+	            dispatch(actionCreators.login.passwordInvalidAction(message));
+	        },
+
+	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
+	            dispatchLog("password validation begins...");
+	            dispatch(actionCreators.login.passwordValidationBeginsAction());
+	        },
+
+	        dispatchAssessIfLoginAllowedAction: function dispatchAssessIfLoginAllowedAction() {
+	            dispatchLog("is login allowed?");
+	            dispatch(actionCreators.login.assessIfAllowedAction());
+	        },
+
+	        dispatchLoginAttemptBegins: function dispatchLoginAttemptBegins() {
+	            dispatchLog("login call begins...");
+	            dispatch(actionCreators.login.attemptBegins());
+	        },
+
+	        dispatchLoginFailedAction: function dispatchLoginFailedAction(message) {
+	            dispatchLog("login failed : " + message);
+	            dispatch(actionCreators.login.attemptFailedAction(message));
+	        },
+
+	        dispatchLoginSuccessAction: function dispatchLoginSuccessAction(userInfo) {
+	            dispatchLog("login success - " + userInfo);
+	            dispatch(actionCreators.login.attemptSuccessAction(userInfo));
+	        }
+	    },
+
+	    reg: {
+
+	        dispatchNickNameChangedAction: function dispatchNickNameChangedAction(newNickName) {
+	            dispatchLog("nickName changed : " + newNickName);
+	            dispatch(actionCreators.reg.nickNameChangedAction(newNickName));
+	        },
+
+	        dispatchNickNameValidAction: function dispatchNickNameValidAction() {
+	            dispatchLog("nickNameValid");
+	            dispatch(actionCreators.reg.nickNameValidAction());
+	        },
+
+	        dispatchNickNameInvalidAction: function dispatchNickNameInvalidAction(message) {
+	            dispatchLog("nickName invalid : " + message);
+	            dispatch(actionCreators.reg.nickNameInvalidAction(message));
+	        },
+
+	        dispatchNickNameValidationBeginsAction: function dispatchNickNameValidationBeginsAction() {
+	            dispatchLog("nickName validation begins... ");
+	            dispatch(actionCreators.reg.nickNameValidationBeginsAction());
+	        },
+
+	        dispatchNameChangedAction: function dispatchNameChangedAction(newName) {
+	            dispatchLog("name changed : " + newName);
+	            dispatch(actionCreators.reg.nameChangedAction(newName));
+	        },
+
+	        dispatchNameValidAction: function dispatchNameValidAction() {
+	            dispatchLog("nameValid");
+	            dispatch(actionCreators.reg.nameValidAction());
+	        },
+
+	        dispatchNameInvalidAction: function dispatchNameInvalidAction(message) {
+	            dispatchLog("name invalid : " + message);
+	            dispatch(actionCreators.reg.nameInvalidAction(message));
+	        },
+
+	        dispatchNameValidationBeginsAction: function dispatchNameValidationBeginsAction() {
+	            dispatchLog("name validation begins... ");
+	            dispatch(actionCreators.reg.nameValidationBeginsAction());
+	        },
+
+	        dispatchSurnameChangedAction: function dispatchSurnameChangedAction(newSurname) {
+	            dispatchLog("surname changed : " + newSurname);
+	            dispatch(actionCreators.reg.surnameChangedAction(newSurname));
+	        },
+
+	        dispatchSurnameValidAction: function dispatchSurnameValidAction() {
+	            dispatchLog("surname valid");
+	            dispatch(actionCreators.reg.surnameValidAction());
+	        },
+
+	        dispatchSurnameInvalidAction: function dispatchSurnameInvalidAction(message) {
+	            dispatchLog("surname invalid : " + message);
+	            dispatch(actionCreators.reg.surnameInvalidAction(message));
+	        },
+
+	        dispatchSurnameValidationBeginsAction: function dispatchSurnameValidationBeginsAction() {
+	            dispatchLog("surname validation begins... ");
+	            dispatch(actionCreators.reg.surnameValidationBeginsAction());
+	        },
+
+	        dispatchEmailChangedAction: function dispatchEmailChangedAction(newEmail) {
+	            dispatchLog("email changed : " + newEmail);
+	            dispatch(actionCreators.reg.emailChangedAction(newEmail));
+	        },
+
+	        dispatchEmailValidAction: function dispatchEmailValidAction() {
+	            dispatchLog("email valid");
+	            dispatch(actionCreators.reg.emailValidAction());
+	        },
+
+	        dispatchEmailInvalidAction: function dispatchEmailInvalidAction(message) {
+	            dispatchLog("email invalid : " + message);
+	            dispatch(actionCreators.reg.emailInvalidAction(message));
+	        },
+
+	        dispatchEmailValidationBeginsAction: function dispatchEmailValidationBeginsAction() {
+	            dispatchLog("email validation begins... ");
+	            dispatch(actionCreators.reg.emailValidationBeginsAction());
+	        },
+
+	        dispatchPasswordChangedAction: function dispatchPasswordChangedAction(newPassword) {
+	            dispatchLog("password changed : " + newPassword);
+	            dispatch(actionCreators.reg.passwordChangedAction(newPassword));
+	        },
+
+	        dispatchPasswordValidAction: function dispatchPasswordValidAction() {
+	            dispatchLog("password valid.");
+	            dispatch(actionCreators.reg.passwordValidAction());
+	        },
+
+	        dispatchPasswordInvalidAction: function dispatchPasswordInvalidAction(message) {
+	            dispatchLog("password invalid : " + message);
+	            dispatch(actionCreators.reg.passwordInvalidAction(message));
+	        },
+
+	        dispatchPasswordValidationBeginsAction: function dispatchPasswordValidationBeginsAction() {
+	            dispatchLog("password validation begins...");
+	            dispatch(actionCreators.reg.passwordValidationBeginsAction());
+	        },
+
+	        dispatchConfirmPasswordChangedAction: function dispatchConfirmPasswordChangedAction(newConfirmPassword) {
+	            dispatchLog("confirm password changed : " + newConfirmPassword);
+	            dispatch(actionCreators.reg.confirmPasswordChangedAction(newConfirmPassword));
+	        },
+
+	        dispatchConfirmPasswordValidAction: function dispatchConfirmPasswordValidAction() {
+	            dispatchLog("confirm password valid.");
+	            dispatch(actionCreators.reg.confirmPasswordValidAction());
+	        },
+
+	        dispatchConfirmPasswordInvalidAction: function dispatchConfirmPasswordInvalidAction(message) {
+	            dispatchLog("confirm password invalid : " + message);
+	            dispatch(actionCreators.reg.confirmPasswordInvalidAction(message));
+	        },
+
+	        dispatchConfirmPasswordValidationBeginsAction: function dispatchConfirmPasswordValidationBeginsAction() {
+	            dispatchLog("confirm password validation begins...");
+	            dispatch(actionCreators.reg.confirmPasswordValidationBeginsAction());
+	        },
+
+	        dispatchAssessIfRegistrationAllowedAction: function dispatchAssessIfRegistrationAllowedAction() {
+	            dispatchLog("is registr allowed?");
+	            dispatch(actionCreators.reg.assessIfAlowedAction());
+	        },
+
+	        dispatchRegistrationAttemptBegins: function dispatchRegistrationAttemptBegins() {
+	            dispatchLog("registr call begins...");
+	            dispatch(actionCreators.reg.attemptBegins());
+	        },
+
+	        dispatchRegistrationFailedAction: function dispatchRegistrationFailedAction(message) {
+	            dispatchLog("registr failed : " + message);
+	            dispatch(actionCreators.reg.attemptFailedAction(message));
+	        },
+
+	        dispatchRegistrationSuccessAction: function dispatchRegistrationSuccessAction(userInfo) {
+	            dispatchLog("registr success - " + userInfo);
+	            dispatch(actionCreators.reg.attemptSuccessAction(userInfo));
+	        },
+
+	        dispatchPasswordsDifferAction: function dispatchPasswordsDifferAction() {
+	            dispatchLog("passwords differ.");
+	            dispatch(actionCreators.reg.passwordsDifferAction());
+	        },
+
+	        dispatchPasswordsEqualAction: function dispatchPasswordsEqualAction() {
+	            dispatchLog("passwords equal.");
+	            dispatch(actionCreators.reg.passwordsEqualAction());
+	        }
+	    },
+
+	    main: {
+
+	        dispatchToggleMainPageContentViewAction: function dispatchToggleMainPageContentViewAction() {
+	            dispatchLog("toggle main page content view.");
+	            dispatch(actionCreators.main.toggleMainPageContentViewAction());
+	        },
+
+	        dispatchDirectoriesReorderedAction: function dispatchDirectoriesReorderedAction(place, newImtblDirs) {
+	            dispatchLog("directories reordered!");
+	            dispatch(actionCreators.main.directoriesReorderedAction(place, newImtblDirs));
+	        },
+
+	        dispatchPagesReorderedAction: function dispatchPagesReorderedAction(place, newImtblDirs) {
+	            dispatchLog("pages reordered.");
+	            dispatch(actionCreators.main.pagesReorderedAction(place, newImtblDirs));
+	        },
+
+	        dispatchDirectoryCreatedAction: function dispatchDirectoryCreatedAction(currentView, newDirName) {
+	            dispatchLog("directory " + newDirName + " create action.");
+	            dispatch(actionCreators.main.directoryCreatedAction(currentView, newDirName));
+	        },
+
+	        webPanel: {
+
+	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
+	                dispatchLog("webPanel loading begins...");
+	                dispatch(actionCreators.main.webPanel.loadingBegins());
+	            },
+
+	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
+	                dispatchLog("webPanel loaded: ");
+	                console.log(dirs);
+	                dispatch(actionCreators.main.webPanel.loaded(dirs));
+	            },
+
+	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
+	                dispatchLog("webPanel loading fails: " + message);
+	                dispatch(actionCreators.main.webPanel.loadingFailed(message));
+	            }
+	        },
+
+	        bookmarks: {
+	            dispatchLoadingBeginsAction: function dispatchLoadingBeginsAction() {
+	                dispatchLog("bookmarks loading begins...");
+	                dispatch(actionCreators.main.bookmarks.loadingBegins());
+	            },
+
+	            dispatchLoadedAction: function dispatchLoadedAction(dirs) {
+	                dispatchLog("bookmarks loaded: ");
+	                console.log(dirs);
+	                dispatch(actionCreators.main.bookmarks.loaded(dirs));
+	            },
+
+	            dispatchLoadingFailedAction: function dispatchLoadingFailedAction(message) {
+	                dispatchLog("bookmarks loading fails: " + message);
+	                dispatch(actionCreators.main.bookmarks.loadingFailed(message));
+	            }
+	        },
+
+	        directory: {
+	            dispatchCreationAjaxStartAction: function dispatchCreationAjaxStartAction() {
+	                dispatchLog("directory creation start...");
+	                dispatch(actionCreators.main.directory.creationStartAction());
+	            },
+	            dispatchCreationAjaxSuccessAction: function dispatchCreationAjaxSuccessAction(placement, dirName) {
+	                dispatchLog("directory created : " + placement + "::" + dirName);
+	                dispatch(actionCreators.main.directory.creationSuccessAction(placement, dirName));
+	            },
+	            dispatchCreationAjaxFailAction: function dispatchCreationAjaxFailAction(message) {
+	                dispatchLog("directory creation fails : " + message);
+	                dispatch(actionCreators.main.directory.creationFailAction(message));
+	            },
+	            dispatchRenamedAction: function dispatchRenamedAction(place, dirs) {
+	                dispatchLog(place + " dir renamed.");
+	                dispatch(actionCreators.main.directory.renamedAction(place, dirs));
+	            },
+	            dispatchRemovedAction: function dispatchRemovedAction(place, dirs) {
+	                dispatchLog("dir removed from " + place);
+	                dispatch(actionCreators.main.directory.removedAction(place, dirs));
+	            }
+	        },
+
+	        page: {
+	            dispatchCreatedAction: function dispatchCreatedAction(place, dirs) {
+	                dispatchLog("page created.");
+	                dispatch(actionCreators.main.page.createdAction(place, dirs));
+	            },
+	            dispatchRenamedAction: function dispatchRenamedAction(place, dirs) {
+	                dispatchLog("page renamed.");
+	                dispatch(actionCreators.main.page.renamedAction(place, dirs));
+	            },
+	            dispatchDeletedAction: function dispatchDeletedAction(place, dirs) {
+	                dispatchLog("page removed.");
+	                dispatch(actionCreators.main.page.deletedAction(place, dirs));
+	            },
+	            dispatchUrlChangedAction: function dispatchUrlChangedAction(place, dirs) {
+	                dispatchLog("page url changed.");
+	                dispatch(actionCreators.main.page.urlChangedAction(place, dirs));
+	            }
 	        }
 	    }
 	};
 
-	module.exports = storage;
+	module.exports = actionDispatchers;
 
 /***/ },
-/* 203 */
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var actionTypes = __webpack_require__(190);
+
+	function creatorLog(message) {
+	    console.log("[APP] [ACTION CREATOR] " + message);
+	}
+
+	var actionCreators = {
+
+	    app: {
+
+	        appStartsAction: function appStartsAction() {
+	            return {
+	                type: actionTypes.appStarts
+	            };
+	        },
+
+	        goToLandingPageAction: function goToLandingPageAction() {
+	            return {
+	                type: actionTypes.goToLanding
+	            };
+	        },
+
+	        logoutAction: function logoutAction() {
+	            return {
+	                type: actionTypes.logout
+	            };
+	        },
+
+	        goToErrorAction: function goToErrorAction(message) {
+	            return {
+	                type: actionTypes.goToError,
+	                message: message
+	            };
+	        }
+	    },
+
+	    main: {
+
+	        toggleMainPageContentViewAction: function toggleMainPageContentViewAction() {
+	            return {
+	                type: actionTypes.toggleMainPageContentView
+	            };
+	        },
+
+	        directoriesReorderedAction: function directoriesReorderedAction(place, newImtblDirs) {
+	            return {
+	                type: actionTypes.directoriesReordered,
+	                place: place,
+	                dirs: newImtblDirs
+	            };
+	        },
+
+	        pagesReorderedAction: function pagesReorderedAction(place, newImtblDirs) {
+	            return {
+	                type: actionTypes.pagesReordered,
+	                place: place,
+	                dirs: newImtblDirs
+	            };
+	        },
+
+	        directoryCreatedAction: function directoryCreatedAction(currentView, newDirName) {
+	            return {
+	                type: actionTypes.directoryCreated,
+	                place: currentView,
+	                name: newDirName
+	            };
+	        },
+
+	        webPanel: {
+
+	            loadingBegins: function loadingBegins() {
+	                return {
+	                    type: actionTypes.webPanelLoadingBegins
+	                };
+	            },
+
+	            loaded: function loaded(dirs) {
+	                return {
+	                    type: actionTypes.webPanelLoaded,
+	                    dirs: dirs
+	                };
+	            },
+
+	            loadingFailed: function loadingFailed(message) {
+	                return {
+	                    type: actionTypes.webPanelLoadingFailed,
+	                    message: message
+	                };
+	            }
+	        },
+
+	        bookmarks: {
+	            loadingBegins: function loadingBegins() {
+	                return {
+	                    type: actionTypes.bookmarksLoadingBegins
+	                };
+	            },
+
+	            loaded: function loaded(dirs) {
+	                return {
+	                    type: actionTypes.bookmarksLoaded,
+	                    dirs: dirs
+	                };
+	            },
+
+	            loadingFailed: function loadingFailed(message) {
+	                return {
+	                    type: actionTypes.bookmarksLoadingFailed,
+	                    message: message
+	                };
+	            }
+	        },
+
+	        directory: {
+
+	            creationStartAction: function creationStartAction() {
+	                return {
+	                    type: actionTypes.directoryCreationAjaxStart
+	                };
+	            },
+
+	            creationSuccessAction: function creationSuccessAction(placement, dirName) {
+	                return {
+	                    type: actionTypes.directoryCreationAjaxSuccess,
+	                    place: placement,
+	                    dirName: dirName
+	                };
+	            },
+
+	            creationFailAction: function creationFailAction(message) {
+	                return {
+	                    type: actionTypes.directoryCreationAjaxFail,
+	                    message: message
+	                };
+	            },
+
+	            renamedAction: function renamedAction(place, dirs) {
+	                return {
+	                    type: actionTypes.directoryRenamed,
+	                    place: place,
+	                    dirs: dirs
+	                };
+	            },
+
+	            removedAction: function removedAction(place, dirs) {
+	                return {
+	                    type: actionTypes.directoryRemoved,
+	                    place: place,
+	                    dirs: dirs
+	                };
+	            }
+	        },
+
+	        page: {
+
+	            createdAction: function createdAction(place, dirs) {
+	                return {
+	                    type: actionTypes.pageCreated,
+	                    place: place,
+	                    dirs: dirs
+	                };
+	            },
+
+	            renamedAction: function renamedAction(place, dirs) {
+	                return {
+	                    type: actionTypes.pageRenamed,
+	                    place: place,
+	                    dirs: dirs
+	                };
+	            },
+
+	            urlChangedAction: function urlChangedAction(place, dirs) {
+	                return {
+	                    type: actionTypes.pageUrlChanged,
+	                    place: place,
+	                    dirs: dirs
+	                };
+	            },
+
+	            deletedAction: function deletedAction(place, dirs) {
+	                return {
+	                    type: actionTypes.pageDeleted,
+	                    place: place,
+	                    dirs: dirs
+	                };
+	            }
+	        }
+	    },
+
+	    initialAuthCheck: {
+
+	        goToLoginAction: function goToLoginAction() {
+	            creatorLog("force to login.");
+	            return {
+	                type: actionTypes.goToLogin
+	            };
+	        },
+
+	        goToRegisterAction: function goToRegisterAction() {
+	            creatorLog("force to register.");
+	            return {
+	                type: actionTypes.goToRegister
+	            };
+	        },
+
+	        storedUserInfoValidationBeginsAction: function storedUserInfoValidationBeginsAction() {
+	            creatorLog("stored user info validation... ");
+	            return {
+	                type: actionTypes.storedUserInfoValidationBegins
+	            };
+	        },
+
+	        storedUserInfoValidAction: function storedUserInfoValidAction(userInfo) {
+	            creatorLog("stored user info valid: " + userInfo);
+	            return {
+	                type: actionTypes.storedUserInfoValid,
+	                userInfo: userInfo
+	            };
+	        }
+	    },
+
+	    login: {
+
+	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
+	            creatorLog("login nickName changed to : " + newNickName);
+	            return {
+	                type: actionTypes.loginNickNameChanged,
+	                newNickName: newNickName
+	            };
+	        },
+
+	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
+	            creatorLog("login nickName validation begins...");
+	            return {
+	                type: actionTypes.loginNickNameValidationBegins
+	            };
+	        },
+
+	        nickNameValidAction: function nickNameValidAction() {
+	            creatorLog("login nickName valid.");
+	            return {
+	                type: actionTypes.loginNickNameValid
+	            };
+	        },
+
+	        nickNameInvalidAction: function nickNameInvalidAction(message) {
+	            creatorLog("login nickName invalid : " + message);
+	            return {
+	                type: actionTypes.loginNickNameInvalid,
+	                message: message
+	            };
+	        },
+
+	        passwordChangedAction: function passwordChangedAction(newPassword) {
+	            creatorLog("login password changed : " + newPassword);
+	            return {
+	                type: actionTypes.loginPasswordChanged,
+	                newPassword: newPassword
+	            };
+	        },
+
+	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
+	            return {
+	                type: actionTypes.loginPasswordValidationBegins
+	            };
+	        },
+
+	        passwordValidAction: function passwordValidAction() {
+	            return {
+	                type: actionTypes.loginPasswordValid
+	            };
+	        },
+
+	        passwordInvalidAction: function passwordInvalidAction(message) {
+	            return {
+	                type: actionTypes.loginPasswordInvalid,
+	                message: message
+	            };
+	        },
+
+	        assessIfAllowedAction: function assessIfAllowedAction() {
+	            return {
+	                type: actionTypes.loginAssessIfAllowed
+	            };
+	        },
+
+	        attemptBegins: function attemptBegins() {
+	            return {
+	                type: actionTypes.loginAttemptBegins
+	            };
+	        },
+
+	        attemptFailedAction: function attemptFailedAction(message) {
+	            return {
+	                type: actionTypes.loginFailed,
+	                message: message
+	            };
+	        },
+
+	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
+	            return {
+	                type: actionTypes.loginSuccess,
+	                userInfo: userInfo
+	            };
+	        }
+	    },
+
+	    reg: {
+
+	        nickNameChangedAction: function nickNameChangedAction(newNickName) {
+	            creatorLog("registr nickName changed to : " + newNickName);
+	            return {
+	                type: actionTypes.regNickNameChanged,
+	                newNickName: newNickName
+	            };
+	        },
+
+	        nickNameValidationBeginsAction: function nickNameValidationBeginsAction() {
+	            creatorLog("registr nickName validation begins...");
+	            return {
+	                type: actionTypes.regNickNameValidationBegins
+	            };
+	        },
+
+	        nickNameValidAction: function nickNameValidAction() {
+	            creatorLog("registr nickName valid.");
+	            return {
+	                type: actionTypes.regNickNameValid
+	            };
+	        },
+
+	        nickNameInvalidAction: function nickNameInvalidAction(message) {
+	            creatorLog("registr nickName invalid : " + message);
+	            return {
+	                type: actionTypes.regNickNameInvalid,
+	                message: message
+	            };
+	        },
+
+	        nameChangedAction: function nameChangedAction(newName) {
+	            creatorLog("registr name changed to : " + newName);
+	            return {
+	                type: actionTypes.regNameChanged,
+	                newName: newName
+	            };
+	        },
+
+	        nameValidationBeginsAction: function nameValidationBeginsAction() {
+	            creatorLog("registr name validation begins...");
+	            return {
+	                type: actionTypes.regNameValidationBegins
+	            };
+	        },
+
+	        nameValidAction: function nameValidAction() {
+	            creatorLog("registr name valid.");
+	            return {
+	                type: actionTypes.regNameValid
+	            };
+	        },
+
+	        nameInvalidAction: function nameInvalidAction(message) {
+	            creatorLog("registr name invalid : " + message);
+	            return {
+	                type: actionTypes.regNameInvalid,
+	                message: message
+	            };
+	        },
+
+	        surnameChangedAction: function surnameChangedAction(newSurname) {
+	            creatorLog("registr surname changed to : " + newSurname);
+	            return {
+	                type: actionTypes.regSurnameChanged,
+	                newSurname: newSurname
+	            };
+	        },
+
+	        surnameValidationBeginsAction: function surnameValidationBeginsAction() {
+	            creatorLog("registr surname validation begins...");
+	            return {
+	                type: actionTypes.regSurnameValidationBegins
+	            };
+	        },
+
+	        surnameValidAction: function surnameValidAction() {
+	            creatorLog("registr surname valid.");
+	            return {
+	                type: actionTypes.regSurnameValid
+	            };
+	        },
+
+	        surnameInvalidAction: function surnameInvalidAction(message) {
+	            creatorLog("registr surname invalid : " + message);
+	            return {
+	                type: actionTypes.regSurnameInvalid,
+	                message: message
+	            };
+	        },
+
+	        emailChangedAction: function emailChangedAction(newEmail) {
+	            creatorLog("registr email changed to : " + newEmail);
+	            return {
+	                type: actionTypes.regEmailChanged,
+	                newEmail: newEmail
+	            };
+	        },
+
+	        emailValidationBeginsAction: function emailValidationBeginsAction() {
+	            creatorLog("registr email validation begins...");
+	            return {
+	                type: actionTypes.regEmailValidationBegins
+	            };
+	        },
+
+	        emailValidAction: function emailValidAction() {
+	            creatorLog("registr email valid.");
+	            return {
+	                type: actionTypes.regEmailValid
+	            };
+	        },
+
+	        emailInvalidAction: function emailInvalidAction(message) {
+	            creatorLog("registr email invalid : " + message);
+	            return {
+	                type: actionTypes.regEmailInvalid,
+	                message: message
+	            };
+	        },
+
+	        passwordChangedAction: function passwordChangedAction(newPassword) {
+	            creatorLog("registr password changed : " + newPassword);
+	            return {
+	                type: actionTypes.regPasswordChanged,
+	                newPassword: newPassword
+	            };
+	        },
+
+	        passwordValidationBeginsAction: function passwordValidationBeginsAction() {
+	            return {
+	                type: actionTypes.regPasswordValidationBegins
+	            };
+	        },
+
+	        passwordValidAction: function passwordValidAction() {
+	            return {
+	                type: actionTypes.regPasswordValid
+	            };
+	        },
+
+	        passwordInvalidAction: function passwordInvalidAction(message) {
+	            return {
+	                type: actionTypes.regPasswordInvalid,
+	                message: message
+	            };
+	        },
+
+	        confirmPasswordChangedAction: function confirmPasswordChangedAction(newConfirmPassword) {
+	            creatorLog("registr confirmPassword changed : " + newConfirmPassword);
+	            return {
+	                type: actionTypes.regConfirmPasswordChanged,
+	                newConfirmPassword: newConfirmPassword
+	            };
+	        },
+
+	        confirmPasswordValidationBeginsAction: function confirmPasswordValidationBeginsAction() {
+	            return {
+	                type: actionTypes.regConfirmPasswordValidationBegins
+	            };
+	        },
+
+	        confirmPasswordValidAction: function confirmPasswordValidAction() {
+	            return {
+	                type: actionTypes.regConfirmPasswordValid
+	            };
+	        },
+
+	        confirmPasswordInvalidAction: function confirmPasswordInvalidAction(message) {
+	            return {
+	                type: actionTypes.regConfirmPasswordInvalid,
+	                message: message
+	            };
+	        },
+
+	        assessIfAlowedAction: function assessIfAlowedAction() {
+	            return {
+	                type: actionTypes.regAssessIfAllowed
+	            };
+	        },
+
+	        attemptBegins: function attemptBegins() {
+	            return {
+	                type: actionTypes.regAttemptBegins
+	            };
+	        },
+
+	        attemptFailedAction: function attemptFailedAction(message) {
+	            return {
+	                type: actionTypes.regFailed,
+	                message: message
+	            };
+	        },
+
+	        attemptSuccessAction: function attemptSuccessAction(userInfo) {
+	            return {
+	                type: actionTypes.regSuccess,
+	                userInfo: userInfo
+	            };
+	        },
+
+	        passwordsDifferAction: function passwordsDifferAction() {
+	            return {
+	                type: actionTypes.regPasswordsDiffer
+	            };
+	        },
+
+	        passwordsEqualAction: function passwordsEqualAction() {
+	            return {
+	                type: actionTypes.regPasswordsEqual
+	            };
+	        }
+	    }
+
+	};
+
+	module.exports = actionCreators;
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var $ = __webpack_require__(201);
+
+	var resources = __webpack_require__(203);
+
+	// --------------------------------
+
+	function ajaxLog(message) {
+	    console.log("[APP] [AJAX CALL] [JWT] " + message);
+	}
+
+	function validateJwt(jwtString, callbacks) {
+	    ajaxLog("validation call starts...");
+	    callbacks.onStart();
+	    $.ajax({
+	        method: resources.validation.jwt.method,
+	        url: resources.validation.jwt.url,
+	        cache: false,
+	        beforeSend: function beforeSend(xhr) {
+	            xhr.setRequestHeader('Authentication', 'Bearer ' + jwtString);
+	        },
+	        statusCode: {
+	            200: function _() {
+	                ajaxLog("valid, parse user info and proceed.");
+	                callbacks.onJwtValid();
+	            },
+	            401: function _() {
+	                ajaxLog("invalid, force to login.");
+	                callbacks.onJwtInvalid();
+	            }
+	        }
+	    });
+	}
+
+	module.exports = validateJwt;
+
+/***/ },
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var connect = __webpack_require__(163).connect;
 
-	var RootPage = __webpack_require__(204);
+	var RootPage = __webpack_require__(208);
 
 	function mapStateToProps(state) {
 	    return {
@@ -38904,7 +39093,7 @@
 	module.exports = RootPageContainer;
 
 /***/ },
-/* 204 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38913,11 +39102,11 @@
 
 	var appPages = __webpack_require__(188);
 
-	var MainPageContainer = __webpack_require__(205);
-	var LandingPageContainer = __webpack_require__(265);
-	var LoginPageContainer = __webpack_require__(267);
-	var ErrorPageContainer = __webpack_require__(277);
-	var RegistrationPageContainer = __webpack_require__(279);
+	var MainPageContainer = __webpack_require__(209);
+	var LandingPageContainer = __webpack_require__(269);
+	var LoginPageContainer = __webpack_require__(271);
+	var ErrorPageContainer = __webpack_require__(281);
+	var RegistrationPageContainer = __webpack_require__(283);
 
 	// ----------------------
 
@@ -38989,17 +39178,17 @@
 	module.exports = RootPage;
 
 /***/ },
-/* 205 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var connect = __webpack_require__(163).connect;
 
-	var MainPage = __webpack_require__(206);
-	var actionDispatchers = __webpack_require__(197);
+	var MainPage = __webpack_require__(210);
+	var actionDispatchers = __webpack_require__(204);
 
-	var getDirectoriesAjaxCall = __webpack_require__(264);
+	var getDirectoriesAjaxCall = __webpack_require__(268);
 
 	// ----------------------
 
@@ -39039,15 +39228,15 @@
 	module.exports = MainPageContainer;
 
 /***/ },
-/* 206 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var MainPageBarContainer = __webpack_require__(207);
-	var MainPageContentContainer = __webpack_require__(239);
+	var MainPageBarContainer = __webpack_require__(211);
+	var MainPageContentContainer = __webpack_require__(243);
 
 	// -------------------
 
@@ -39076,17 +39265,17 @@
 	module.exports = MainPage;
 
 /***/ },
-/* 207 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var connect = __webpack_require__(163).connect;
 
-	var MainPageBar = __webpack_require__(208);
+	var MainPageBar = __webpack_require__(212);
 	var storage = __webpack_require__(202);
-	var actionDispatchers = __webpack_require__(197);
-	var createDirAjaxCall = __webpack_require__(238);
+	var actionDispatchers = __webpack_require__(204);
+	var createDirAjaxCall = __webpack_require__(242);
 
 	// ----------------------
 
@@ -39144,15 +39333,15 @@
 	module.exports = MainPageBarContainer;
 
 /***/ },
-/* 208 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var CreateDirController = __webpack_require__(209);
-	var ModalDialog = __webpack_require__(237);
+	var CreateDirController = __webpack_require__(213);
+	var ModalDialog = __webpack_require__(241);
 
 	// -----------------------
 
@@ -39211,15 +39400,15 @@
 	module.exports = MainPageBar;
 
 /***/ },
-/* 209 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var ModalSingleValueDialog = __webpack_require__(210);
-	var validateDirectoryName = __webpack_require__(236);
+	var ModalSingleValueDialog = __webpack_require__(214);
+	var validateDirectoryName = __webpack_require__(240);
 
 	// -----------------------
 
@@ -39270,16 +39459,16 @@
 	module.exports = CreateDirController;
 
 /***/ },
-/* 210 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var ModalPane = __webpack_require__(211);
-	var DialogButtonsPane = __webpack_require__(233);
-	var SelfValidatableFormField = __webpack_require__(234);
+	var ModalPane = __webpack_require__(215);
+	var DialogButtonsPane = __webpack_require__(237);
+	var SelfValidatableFormField = __webpack_require__(238);
 
 	// ---------------------
 
@@ -39342,15 +39531,15 @@
 	module.exports = ModalSingleValueDialog;
 
 /***/ },
-/* 211 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var Modal = __webpack_require__(212);
+	var Modal = __webpack_require__(216);
 
-	var styles = __webpack_require__(232);
+	var styles = __webpack_require__(236);
 
 	// ------------------------
 
@@ -39373,25 +39562,25 @@
 	module.exports = ModalPane;
 
 /***/ },
-/* 212 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(213);
+	module.exports = __webpack_require__(217);
 
 
 
 /***/ },
-/* 213 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(30);
-	var ExecutionEnvironment = __webpack_require__(214);
-	var ModalPortal = React.createFactory(__webpack_require__(215));
-	var ariaAppHider = __webpack_require__(230);
-	var elementClass = __webpack_require__(231);
+	var ExecutionEnvironment = __webpack_require__(218);
+	var ModalPortal = React.createFactory(__webpack_require__(219));
+	var ariaAppHider = __webpack_require__(234);
+	var elementClass = __webpack_require__(235);
 	var renderSubtreeIntoContainer = __webpack_require__(30).unstable_renderSubtreeIntoContainer;
-	var Assign = __webpack_require__(219);
+	var Assign = __webpack_require__(223);
 
 	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
 	var AppElement = ExecutionEnvironment.canUseDOM ? document.body : {appendChild: function() {}};
@@ -39498,7 +39687,7 @@
 
 
 /***/ },
-/* 214 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -39543,14 +39732,14 @@
 
 
 /***/ },
-/* 215 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var div = React.DOM.div;
-	var focusManager = __webpack_require__(216);
-	var scopeTab = __webpack_require__(218);
-	var Assign = __webpack_require__(219);
+	var focusManager = __webpack_require__(220);
+	var scopeTab = __webpack_require__(222);
+	var Assign = __webpack_require__(223);
 
 	// so that our CSS is statically analyzable
 	var CLASS_NAMES = {
@@ -39741,10 +39930,10 @@
 
 
 /***/ },
-/* 216 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(217);
+	var findTabbable = __webpack_require__(221);
 	var modalElement = null;
 	var focusLaterElement = null;
 	var needToFocus = false;
@@ -39815,7 +40004,7 @@
 
 
 /***/ },
-/* 217 */
+/* 221 */
 /***/ function(module, exports) {
 
 	/*!
@@ -39871,10 +40060,10 @@
 
 
 /***/ },
-/* 218 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(217);
+	var findTabbable = __webpack_require__(221);
 
 	module.exports = function(node, event) {
 	  var tabbable = findTabbable(node);
@@ -39896,7 +40085,7 @@
 
 
 /***/ },
-/* 219 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -39907,9 +40096,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(220),
-	    createAssigner = __webpack_require__(226),
-	    keys = __webpack_require__(222);
+	var baseAssign = __webpack_require__(224),
+	    createAssigner = __webpack_require__(230),
+	    keys = __webpack_require__(226);
 
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -39982,7 +40171,7 @@
 
 
 /***/ },
-/* 220 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -39993,8 +40182,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(221),
-	    keys = __webpack_require__(222);
+	var baseCopy = __webpack_require__(225),
+	    keys = __webpack_require__(226);
 
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -40015,7 +40204,7 @@
 
 
 /***/ },
-/* 221 */
+/* 225 */
 /***/ function(module, exports) {
 
 	/**
@@ -40053,7 +40242,7 @@
 
 
 /***/ },
-/* 222 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -40064,9 +40253,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(223),
-	    isArguments = __webpack_require__(224),
-	    isArray = __webpack_require__(225);
+	var getNative = __webpack_require__(227),
+	    isArguments = __webpack_require__(228),
+	    isArray = __webpack_require__(229);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -40295,7 +40484,7 @@
 
 
 /***/ },
-/* 223 */
+/* 227 */
 /***/ function(module, exports) {
 
 	/**
@@ -40438,7 +40627,7 @@
 
 
 /***/ },
-/* 224 */
+/* 228 */
 /***/ function(module, exports) {
 
 	/**
@@ -40673,7 +40862,7 @@
 
 
 /***/ },
-/* 225 */
+/* 229 */
 /***/ function(module, exports) {
 
 	/**
@@ -40859,7 +41048,7 @@
 
 
 /***/ },
-/* 226 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -40870,9 +41059,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(227),
-	    isIterateeCall = __webpack_require__(228),
-	    restParam = __webpack_require__(229);
+	var bindCallback = __webpack_require__(231),
+	    isIterateeCall = __webpack_require__(232),
+	    restParam = __webpack_require__(233);
 
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -40917,7 +41106,7 @@
 
 
 /***/ },
-/* 227 */
+/* 231 */
 /***/ function(module, exports) {
 
 	/**
@@ -40988,7 +41177,7 @@
 
 
 /***/ },
-/* 228 */
+/* 232 */
 /***/ function(module, exports) {
 
 	/**
@@ -41126,7 +41315,7 @@
 
 
 /***/ },
-/* 229 */
+/* 233 */
 /***/ function(module, exports) {
 
 	/**
@@ -41199,7 +41388,7 @@
 
 
 /***/ },
-/* 230 */
+/* 234 */
 /***/ function(module, exports) {
 
 	var _element = typeof document !== 'undefined' ? document.body : null;
@@ -41247,7 +41436,7 @@
 
 
 /***/ },
-/* 231 */
+/* 235 */
 /***/ function(module, exports) {
 
 	module.exports = function(opts) {
@@ -41312,7 +41501,7 @@
 
 
 /***/ },
-/* 232 */
+/* 236 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41502,14 +41691,14 @@
 	module.exports = inlineStyles;
 
 /***/ },
-/* 233 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var styles = __webpack_require__(232);
+	var styles = __webpack_require__(236);
 
 	// ----------------------
 
@@ -41594,15 +41783,15 @@
 	module.exports = DialogButtonsPane;
 
 /***/ },
-/* 234 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var styles = __webpack_require__(232);
-	var FormFieldInvalidUnderlineMessage = __webpack_require__(235);
+	var styles = __webpack_require__(236);
+	var FormFieldInvalidUnderlineMessage = __webpack_require__(239);
 
 	// ----------------------
 
@@ -41673,7 +41862,7 @@
 	module.exports = SelfValidatableFormField;
 
 /***/ },
-/* 235 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41704,14 +41893,14 @@
 	module.exports = FormFieldInvalidUnderlineMessage;
 
 /***/ },
-/* 236 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -41747,16 +41936,16 @@
 	module.exports = validateWebObjectName;
 
 /***/ },
-/* 237 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var styles = __webpack_require__(232);
-	var ModalPane = __webpack_require__(211);
-	var DialogButtonsPane = __webpack_require__(233);
+	var styles = __webpack_require__(236);
+	var ModalPane = __webpack_require__(215);
+	var DialogButtonsPane = __webpack_require__(237);
 
 	// -----------------------
 
@@ -41786,15 +41975,15 @@
 	module.exports = ModalDialog;
 
 /***/ },
-/* 238 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -41845,7 +42034,7 @@
 	module.exports = createNewDirectory;
 
 /***/ },
-/* 239 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41853,13 +42042,13 @@
 	var connect = __webpack_require__(163).connect;
 	var Immutable = __webpack_require__(195);
 
-	var MainPageContent = __webpack_require__(240);
-	var actionDispatchers = __webpack_require__(197);
-	var editDirectoryPropAjaxCall = __webpack_require__(259);
-	var editPagePropAjaxCall = __webpack_require__(260);
-	var createNewPageAjaxCall = __webpack_require__(261);
-	var deletePageAjaxCall = __webpack_require__(262);
-	var deleteDirectoryAjaxCall = __webpack_require__(263);
+	var MainPageContent = __webpack_require__(244);
+	var actionDispatchers = __webpack_require__(204);
+	var editDirectoryPropAjaxCall = __webpack_require__(263);
+	var editPagePropAjaxCall = __webpack_require__(264);
+	var createNewPageAjaxCall = __webpack_require__(265);
+	var deletePageAjaxCall = __webpack_require__(266);
+	var deleteDirectoryAjaxCall = __webpack_require__(267);
 
 	// -------------------------------
 
@@ -42139,17 +42328,17 @@
 	module.exports = MainPageContentContainer;
 
 /***/ },
-/* 240 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var $ = __webpack_require__(200);
-	__webpack_require__(241);
+	var $ = __webpack_require__(201);
+	__webpack_require__(245);
 
-	var WebPanel = __webpack_require__(242);
-	var Bookmarks = __webpack_require__(258);
+	var WebPanel = __webpack_require__(246);
+	var Bookmarks = __webpack_require__(262);
 
 	// ---------------
 
@@ -42203,10 +42392,10 @@
 	module.exports = MainPageContent;
 
 /***/ },
-/* 241 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jQuery = __webpack_require__(200);
+	var jQuery = __webpack_require__(201);
 
 	/*! jQuery UI - v1.10.3 - 2013-05-03
 	* http://jqueryui.com
@@ -57214,17 +57403,17 @@
 
 
 /***/ },
-/* 242 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(30);
-	var $ = __webpack_require__(200);
-	__webpack_require__(241);
+	var $ = __webpack_require__(201);
+	__webpack_require__(245);
 
-	var Directory = __webpack_require__(243);
+	var Directory = __webpack_require__(247);
 
 	// --------------------
 
@@ -57319,15 +57508,15 @@
 	module.exports = WebPanel;
 
 /***/ },
-/* 243 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var DirectoryBar = __webpack_require__(244);
-	var DirectoryContent = __webpack_require__(249);
+	var DirectoryBar = __webpack_require__(248);
+	var DirectoryContent = __webpack_require__(253);
 
 	// ------------------
 
@@ -57397,16 +57586,16 @@
 	module.exports = Directory;
 
 /***/ },
-/* 244 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var CreatePageController = __webpack_require__(245);
-	var DeleteDirController = __webpack_require__(247);
-	var RenameDirController = __webpack_require__(248);
+	var CreatePageController = __webpack_require__(249);
+	var DeleteDirController = __webpack_require__(251);
+	var RenameDirController = __webpack_require__(252);
 
 	// -------------------------
 
@@ -57454,19 +57643,19 @@
 	module.exports = DirectoryBar;
 
 /***/ },
-/* 245 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var Modal = __webpack_require__(212);
+	var Modal = __webpack_require__(216);
 
-	var styles = __webpack_require__(232);
-	var DialogButtonsPane = __webpack_require__(233);
-	var SelfValidatableFormField = __webpack_require__(234);
-	var validateUrl = __webpack_require__(246);
-	var validateName = __webpack_require__(236);
+	var styles = __webpack_require__(236);
+	var DialogButtonsPane = __webpack_require__(237);
+	var SelfValidatableFormField = __webpack_require__(238);
+	var validateUrl = __webpack_require__(250);
+	var validateName = __webpack_require__(240);
 
 	// -----------------------
 
@@ -57576,14 +57765,14 @@
 	module.exports = CreatePageController;
 
 /***/ },
-/* 246 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -57619,14 +57808,14 @@
 	module.exports = validateWebObjectUrl;
 
 /***/ },
-/* 247 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var ModalDialog = __webpack_require__(237);
+	var ModalDialog = __webpack_require__(241);
 
 	// -----------------------
 
@@ -57683,15 +57872,15 @@
 	module.exports = DeleteDirController;
 
 /***/ },
-/* 248 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var ModalSingleValueDialog = __webpack_require__(210);
-	var validateDirectoryName = __webpack_require__(236);
+	var ModalSingleValueDialog = __webpack_require__(214);
+	var validateDirectoryName = __webpack_require__(240);
 
 	// -----------------------
 
@@ -57748,14 +57937,14 @@
 	module.exports = RenameDirController;
 
 /***/ },
-/* 249 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var DirectoryContentList = __webpack_require__(250);
+	var DirectoryContentList = __webpack_require__(254);
 
 	var DirectoryContent = React.createClass({
 	    displayName: "DirectoryContent",
@@ -57786,17 +57975,17 @@
 	module.exports = DirectoryContent;
 
 /***/ },
-/* 250 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(30);
-	var $ = __webpack_require__(200);
-	__webpack_require__(241);
+	var $ = __webpack_require__(201);
+	__webpack_require__(245);
 
-	var PageFrame = __webpack_require__(251);
+	var PageFrame = __webpack_require__(255);
 
 	function contentLog(message) {
 	    console.log("[APP] [DIRECTORY CONTENT LIST] " + message);
@@ -57858,16 +58047,16 @@
 	module.exports = DirectoryContentList;
 
 /***/ },
-/* 251 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var PageImageFrame = __webpack_require__(252);
-	var PageTitle = __webpack_require__(253);
-	var PageMenuContainer = __webpack_require__(254);
+	var PageImageFrame = __webpack_require__(256);
+	var PageTitle = __webpack_require__(257);
+	var PageMenuContainer = __webpack_require__(258);
 
 	// ---------------------------
 
@@ -57921,7 +58110,7 @@
 	module.exports = PageFrame;
 
 /***/ },
-/* 252 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57943,7 +58132,7 @@
 	module.exports = PageImage;
 
 /***/ },
-/* 253 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57969,18 +58158,18 @@
 	module.exports = PageTitle;
 
 /***/ },
-/* 254 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var PageMenuTrigger = __webpack_require__(255);
-	var ModalDialog = __webpack_require__(237);
-	var ModalSingleValueDialog = __webpack_require__(210);
-	var validatePageName = __webpack_require__(236);
-	var validatePageUrl = __webpack_require__(246);
+	var PageMenuTrigger = __webpack_require__(259);
+	var ModalDialog = __webpack_require__(241);
+	var ModalSingleValueDialog = __webpack_require__(214);
+	var validatePageName = __webpack_require__(240);
+	var validatePageUrl = __webpack_require__(250);
 
 	// ------------------------
 
@@ -58119,14 +58308,14 @@
 	module.exports = PageMenuContainer;
 
 /***/ },
-/* 255 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var PageMenu = __webpack_require__(256);
+	var PageMenu = __webpack_require__(260);
 
 	// -----------------
 
@@ -58210,14 +58399,14 @@
 	module.exports = PageMenuTrigger;
 
 /***/ },
-/* 256 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var PageMenuItem = __webpack_require__(257);
+	var PageMenuItem = __webpack_require__(261);
 
 	// ----------------------
 
@@ -58264,7 +58453,7 @@
 	module.exports = PageMenu;
 
 /***/ },
-/* 257 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58314,7 +58503,7 @@
 	module.exports = PageMenuItem;
 
 /***/ },
-/* 258 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58340,15 +58529,15 @@
 	module.exports = Bookmarks;
 
 /***/ },
-/* 259 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -58399,15 +58588,15 @@
 	module.exports = editDirectoryProp;
 
 /***/ },
-/* 260 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -58458,15 +58647,15 @@
 	module.exports = editPageProp;
 
 /***/ },
-/* 261 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -58516,15 +58705,15 @@
 	module.exports = createPage;
 
 /***/ },
-/* 262 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -58570,15 +58759,15 @@
 	module.exports = deletePage;
 
 /***/ },
-/* 263 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -58622,15 +58811,15 @@
 	module.exports = deleteDirectory;
 
 /***/ },
-/* 264 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
 	var storage = __webpack_require__(202);
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -58677,15 +58866,15 @@
 	module.exports = getDirectories;
 
 /***/ },
-/* 265 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var connect = __webpack_require__(163).connect;
 
-	var actionDispatchers = __webpack_require__(197);
-	var LandingPage = __webpack_require__(266);
+	var actionDispatchers = __webpack_require__(204);
+	var LandingPage = __webpack_require__(270);
 
 	function mapStateToProps(state) {
 	    return {
@@ -58699,7 +58888,7 @@
 	module.exports = LandingPageContainer;
 
 /***/ },
-/* 266 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58736,7 +58925,7 @@
 	module.exports = LandingPage;
 
 /***/ },
-/* 267 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58744,11 +58933,11 @@
 	var connect = __webpack_require__(163).connect;
 
 	var storage = __webpack_require__(202);
-	var LoginPage = __webpack_require__(268);
-	var actionDispatchers = __webpack_require__(197);
-	var loginAjaxCall = __webpack_require__(274);
-	var validateNickNameAjaxCall = __webpack_require__(275);
-	var validatePasswordAjaxCall = __webpack_require__(276);
+	var LoginPage = __webpack_require__(272);
+	var actionDispatchers = __webpack_require__(204);
+	var loginAjaxCall = __webpack_require__(278);
+	var validateNickNameAjaxCall = __webpack_require__(279);
+	var validatePasswordAjaxCall = __webpack_require__(280);
 
 	// ----------------------
 
@@ -58844,15 +59033,15 @@
 	module.exports = LoginPageContainer;
 
 /***/ },
-/* 268 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var LoginForm = __webpack_require__(269);
-	var FormFailureMessage = __webpack_require__(273);
+	var LoginForm = __webpack_require__(273);
+	var FormFailureMessage = __webpack_require__(277);
 
 	var LoginPage = React.createClass({
 	    displayName: "LoginPage",
@@ -58904,17 +59093,17 @@
 	module.exports = LoginPage;
 
 /***/ },
-/* 269 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
 
-	var inlineStyles = __webpack_require__(232);
-	var AcceptedSign = __webpack_require__(270);
-	var FormFieldInvalidMessage = __webpack_require__(271);
-	var Spinner = __webpack_require__(272);
+	var inlineStyles = __webpack_require__(236);
+	var AcceptedSign = __webpack_require__(274);
+	var FormFieldInvalidMessage = __webpack_require__(275);
+	var Spinner = __webpack_require__(276);
 
 	var LoginForm = React.createClass({
 	    displayName: 'LoginForm',
@@ -59011,7 +59200,7 @@
 	module.exports = LoginForm;
 
 /***/ },
-/* 270 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59041,7 +59230,7 @@
 	module.exports = AcceptedSign;
 
 /***/ },
-/* 271 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59071,7 +59260,7 @@
 	module.exports = FormFieldInvalidInlineMessage;
 
 /***/ },
-/* 272 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59101,7 +59290,7 @@
 	module.exports = Spinner;
 
 /***/ },
-/* 273 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59127,14 +59316,14 @@
 	module.exports = FormFailureMessage;
 
 /***/ },
-/* 274 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -59172,14 +59361,14 @@
 	module.exports = tryToLogin;
 
 /***/ },
-/* 275 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -59215,14 +59404,14 @@
 	module.exports = validateNickName;
 
 /***/ },
-/* 276 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -59258,14 +59447,14 @@
 	module.exports = validatePassword;
 
 /***/ },
-/* 277 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var connect = __webpack_require__(163).connect;
 
-	var ErrorPage = __webpack_require__(278);
+	var ErrorPage = __webpack_require__(282);
 
 	function mapStateToProps(state) {
 	    return {
@@ -59278,7 +59467,7 @@
 	module.exports = ErrorPageContainer;
 
 /***/ },
-/* 278 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59310,7 +59499,7 @@
 	module.exports = ErrorPage;
 
 /***/ },
-/* 279 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59318,13 +59507,13 @@
 	var connect = __webpack_require__(163).connect;
 
 	var storage = __webpack_require__(202);
-	var RegistrationPage = __webpack_require__(280);
-	var actionDispatchers = __webpack_require__(197);
-	var registrationAjaxCall = __webpack_require__(282);
-	var validateNickNameAjaxCall = __webpack_require__(283);
-	var validateNameAjaxCall = __webpack_require__(284);
-	var validateEmailAjaxCall = __webpack_require__(285);
-	var validatePasswordAjaxCall = __webpack_require__(276);
+	var RegistrationPage = __webpack_require__(284);
+	var actionDispatchers = __webpack_require__(204);
+	var registrationAjaxCall = __webpack_require__(286);
+	var validateNickNameAjaxCall = __webpack_require__(287);
+	var validateNameAjaxCall = __webpack_require__(288);
+	var validateEmailAjaxCall = __webpack_require__(289);
+	var validatePasswordAjaxCall = __webpack_require__(280);
 
 	//---------------------
 
@@ -59536,15 +59725,15 @@
 	module.exports = RegistrationPageContainer;
 
 /***/ },
-/* 280 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var RegistrationForm = __webpack_require__(281);
-	var FormFailureMessage = __webpack_require__(273);
+	var RegistrationForm = __webpack_require__(285);
+	var FormFailureMessage = __webpack_require__(277);
 
 	var RegistrationPage = React.createClass({
 	    displayName: "RegistrationPage",
@@ -59618,16 +59807,16 @@
 	module.exports = RegistrationPage;
 
 /***/ },
-/* 281 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
 
-	var inlineStyles = __webpack_require__(232);
-	var AcceptedSign = __webpack_require__(270);
-	var FormFieldInvalidMessage = __webpack_require__(271);
+	var inlineStyles = __webpack_require__(236);
+	var AcceptedSign = __webpack_require__(274);
+	var FormFieldInvalidMessage = __webpack_require__(275);
 
 	// -------------------------
 
@@ -59833,14 +60022,14 @@
 	module.exports = RegistrationForm;
 
 /***/ },
-/* 282 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -59879,14 +60068,14 @@
 	module.exports = registerCall;
 
 /***/ },
-/* 283 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -59926,14 +60115,14 @@
 	module.exports = validateNickName;
 
 /***/ },
-/* 284 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 
@@ -59969,14 +60158,14 @@
 	module.exports = validateName;
 
 /***/ },
-/* 285 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var $ = __webpack_require__(200);
+	var $ = __webpack_require__(201);
 
-	var resources = __webpack_require__(201);
+	var resources = __webpack_require__(203);
 
 	// --------------------------------
 

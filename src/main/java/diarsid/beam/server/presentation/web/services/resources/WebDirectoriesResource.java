@@ -24,6 +24,7 @@ import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
 import diarsid.beam.server.presentation.web.json.dto.JsonWebDirectory;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static java.util.stream.Collectors.toList;
 
@@ -31,11 +32,264 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.ok;
 
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
 
 import static javax.ws.rs.core.Response.ok;
 
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+
+import static javax.ws.rs.core.Response.ok;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.ok;
 
 /**
  *
@@ -44,6 +298,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 
 @Component
 @Path("/users/{id}/{place}")
+@AuthenticationRequired
 public class WebDirectoriesResource {
     
     private static final Logger logger = LoggerFactory.getLogger(WebDirectoriesResource.class);
@@ -91,7 +346,7 @@ public class WebDirectoriesResource {
             return Response.ok().build();
         } else {
             logger.info("...dir creation fails.");
-            return composeResponseFrom(
+            return jsonResponseWith(
                     SC_INTERNAL_SERVER_ERROR, 
                     "Directory creation fails due to unknown reason.");
         } 

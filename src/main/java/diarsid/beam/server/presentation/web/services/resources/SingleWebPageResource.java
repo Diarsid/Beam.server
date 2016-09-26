@@ -26,6 +26,7 @@ import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
 import diarsid.beam.server.presentation.web.json.dto.JsonPlacementAndDirectory;
 import diarsid.beam.server.presentation.web.json.dto.JsonWebPage;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static java.lang.Integer.valueOf;
 
@@ -33,9 +34,266 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeOkResponse;
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeOkResponseWithJson;
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.composeResponseFrom;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.okResponse;
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.okJsonResponseWith;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+
+import static java.lang.Integer.valueOf;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
+import static java.lang.Integer.valueOf;
 
 /**
  *
@@ -44,6 +302,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 
 @Component
 @Path("/users/{id}/{place}/directories/{dirName}/pages/{pageName}")
+@AuthenticationRequired
 public class SingleWebPageResource {
     
     private static final Logger logger = LoggerFactory.getLogger(SingleWebPageResource.class);
@@ -73,10 +332,10 @@ public class SingleWebPageResource {
         done = this.webObjects.renameUserWebPage(userId, place, dirName, pageName, payload.get());
         if ( done ) {
             logger.info("...renamed.");
-            return composeOkResponse();
+            return okResponse();
         } else {
             logger.info("...rename fails.");
-            return composeResponseFrom(SC_INTERNAL_SERVER_ERROR, "cannot rename page.");
+            return jsonResponseWith(SC_INTERNAL_SERVER_ERROR, "cannot rename page.");
         }
     }
     
@@ -96,10 +355,10 @@ public class SingleWebPageResource {
                 userId, place, dirName, pageName, payload.get());
         if ( done ) {
             logger.info("...url changed.");
-            return composeOkResponse();
+            return okResponse();
         } else {
             logger.info("...rename fails.");
-            return composeResponseFrom(SC_INTERNAL_SERVER_ERROR, "cannot change page url.");
+            return jsonResponseWith(SC_INTERNAL_SERVER_ERROR, "cannot change page url.");
         }
     }
     
@@ -119,10 +378,10 @@ public class SingleWebPageResource {
                 userId, place, dirName, payload.get(), pageName);
         if ( done ) {
             logger.info("...page moved.");
-            return composeOkResponse();
+            return okResponse();
         } else {
             logger.info("...page movement fails.");
-            return composeResponseFrom(SC_INTERNAL_SERVER_ERROR, "cannot move page.");
+            return jsonResponseWith(SC_INTERNAL_SERVER_ERROR, "cannot move page.");
         }
     }
     
@@ -144,10 +403,10 @@ public class SingleWebPageResource {
                 userId, place, moveInfo.getPlace(), dirName, moveInfo.getDirectory(), pageName);
         if ( done ) {
             logger.info("...page moved.");
-            return composeOkResponse();
+            return okResponse();
         } else {
             logger.info("...page movement fails.");
-            return composeResponseFrom(SC_INTERNAL_SERVER_ERROR, "cannot move page.");
+            return jsonResponseWith(SC_INTERNAL_SERVER_ERROR, "cannot move page.");
         }
     }
         
@@ -167,10 +426,10 @@ public class SingleWebPageResource {
                 userId, place, dirName, pageName, valueOf(payload.get()));
         if ( done ) {
             logger.info("...page reordered.");
-            return composeOkResponse();
+            return okResponse();
         } else {
             logger.info("...page reordering fails fails.");
-            return composeResponseFrom(SC_INTERNAL_SERVER_ERROR, "cannot reorder page.");
+            return jsonResponseWith(SC_INTERNAL_SERVER_ERROR, "cannot reorder page.");
         }
     } 
     
@@ -189,7 +448,7 @@ public class SingleWebPageResource {
                 .map(persistedPage -> new JsonWebPage(persistedPage))
                 .findFirst();
         if ( page.isPresent() ) {
-            return composeOkResponseWithJson(this.toJsonConverter.jsonizeToString(page.get()));
+            return okJsonResponseWith(this.toJsonConverter.jsonizeToString(page.get()));
         } else {
             return Response.status(NOT_FOUND).build();
         }
@@ -208,10 +467,10 @@ public class SingleWebPageResource {
         done = this.webObjects.deleteUserWebPage(userId, place, dirName, pageName);
         if ( done ) {
             logger.info("...page deleted.");
-            return composeOkResponse();
+            return okResponse();
         } else {
             logger.info("...page deletion fails.");
-            return composeResponseFrom(SC_INTERNAL_SERVER_ERROR, "cannot delete page.");
+            return jsonResponseWith(SC_INTERNAL_SERVER_ERROR, "cannot delete page.");
         }
     }
 }

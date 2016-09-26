@@ -13,7 +13,9 @@ import diarsid.beam.server.domain.services.validation.ValidationResult;
 import diarsid.beam.server.presentation.web.json.dto.JsonErrorObject;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
+import static diarsid.beam.server.domain.services.jwtauth.JwtProducer.JWT_RESPONSE_HEADER;
 import static diarsid.beam.server.presentation.web.services.providers.DomainExceptionOnHttpStatusMapper.defineHttpStatusOf;
 
 /**
@@ -25,23 +27,31 @@ public class JaxRsResponseComposer {
     private JaxRsResponseComposer() {
     }    
     
-    public static Response composeOkResponse() {
+    public static Response okResponse() {
         return Response.ok().build();
     }
     
-    public static Response composeOkResponseWithJson(String jsonString) {
+    public static Response anauthenticatedResponse() {
+        return Response.status(UNAUTHORIZED).build();
+    }
+    
+    public static Response okResponseWithJwt(String jwt) {
+        return Response.ok().header(JWT_RESPONSE_HEADER, jwt).build();                
+    }
+    
+    public static Response okJsonResponseWith(String jsonString) {
         return Response.ok(jsonString, APPLICATION_JSON).build();
     }
     
-    public static Response composeResponseFrom(int status, String message) {
+    public static Response jsonResponseWith(int status, String message) {
         return buildWithJsonErrorObject(new JsonErrorObject(status, message));
     }
     
-    public static Response composeResponseFrom(int status, ValidationResult result) {
+    public static Response jsonResponseWith(int status, ValidationResult result) {
         return buildWithJsonErrorObject(new JsonErrorObject(status, result));
     }
     
-    public static Response composeResponseFrom(DomainRuntimeException domainException) {
+    public static Response jsonResponseWith(DomainRuntimeException domainException) {
         return buildWithJsonErrorObject(new JsonErrorObject(
                 defineHttpStatusOf(domainException), 
                 domainException.convertToDomainErrorObject()));        

@@ -8,6 +8,7 @@ package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ import static util.FakeWebPagesProducer.newFakePages;
  * @author Diarsid
  */
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppTestConfig.class})
 @Transactional

@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import org.slf4j.Logger;
@@ -21,12 +20,13 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.domain.services.jwtauth.JwtUserInfo;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidationResult;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidator;
-
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ID;
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_NICKNAME;
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ROLE;
+import static diarsid.beam.server.presentation.web.services.filters.RequestAdditionalProperties.USER;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.anauthenticatedResponse;
 
 /**
  *
@@ -35,49 +35,45 @@ import static diarsid.beam.server.presentation.web.services.auth.InnerHttpReques
 
 @Component
 @Provider
-public class AuthenticationFilter implements ContainerRequestFilter {
+@AuthenticationRequired
+public class JwtAuthenticationFilter implements ContainerRequestFilter {
     
     private final static Logger logger;
     static {
-        logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+        logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     }
     
     private final JwtValidator validator;
     
-    public AuthenticationFilter(JwtValidator validator) {
+    public JwtAuthenticationFilter(JwtValidator validator) {
         this.validator = validator;
         logger.info("created.");
     }
     
     @Override
     public void filter(ContainerRequestContext request) throws IOException {        
-        String path = request.getUriInfo().getPath();
-        if ( path.contains("auth") || path.contains("validation") ) {
-            logger.info("unprotected area: " + path);
-        } else {
-            logger.info("auth: required for: " + path);
-            JwtValidationResult result = this.validator.validateRequest(request);
-            if ( result.isJwtPresent() ) {
-                if ( result.isJwtSignVerified() ) {
-                    if ( result.isJwtNotExpired() ) {
-                        this.addUserFieldsIntoHttpRequestHeader(request, result.getUserInfo());
-                        logger.info("auth: OK <"
-                                + "id:"+result.getUserInfo().getId() + 
-                                ", role:"+result.getUserInfo().getRole() + 
-                                ", nick:"+result.getUserInfo().getNickName() + ">");
-                    } else {
-                        request.abortWith(Response.status(UNAUTHORIZED).build());
-                        logger.info("auth: JWT expired. Access denied.");
-                    }
+        logger.info("Auth required for: " + request.getUriInfo().getPath());
+        JwtValidationResult result = this.validator.validateRequest(request);
+        if ( result.isJwtPresent() ) {
+            if ( result.isJwtSignVerified() ) {
+                if ( result.isJwtNotExpired() ) {
+                    request.setProperty(USER.getPropertyName(), result.getUserInfo());
+                    logger.info("auth: OK <"
+                            + "id:"+result.getUserInfo().getId() + 
+                            ", role:"+result.getUserInfo().getRole() + 
+                            ", nick:"+result.getUserInfo().getNickName() + ">");
                 } else {
-                    logger.info("auth: JWT signature verification failure. Access denied.");
-                    request.abortWith(Response.status(UNAUTHORIZED).build());
+                    request.abortWith(anauthenticatedResponse());
+                    logger.info("auth: JWT expired. Access denied.");
                 }
             } else {
-                logger.info("auth: JWT not found. Access denied.");
-                request.abortWith(Response.status(UNAUTHORIZED).build());
+                logger.info("auth: JWT signature verification failure. Access denied.");
+                request.abortWith(anauthenticatedResponse());
             }
-        }        
+        } else {
+            logger.info("auth: JWT not found. Access denied.");
+            request.abortWith(anauthenticatedResponse());
+        }
     }
     
     private void addUserFieldsIntoHttpRequestHeader(ContainerRequestContext request, JwtUserInfo user) {

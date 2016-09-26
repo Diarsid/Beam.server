@@ -17,13 +17,13 @@ import diarsid.beam.server.domain.services.validation.UsersValidationService;
 import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
 import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
-import diarsid.beam.server.presentation.web.services.filters.AuthenticationFilter;
+import diarsid.beam.server.presentation.web.services.filters.JwtAuthenticationFilter;
 import diarsid.beam.server.presentation.web.services.resources.AuthenticationResource;
 import diarsid.beam.server.presentation.web.services.resources.SingleWebDirectoryResource;
 import diarsid.beam.server.presentation.web.services.resources.SingleWebPageResource;
-import diarsid.beam.server.presentation.web.services.resources.UsersValidationResource;
+import diarsid.beam.server.presentation.web.services.resources.ValidationUsersResource;
 import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
-import diarsid.beam.server.presentation.web.services.resources.WebObjectsValidationResource;
+import diarsid.beam.server.presentation.web.services.resources.ValidationWebObjectsResource;
 import diarsid.beam.server.presentation.web.services.resources.WebPagesResource;
 
 /**
@@ -42,8 +42,8 @@ public class WebServicesBeans {
     }    
     
     @Bean
-    public AuthenticationFilter authenticationFilter(JwtValidator jwtValidator) {
-        return new AuthenticationFilter(jwtValidator);
+    public JwtAuthenticationFilter authenticationFilter(JwtValidator jwtValidator) {
+        return new JwtAuthenticationFilter(jwtValidator);
     }
     
     @Bean
@@ -55,14 +55,14 @@ public class WebServicesBeans {
     }
     
     @Bean
-    public UsersValidationResource usersValidationResource(
+    public ValidationUsersResource usersValidationResource(
             UsersService usersService, UsersValidationService validation) {
-        return new UsersValidationResource(validation, usersService);
+        return new ValidationUsersResource(validation, usersService);
     }
     
     @Bean
-    public WebObjectsValidationResource webObjectsValidationResource(WebObjectsValidationService validation) {
-        return new WebObjectsValidationResource(validation);
+    public ValidationWebObjectsResource webObjectsValidationResource(WebObjectsValidationService validation) {
+        return new ValidationWebObjectsResource(validation);
     }
     
     @Bean

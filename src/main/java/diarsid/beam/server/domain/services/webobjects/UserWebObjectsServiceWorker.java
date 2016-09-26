@@ -351,19 +351,29 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
     @Override
     public List<PersistableWebDirectory> getUserWebDirectoriesInPlace(int userId, String place) {
         this.dataOperator.checkUser(userId);
-        return this.dataOperator.findWebDirectories(placementOf(place), userId);
+        List<PersistableWebDirectory> dirs = this.dataOperator.findWebDirectories(placementOf(place), userId);
+        for (PersistableWebDirectory dir : dirs) {
+            dir.getPages().size();
+        }
+        return dirs;
     }
 
     @Override
     public PersistableWebDirectory getUserWebDirectory(
             int userId, String place, String dirName) {
         this.dataOperator.checkUser(userId);
-        return this.dataOperator.findWebDirectoryNotNull(dirName, placementOf(place), userId);
+        PersistableWebDirectory dir = this.dataOperator.findWebDirectoryNotNull(dirName, placementOf(place), userId);
+        dir.getPages().size();
+        return dir;
     }
 
     @Override
     public List<PersistableWebDirectory> getUserAllWebDirectories(int userId) {
         this.dataOperator.checkUser(userId);
-        return this.dataOperator.findAllUserWebDirectories(userId);
+        List<PersistableWebDirectory> dirs = this.dataOperator.findAllUserWebDirectories(userId);
+        for (PersistableWebDirectory dir : dirs) {
+            dir.getPages().size();
+        }
+        return dirs;
     }
 }
