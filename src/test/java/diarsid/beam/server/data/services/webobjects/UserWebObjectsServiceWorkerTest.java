@@ -8,7 +8,6 @@ package diarsid.beam.server.data.services.webobjects;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,6 @@ import static util.FakeWebPagesProducer.newFakePages;
  * @author Diarsid
  */
 
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppTestConfig.class})
 @Transactional
@@ -208,7 +206,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -233,7 +231,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -258,7 +256,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -284,7 +282,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -313,7 +311,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -334,7 +332,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -355,7 +353,7 @@ public class UserWebObjectsServiceWorkerTest {
         savedPages.get(0).setName("first");
         savedPages.get(1).setName("second");
         savedPages.get(2).setName("third");
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -380,7 +378,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -403,7 +401,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -546,8 +544,8 @@ public class UserWebObjectsServiceWorkerTest {
         
         String movedPageName = pagesInDirFrom.get(movedPageInitialIndex).getName();
         
-        dirFrom.setPages(pagesInDirFrom);
-        dirTo.setPages(pagesInDirTo);
+        dirFrom.getPages().addAll(pagesInDirFrom);
+        dirTo.getPages().addAll(pagesInDirTo);
         
         dirs = dirsRepo.save(dirs);
         dirFrom = dirs.get(dirFromIndex);
@@ -606,8 +604,8 @@ public class UserWebObjectsServiceWorkerTest {
         
         String movedPageName = pagesInDirFrom.get(movedPageInitialIndex).getName();
                         
-        dirFrom.setPages(pagesInDirFrom);
-        dirTo.setPages(pagesInDirTo);
+        dirFrom.getPages().addAll(pagesInDirFrom);
+        dirTo.getPages().addAll(pagesInDirTo);
         
         dirs = dirsRepo.save(dirs);
         dirsRepo.flush();
@@ -667,8 +665,8 @@ public class UserWebObjectsServiceWorkerTest {
         
         String movedPageName = pagesInDirFrom.get(movedPageInitialIndex).getName();
         
-        dirFrom.setPages(pagesInDirFrom);
-        dirTo.setPages(pagesInDirTo);
+        dirFrom.getPages().addAll(pagesInDirFrom);
+        dirTo.getPages().addAll(pagesInDirTo);
         
         panelDirs = dirsRepo.save(panelDirs);
         bookmDirs = dirsRepo.save(bookmDirs);
@@ -722,9 +720,9 @@ public class UserWebObjectsServiceWorkerTest {
         List<PersistableWebPage> pagesInDeletedDir = newFakePages(deletedDir, 10, pagesQty);
         List<PersistableWebPage> pagesInAnotherDir1 = newFakePages(anotherDir1, 20, pagesQty);
         List<PersistableWebPage> pagesInAnotherDir2 = newFakePages(anotherDir2, 30, pagesQty);
-        deletedDir.setPages(pagesInDeletedDir);
-        anotherDir1.setPages(pagesInAnotherDir1);
-        anotherDir2.setPages(pagesInAnotherDir2);
+        deletedDir.getPages().addAll(pagesInDeletedDir);
+        anotherDir1.getPages().addAll(pagesInAnotherDir1);
+        anotherDir2.getPages().addAll(pagesInAnotherDir2);
         dirs = dirsRepo.save(dirs);
         dirsRepo.flush();
         
@@ -768,7 +766,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         
@@ -809,7 +807,7 @@ public class UserWebObjectsServiceWorkerTest {
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         List<PersistableWebPage> savedPages = newFakePages(savedDir, 5, pagesQty);
-        savedDir.setPages(savedPages);
+        savedDir.getPages().addAll(savedPages);
         savedDir = dirsRepo.save(savedDir);
         dirsRepo.flush();
         

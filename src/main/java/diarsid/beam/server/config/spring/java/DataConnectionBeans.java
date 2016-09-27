@@ -73,6 +73,7 @@ public class DataConnectionBeans {
     @Bean
     public EntityManagerFactory entityManagerFactory(DataSource dataSource) {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setShowSql(true);
         //vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = 
@@ -80,6 +81,11 @@ public class DataConnectionBeans {
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("diarsid.beam.server.domain.entities.jpa");
         factory.setDataSource(dataSource);
+        Properties props = new Properties();
+        props.put("spring.jpa.show-sql", "true");
+        props.put("spring.jpa.properties.hibernate.format_sql", "true");
+        props.put("spring.jpa.properties.format_sql", "true");
+        factory.setJpaProperties(props);
         factory.afterPropertiesSet();
 
         return factory.getObject();

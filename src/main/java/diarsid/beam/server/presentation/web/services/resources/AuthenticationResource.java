@@ -7,7 +7,6 @@
 package diarsid.beam.server.presentation.web.services.resources;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -108,7 +107,7 @@ public class AuthenticationResource {
         }        
     }
     
-    @GET
+    @POST
     @Path("/refresh")
     @AuthenticationRequired
     public Response refreshJWT(@Context ContainerRequestContext request) {

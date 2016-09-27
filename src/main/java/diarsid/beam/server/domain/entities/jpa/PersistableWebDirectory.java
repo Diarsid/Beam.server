@@ -7,6 +7,7 @@
 package diarsid.beam.server.domain.entities.jpa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,7 +71,7 @@ public class PersistableWebDirectory
             cascade = {DETACH, MERGE, PERSIST, REFRESH, REMOVE},
             orphanRemoval = true)
     @OrderBy("page_order")
-    private List<PersistableWebPage> pages;
+    private List<PersistableWebPage> pages = new ArrayList<>();
     
     public PersistableWebDirectory() {
     }

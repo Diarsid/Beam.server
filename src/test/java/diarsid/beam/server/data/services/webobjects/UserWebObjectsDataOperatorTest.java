@@ -12,6 +12,8 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.Test.None;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
@@ -47,6 +49,8 @@ import static util.FakeWebPagesProducer.newFakePages;
 @ContextConfiguration(classes = {AppTestConfig.class})
 @Transactional
 public class UserWebObjectsDataOperatorTest {
+    
+    private static final Logger logger = LoggerFactory.getLogger(UserWebObjectsDataOperatorTest.class);
     
     @Autowired
     private UserWebObjectsDataOperator dataOperator;
@@ -116,6 +120,7 @@ public class UserWebObjectsDataOperatorTest {
         dirsRepo.flush();
         
         int expectedDirsQty = savedDirs.size();
+        logger.info(savedDirs.get(0).getPages().getClass().getName());
         int assuredActualDirsQty = countRowsInTable(jdbcTemplate, "dirs");
         
         int actualDirsQty = dataOperator.countWebDirectoriesInPlace(WEBPANEL, savedUser.getId());
@@ -154,7 +159,7 @@ public class UserWebObjectsDataOperatorTest {
         PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, WEBPANEL, 3));
         //List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
-        savedPanelDir.setPages(savedPages);
+        savedPanelDir.getPages().addAll(savedPages);
         dirsRepo.saveAndFlush(savedPanelDir);
         
         String expectedPageName = PAGE_NAME_TEMPLATE + 17;
@@ -180,7 +185,7 @@ public class UserWebObjectsDataOperatorTest {
         PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, WEBPANEL, 3));
 //        List<PersistableWebPage> savedPages = pagesRepo.save(newFakePages(savedPanelDir, 15, pagesQty));
         List<PersistableWebPage> savedPages = newFakePages(savedPanelDir, 15, pagesQty);
-        savedPanelDir.setPages(savedPages);
+        savedPanelDir.getPages().addAll(savedPages);
         dirsRepo.saveAndFlush(savedPanelDir);
                 
         PersistableWebDirectory foundDir = 
@@ -406,7 +411,7 @@ public class UserWebObjectsDataOperatorTest {
         int pagesQty = 3;
         List<PersistableWebPage> newPages = newFakePages(savedDir, 3, pagesQty);   
         savedDir.setName(newName);
-        savedDir.setPages(newPages);
+        savedDir.getPages().addAll(newPages);
         savedDir = dataOperator.saveModifiedDirectory(savedDir);
         
         int expectedPagesQty = pagesQty;
@@ -461,7 +466,7 @@ public class UserWebObjectsDataOperatorTest {
         
         int pagesQty = 5;
         List<PersistableWebPage> newPages = newFakePages(workedDir, 3, pagesQty);   
-        workedDir.setPages(newPages);
+        workedDir.getPages().addAll(newPages);
         
         dataOperator.saveModifiedDirectory(workedDir);
         
