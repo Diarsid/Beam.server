@@ -6,6 +6,8 @@
 
 package springtests.config;
 
+import java.util.Properties;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -54,6 +56,12 @@ public class DataConnectionTestConfig {
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("diarsid.beam.server.domain.entities.jpa");
         factory.setDataSource(dataSource);
+        Properties props = new Properties();
+        props.put("spring.jpa.show-sql", "true");
+        props.put("spring.jpa.properties.hibernate.format_sql", "true");
+        props.put("spring.jpa.properties.format_sql", "true");
+        props.put("hibernate.format_sql", "true");
+        factory.setJpaProperties(props);
         factory.afterPropertiesSet();
 
         return factory.getObject();

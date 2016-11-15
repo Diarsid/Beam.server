@@ -9,6 +9,8 @@ package diarsid.beam.server.data.services.webobjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Test.None;
 import org.junit.runner.RunWith;
@@ -68,21 +70,30 @@ public class UserWebObjectsDataOperatorTest {
     public UserWebObjectsDataOperatorTest() {       
     }
     
-//    @Before
-//    public void setUp() {
-//        dataOperator.
-//    }
+    @BeforeClass
+    public static void log() {
+        logger.info("");
+        logger.info(" ----------- BEGINS --------------");
+    }
+    
+    @AfterClass
+    public static void logAfter() {
+        logger.info("");
+        logger.info(" ------------ ENDS ---------------");
+    }
 
     /**
      * Test of findUserNotNull method, of class UserWebObjectsDataOperatorWorker.
      */
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testFindUserNotNull() {
+        logger.info(" testFindUserNotNull() ");
         PersistableUser user = dataOperator.findUserNotNull(1);
     }
     
     @Test(expected = None.class)
     public void testFindUserNotNull_pass() {
+        logger.info(" testFindUserNotNull_pass() ");
         PersistableUser user = newFakeUser(1);
         user = usersRepo.saveAndFlush(user);
         
@@ -95,11 +106,13 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testCheckUser_fail() {
+        logger.info(" testCheckUser_fail() ");
         dataOperator.checkUser(-1);     
     }
     
     @Test(expected = None.class)
     public void testCheckUser_pass() {
+        logger.info(" testCheckUser_pass() ");
         PersistableUser user = newFakeUser(1);
         user = usersRepo.saveAndFlush(user);
         
@@ -115,6 +128,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test
     public void testCountWebDirectoriesInPlace() {
+        logger.info(" testCountWebDirectoriesInPlace()");
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         List<PersistableWebDirectory> savedDirs = dirsRepo.save(newFakeDirs(savedUser, WEBPANEL, 3, 5));
         dirsRepo.flush();
@@ -134,6 +148,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test
     public void testFindAllUserWebDirectories() {
+        logger.info(" testFindAllUserWebDirectories()");
         int panelDirs = 5;
         int bookmDirs = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
@@ -154,6 +169,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test(expected = None.class)
     public void testFindWebPageInDirectoryNotNull_noException() {
+        logger.info(" testFindWebPageInDirectoryNotNull_noException()");
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, WEBPANEL, 3));
@@ -180,6 +196,7 @@ public class UserWebObjectsDataOperatorTest {
     
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testFindWebPageInDirectoryNotNull_exceptionThrown() {
+        logger.info(" testFindWebPageInDirectoryNotNull_exceptionThrown()");
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = dirsRepo.saveAndFlush(newFakeDir(savedUser, WEBPANEL, 3));
@@ -201,6 +218,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test(expected = None.class)
     public void testFindWebDirectoryNotNull_noException() {  
+        logger.info(" testFindWebDirectoryNotNull_noException()");
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
@@ -224,6 +242,7 @@ public class UserWebObjectsDataOperatorTest {
     
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testFindWebDirectoryNotNull_exceptionThrown() {  
+        logger.info(" testFindWebDirectoryNotNull_exceptionThrown()");
         int pagesQty = 5;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
@@ -242,6 +261,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test(expected = None.class)
     public void testFindWebDirectoryNotNullNotEmpty_noException() {
+        logger.info(" testFindWebDirectoryNotNullNotEmpty_noException()");
         int pagesQty = 3;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
@@ -264,6 +284,7 @@ public class UserWebObjectsDataOperatorTest {
     
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testFindWebDirectoryNotNullNotEmpty_exceptionThrown() {
+        logger.info(" testFindWebDirectoryNotNullNotEmpty_exceptionThrown()");
         int pagesQty = 0;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(3));
         PersistableWebDirectory savedPanelDir = newFakeDir(savedUser, WEBPANEL, 3);
@@ -289,6 +310,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test(expected = None.class)
     public void testFindWebDirectoriesNotEmpty_noException() {
+        logger.info(" testFindWebDirectoriesNotEmpty_noException()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
@@ -307,6 +329,7 @@ public class UserWebObjectsDataOperatorTest {
     
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testFindWebDirectoriesNotEmpty_exceptionThrown() {
+        logger.info(" testFindWebDirectoriesNotEmpty_exceptionThrown()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
@@ -329,6 +352,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test(expected = None.class)
     public void testFindDirectoryFromDirectoriesNotNull_noException() {
+        logger.info(" testFindDirectoryFromDirectoriesNotNull_noException()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
@@ -352,6 +376,7 @@ public class UserWebObjectsDataOperatorTest {
     
     @Test(expected = BadDataRequestArgumentsException.class)
     public void testFindDirectoryFromDirectoriesNotNull_exceptionThrown() {
+        logger.info(" testFindDirectoryFromDirectoriesNotNull_exceptionThrown()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
@@ -377,6 +402,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test
     public void testSaveModifiedDirectories() {
+        logger.info(" testSaveModifiedDirectories()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
@@ -396,6 +422,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test
     public void testSaveModifiedDirectory() {
+        logger.info(" testSaveModifiedDirectory()");
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         PersistableWebDirectory savedDir = newFakeDir(savedUser, WEBPANEL, 3);
         savedDir = dataOperator.saveModifiedDirectory(savedDir);
@@ -435,6 +462,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test
     public void testDeleteDirectory() {
+        logger.info(" testDeleteDirectory()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);
@@ -457,6 +485,7 @@ public class UserWebObjectsDataOperatorTest {
      */
     @Test
     public void testDeletePage() {
+        logger.info(" testDeletePage()");
         int dirsQty = 4;
         PersistableUser savedUser = usersRepo.saveAndFlush(newFakeUser(9));
         List<PersistableWebDirectory> savedDirs = newFakeDirs(savedUser, WEBPANEL, 6, dirsQty);

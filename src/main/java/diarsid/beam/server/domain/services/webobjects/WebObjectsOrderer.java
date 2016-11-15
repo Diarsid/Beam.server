@@ -6,13 +6,10 @@
 
 package diarsid.beam.server.domain.services.webobjects;
 
-import diarsid.beam.server.domain.entities.OrderableWebObject;
-
 import java.util.List;
 
-import static java.util.Collections.sort;
-import static java.util.Collections.sort;
-import static java.util.Collections.sort;
+import diarsid.beam.server.domain.entities.OrderableWebObject;
+
 import static java.util.Collections.sort;
 
 /**

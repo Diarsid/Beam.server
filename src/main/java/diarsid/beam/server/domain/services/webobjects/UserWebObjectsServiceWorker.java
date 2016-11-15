@@ -93,14 +93,15 @@ public class UserWebObjectsServiceWorker implements UserWebObjectsService {
         
         this.dataOperator.checkUser(userId);
         
-        PersistableWebDirectory dir = this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, placementOf(place), userId);
+        PersistableWebDirectory dir = 
+                this.dataOperator.findWebDirectoryNotNullNotEmpty(dirName, placementOf(place), userId);
         PersistableWebPage renamedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(dir.getPages(), oldPageName);
         
         newPageName = this.nameIncrementor.incrementName(dir.getPages(), newPageName);
         renamedPage.setName(newPageName);
         
-        dir = this.dataOperator.saveModifiedDirectory(dir);
+        //dir = this.dataOperator.saveModifiedDirectory(dir);
         renamedPage = 
                 this.dataOperator.findWebPageInDirectoryNotNull(
                         dir.getPages(), renamedPage.getName());
