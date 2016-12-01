@@ -16,6 +16,7 @@ import diarsid.beam.server.presentation.web.services.providers.MapperUserRegistr
 import diarsid.beam.server.presentation.web.services.providers.MapperUsersServiceUnknownLogicException;
 import diarsid.beam.server.presentation.web.services.providers.MapperWebObjectNameInvalidException;
 import diarsid.beam.server.presentation.web.services.providers.MapperWebObjectUrlInvalidException;
+import diarsid.beam.server.presentation.web.services.providers.MapperWebPlacementNameInvalidException;
 
 /**
  *
@@ -61,5 +62,10 @@ public class WebServicesExceptionMappersBeans {
     @Bean
     public MapperWebObjectUrlInvalidException mapperWebObjectUrlInvalidException() {
         return new MapperWebObjectUrlInvalidException();
+    }
+    
+    @Bean 
+    public MapperWebPlacementNameInvalidException mapperWebPlacementNameInvalidException() {
+        return new MapperWebPlacementNameInvalidException();
     }
 }

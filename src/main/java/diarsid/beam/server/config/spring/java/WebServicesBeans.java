@@ -17,13 +17,14 @@ import diarsid.beam.server.domain.services.validation.UsersValidationService;
 import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
 import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.filters.AdministratorAccessFilter;
 import diarsid.beam.server.presentation.web.services.filters.JwtAuthenticationFilter;
 import diarsid.beam.server.presentation.web.services.resources.AuthenticationResource;
 import diarsid.beam.server.presentation.web.services.resources.SingleWebDirectoryResource;
 import diarsid.beam.server.presentation.web.services.resources.SingleWebPageResource;
 import diarsid.beam.server.presentation.web.services.resources.ValidationUsersResource;
-import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
 import diarsid.beam.server.presentation.web.services.resources.ValidationWebObjectsResource;
+import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
 import diarsid.beam.server.presentation.web.services.resources.WebPagesResource;
 
 /**
@@ -44,6 +45,11 @@ public class WebServicesBeans {
     @Bean
     public JwtAuthenticationFilter authenticationFilter(JwtValidator jwtValidator) {
         return new JwtAuthenticationFilter(jwtValidator);
+    }
+    
+    @Bean
+    public AdministratorAccessFilter administratorAccessFilter() {
+        return new AdministratorAccessFilter();
     }
     
     @Bean
