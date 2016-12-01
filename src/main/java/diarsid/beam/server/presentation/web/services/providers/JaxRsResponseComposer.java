@@ -31,7 +31,7 @@ public class JaxRsResponseComposer {
         return Response.ok().build();
     }
     
-    public static Response anauthenticatedResponse() {
+    public static Response unauthenticatedResponse() {
         return Response.status(UNAUTHORIZED).build();
     }
     

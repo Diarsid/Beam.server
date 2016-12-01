@@ -32,9 +32,9 @@ import static java.util.Objects.nonNull;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import static diarsid.beam.server.presentation.web.services.filters.RequestAdditionalProperties.USER;
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.anauthenticatedResponse;
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.okResponse;
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.okResponseWithJwt;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.unauthenticatedResponse;
 
 /**
  *
@@ -66,13 +66,13 @@ public class AuthenticationResource {
     @Consumes(APPLICATION_JSON)
     public Response loginUserAndReturnJWT(JsonUserLogin login) {
         logger.info("login data: " + login.getNickName() + " "+ login.getPassword());            
-        PersistableUser user = this.usersService.findBy(login);
-        if ( user != null ) {
+        PersistableUser user = this.usersService.ifExistsFindBy(login);
+        if ( nonNull(user) ) {
             logger.info("login succeed with " + login.getNickName() + ":" + login.getPassword());               
             return okResponseWithJwt(this.jwtAuthService.createJwtFor(user));
         } else {
             logger.info("login failed with " + login.getNickName() + ":" + login.getPassword());
-            return anauthenticatedResponse();
+            return unauthenticatedResponse();
         }
     }
     
@@ -97,13 +97,13 @@ public class AuthenticationResource {
                 if ( result.isJwtNotExpired() ) {
                     return okResponse();
                 } else {
-                    return anauthenticatedResponse();
+                    return unauthenticatedResponse();
                 }
             } else {
-                return anauthenticatedResponse();
+                return unauthenticatedResponse();
             }
         } else {
-            return anauthenticatedResponse();
+            return unauthenticatedResponse();
         }        
     }
     
@@ -118,7 +118,7 @@ public class AuthenticationResource {
             return okResponseWithJwt(this.jwtAuthService.createJwtFor(user));
         } else {
             logger.info("...unauthenticated.");
-            return anauthenticatedResponse();
+            return unauthenticatedResponse();
         }
     }
 

@@ -26,7 +26,7 @@ import static diarsid.beam.server.presentation.web.services.auth.InnerHttpReques
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_NICKNAME;
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ROLE;
 import static diarsid.beam.server.presentation.web.services.filters.RequestAdditionalProperties.USER;
-import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.anauthenticatedResponse;
+import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.unauthenticatedResponse;
 
 /**
  *
@@ -63,16 +63,16 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
                             ", role:"+result.getUserInfo().getRole() + 
                             ", nick:"+result.getUserInfo().getNickName() + ">");
                 } else {
-                    request.abortWith(anauthenticatedResponse());
+                    request.abortWith(unauthenticatedResponse());
                     logger.info("auth: JWT expired. Access denied.");
                 }
             } else {
                 logger.info("auth: JWT signature verification failure. Access denied.");
-                request.abortWith(anauthenticatedResponse());
+                request.abortWith(unauthenticatedResponse());
             }
         } else {
             logger.info("auth: JWT not found. Access denied.");
-            request.abortWith(anauthenticatedResponse());
+            request.abortWith(unauthenticatedResponse());
         }
     }
     

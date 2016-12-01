@@ -23,6 +23,8 @@ import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
 import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 import diarsid.beam.server.presentation.web.services.auth.UserRole;
 
+import static java.util.Objects.isNull;
+
 @Component
 public class UsersServiceWorker implements UsersService {
     
@@ -48,18 +50,19 @@ public class UsersServiceWorker implements UsersService {
     }
 
     @Override
-    public UserRole getRoleOf(int userId) {
-        return UserRole.valueOfIgnoreCase(this.obtainUser(userId).getRole());
+    public UserRole getNonNullUserRoleOf(int userId) {
+        return UserRole.valueOfIgnoreCase(this.obtainUserNonNull(userId).getRole());
     }
 
     @Override
     public PersistableUser findBy(int userId) {
-        return this.obtainUser(userId);
+        return this.obtainUserNonNull(userId);
     }
 
-    private PersistableUser obtainUser(int userId) throws BadDataRequestArgumentsException {
+    private PersistableUser obtainUserNonNull(int userId) 
+            throws BadDataRequestArgumentsException {
         PersistableUser user = this.users.getUserById(userId);
-        if ( user == null ) {
+        if ( isNull(user) ) {
             logger.debug("User with id " + userId + " does not exist.");
             throw new BadDataRequestArgumentsException("User with id " + userId + " does not exist.");
         } else {
@@ -68,17 +71,15 @@ public class UsersServiceWorker implements UsersService {
     }
 
     @Override
-    public PersistableUser findBy(JsonUserLogin login) {        
+    public PersistableUser ifExistsFindBy(JsonUserLogin login) {        
         ValidationResult result = this.validation.validateLoginInfo(login);
         if ( result.isOk() ) {
             PersistableUser user = this.users.getUserByNicknameAndPassword(
                     login.getNickName(), login.getPassword());
-            if ( user == null ) {
+            if ( isNull(user) ) {
                 logger.debug("Any user has not been found by login " + 
                         login.getNickName() + ":" + login.getPassword());
-                throw new BadDataRequestArgumentsException(
-                        "User with nickname " + login.getNickName() + 
-                                " and given password does not exist.");
+                return null;
             } else {
                 return user;
             }
@@ -96,7 +97,7 @@ public class UsersServiceWorker implements UsersService {
                         "Nickname " + registration.getNickName() + " is not free.");
             }
             PersistableUser savedUser = this.users.addUser(registration.composeNewUnpersistedUser());
-            if ( savedUser == null ) {
+            if ( isNull(savedUser) ) {
                 logger.debug("Unknown error during new user saving.");
                 throw new UsersServiceUnknownLogicException("Unknown error during new user saving.");
             } else {

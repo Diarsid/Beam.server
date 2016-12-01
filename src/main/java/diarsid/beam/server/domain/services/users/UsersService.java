@@ -22,11 +22,11 @@ public interface UsersService {
     
     void checkUser(int userId);
     
-    UserRole getRoleOf(int userId);
+    UserRole getNonNullUserRoleOf(int userId);
     
     PersistableUser findBy(int userId);
     
-    PersistableUser findBy(JsonUserLogin login);
+    PersistableUser ifExistsFindBy(JsonUserLogin login);
     
     PersistableUser createUserBy(JsonUserRegistration registration); 
     
