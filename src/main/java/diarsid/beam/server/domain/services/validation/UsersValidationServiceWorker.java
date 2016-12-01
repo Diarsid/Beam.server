@@ -104,43 +104,43 @@ public class UsersValidationServiceWorker implements UsersValidationService {
     }
     
     @Override
-    public ValidationResult validatePassword(String pass) {
-        if ( ! pass.matches(ACCEPTABLE_PASSWORD_REGEXP) ) {
-            return validationFailsWith(this.composePassCharactersInvalidMessage());
-        }
+    public ValidationResult validatePassword(String pass) {        
         if ( pass.length() < PASSWORD_MIN_LENGTH ) {
             return validationFailsWith(this.composePassMinLengthInvalidMessage());
         }
         if ( pass.length() > PASSWORD_MAX_LENGTH ) {
             return validationFailsWith(this.composePassMaxLengthInvalidMessage());
         }
+        if ( ! pass.matches(ACCEPTABLE_PASSWORD_REGEXP) ) {
+            return validationFailsWith(this.composePassCharactersInvalidMessage());
+        }
         return validationOk();
     }
     
     @Override
-    public ValidationResult validateName(String name) {
-        if ( ! name.matches(ACCEPTABLE_NAME_REGEXP) ) {
-            return validationFailsWith(this.composeNameCharactersInvalidMessage());
-        }
+    public ValidationResult validateName(String name) {        
         if ( name.length() < NAME_MIN_LENGTH ) {
             return validationFailsWith(this.composeNameMinLengthInvalidMessage());
         }
         if ( name.length() > NAME_MAX_LENGTH ) {
             return validationFailsWith(this.composeNameMaxLengthInvalidMessage());
         }
+        if ( ! name.matches(ACCEPTABLE_NAME_REGEXP) ) {
+            return validationFailsWith(this.composeNameCharactersInvalidMessage());
+        }
         return validationOk();
     }
     
     @Override
-    public ValidationResult validateNick(String nick) {
-        if ( ! nick.matches(ACCEPTABLE_NICKNAME_REGEXP) ) {
-            return validationFailsWith(this.composeNicknameCharactersInvalidMessage());
-        }
+    public ValidationResult validateNick(String nick) {        
         if ( nick.length() < NICKNAME_MIN_LENGTH ) {
             return validationFailsWith(this.composeNicknameMinLengthInvalidMessage());
         }
         if ( nick.length() > NICKNAME_MAX_LENGTH ) {
             return validationFailsWith(this.composeNicknameMaxLengthInvalidMessage());
+        }
+        if ( ! nick.matches(ACCEPTABLE_NICKNAME_REGEXP) ) {
+            return validationFailsWith(this.composeNicknameCharactersInvalidMessage());
         }
         return validationOk();
     }
