@@ -27,6 +27,8 @@ import diarsid.beam.server.data.daos.DaoKeys;
 import diarsid.beam.server.domain.entities.KeyIdPair;
 import diarsid.beam.server.domain.util.RandomStringGenerator;
 
+import static java.util.Objects.isNull;
+
 /**
  *
  * @author Diarsid
@@ -102,6 +104,11 @@ public class KeysServiceWorker implements KeysService {
     
     @Override
     public Key getKeyById(String id) {
-        return this.keys.get(id).getKey();
+        KeyIdPair pair = this.keys.get(id);
+        if ( isNull(pair) ) {
+            return null;
+        } else {
+            return pair.getKey();
+        }
     }
 }

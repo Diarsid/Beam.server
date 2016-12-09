@@ -74,7 +74,7 @@ public class DataConnectionBeans {
     public EntityManagerFactory entityManagerFactory(DataSource dataSource) {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
-        //vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = 
                 new LocalContainerEntityManagerFactoryBean();

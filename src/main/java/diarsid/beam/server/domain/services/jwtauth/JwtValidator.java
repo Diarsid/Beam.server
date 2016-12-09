@@ -139,6 +139,8 @@ public class JwtValidator {
             logger.info("JWT validation failed. Do not trust to this JWT.");
         } catch (MalformedJwtException e) {
             logger.info("JWT validation failed - JWT is malformed.");
+        } catch (IllegalArgumentException e) {
+            logger.info("JWT validation failed - key id from given JWT is not a valid id.");
         }
         return claims;
     }
