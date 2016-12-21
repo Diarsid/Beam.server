@@ -6,9 +6,12 @@
 
 package diarsid.beam.server.presentation.web.services;
 
+import java.util.Set;
+
 import javax.ws.rs.ApplicationPath;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -16,10 +19,10 @@ import org.glassfish.jersey.server.ResourceConfig;
  */
 
 @ApplicationPath("/services")
+@Component
 public class JerseyApplicationRoot extends ResourceConfig {
     
-    public JerseyApplicationRoot() {
-        super();
-        packages("diarsid.beam.server.presentation.web.services");
+    public JerseyApplicationRoot(Set<Class<?>> jaxRsClasses) {
+        super(jaxRsClasses);
     }
 }

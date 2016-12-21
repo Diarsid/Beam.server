@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.domain.services.validation.ValidationResult;
 import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
 import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -28,7 +29,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 
 @Component
 @Path("/validation/webobjects")
-public class ValidationWebObjectsResource {
+public class ValidationWebObjectsResource implements JAXRSAutoRegistrableComponent {
     
     private final WebObjectsValidationService validationService;
     

@@ -6,6 +6,7 @@
 
 package diarsid.beam.server.config.spring.java;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,6 +18,8 @@ import diarsid.beam.server.domain.services.validation.UsersValidationService;
 import diarsid.beam.server.domain.services.validation.WebObjectsValidationService;
 import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
+import diarsid.beam.server.presentation.web.services.JerseyApplicationRoot;
 import diarsid.beam.server.presentation.web.services.filters.AdministratorAccessFilter;
 import diarsid.beam.server.presentation.web.services.filters.JwtAuthenticationFilter;
 import diarsid.beam.server.presentation.web.services.resources.AuthenticationResource;
@@ -26,6 +29,8 @@ import diarsid.beam.server.presentation.web.services.resources.ValidationUsersRe
 import diarsid.beam.server.presentation.web.services.resources.ValidationWebObjectsResource;
 import diarsid.beam.server.presentation.web.services.resources.WebDirectoriesResource;
 import diarsid.beam.server.presentation.web.services.resources.WebPagesResource;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  *
@@ -41,6 +46,16 @@ public class WebServicesBeans {
     
     public WebServicesBeans() {
     }    
+    
+    @Bean
+    public JerseyApplicationRoot jerseyApplicationRoot(ApplicationContext context) {
+        return new JerseyApplicationRoot(context
+                .getBeansOfType(JAXRSAutoRegistrableComponent.class)
+                .values()
+                .stream()
+                .map(jaxRsBean -> jaxRsBean.getClass())
+                .collect(toSet()));
+    }
     
     @Bean
     public JwtAuthenticationFilter authenticationFilter(JwtValidator jwtValidator) {

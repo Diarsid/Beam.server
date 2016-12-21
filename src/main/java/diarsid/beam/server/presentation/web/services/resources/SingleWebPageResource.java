@@ -26,6 +26,7 @@ import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
 import diarsid.beam.server.presentation.web.json.dto.JsonPlacementAndDirectory;
 import diarsid.beam.server.presentation.web.json.dto.JsonWebPage;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static java.lang.Integer.valueOf;
@@ -46,7 +47,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 @Component
 @Path("/users/{id}/{place}/directories/{dirName}/pages/{pageName}")
 @AuthenticationRequired
-public class SingleWebPageResource {
+public class SingleWebPageResource implements JAXRSAutoRegistrableComponent {
     
     private static final Logger logger = LoggerFactory.getLogger(SingleWebPageResource.class);
     

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.domain.services.jwtauth.JwtUserInfo;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidationResult;
 import diarsid.beam.server.domain.services.jwtauth.JwtValidator;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static diarsid.beam.server.presentation.web.services.auth.InnerHttpRequestUserHeaders.BEAM_USER_ID;
@@ -36,7 +37,10 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 @Component
 @Provider
 @AuthenticationRequired
-public class JwtAuthenticationFilter implements ContainerRequestFilter {
+public class JwtAuthenticationFilter 
+        implements 
+                ContainerRequestFilter,
+                JAXRSAutoRegistrableComponent {
     
     private final static Logger logger;
     static {

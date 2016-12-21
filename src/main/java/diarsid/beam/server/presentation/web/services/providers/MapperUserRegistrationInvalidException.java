@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import diarsid.beam.server.domain.services.exceptions.UserRegistrationInvalidException;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
 
@@ -18,7 +19,9 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
  * @author Diarsid
  */
 public class MapperUserRegistrationInvalidException 
-        implements ExceptionMapper<UserRegistrationInvalidException> {
+        implements 
+                ExceptionMapper<UserRegistrationInvalidException>,
+                JAXRSAutoRegistrableComponent {
     
     public MapperUserRegistrationInvalidException() {
     }

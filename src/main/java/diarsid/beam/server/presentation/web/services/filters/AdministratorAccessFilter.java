@@ -14,6 +14,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 import diarsid.beam.server.presentation.web.services.filters.bindings.AdministratorRightsRequired;
 
 /**
@@ -24,7 +25,10 @@ import diarsid.beam.server.presentation.web.services.filters.bindings.Administra
 @Component
 @Provider
 @AdministratorRightsRequired
-public class AdministratorAccessFilter implements ContainerRequestFilter {
+public class AdministratorAccessFilter 
+        implements 
+                ContainerRequestFilter,
+                JAXRSAutoRegistrableComponent {
     
     public AdministratorAccessFilter() {
     }

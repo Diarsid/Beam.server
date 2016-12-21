@@ -13,6 +13,7 @@ import javax.ws.rs.ext.Provider;
 import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.domain.services.exceptions.BadDataRequestArgumentsException;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
 
@@ -25,7 +26,9 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 @Provider
 @Component
 public class MapperBadDataRequestArgumentsException 
-        implements ExceptionMapper<BadDataRequestArgumentsException> {
+        implements 
+                ExceptionMapper<BadDataRequestArgumentsException>,
+                JAXRSAutoRegistrableComponent {
     
     public MapperBadDataRequestArgumentsException() {
     }

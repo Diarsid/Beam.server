@@ -13,6 +13,7 @@ import javax.ws.rs.ext.Provider;
 import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.domain.services.exceptions.UsersServiceUnknownLogicException;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
 
@@ -24,7 +25,9 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 @Provider
 @Component
 public class MapperUsersServiceUnknownLogicException 
-        implements ExceptionMapper<UsersServiceUnknownLogicException> {
+        implements 
+                ExceptionMapper<UsersServiceUnknownLogicException>,
+                JAXRSAutoRegistrableComponent {
     
     public MapperUsersServiceUnknownLogicException() {
     }

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import diarsid.beam.server.domain.services.webobjects.UserWebObjectsService;
 import diarsid.beam.server.presentation.web.json.dto.JsonWebPage;
 import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static java.util.stream.Collectors.toList;
@@ -42,7 +43,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 @Component
 @Path("/users/{id}/{place}/directories/{dirName}/pages")
 @AuthenticationRequired
-public class WebPagesResource {
+public class WebPagesResource implements JAXRSAutoRegistrableComponent {
     
     private static final Logger logger = LoggerFactory.getLogger(WebDirectoriesResource.class);
     

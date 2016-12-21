@@ -20,8 +20,9 @@ import javax.ws.rs.ext.Provider;
 
 import org.springframework.stereotype.Component;
 
-import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
 import diarsid.beam.server.presentation.web.json.dto.JsonErrorObject;
+import diarsid.beam.server.presentation.web.json.util.JavaObjectToJsonConverter;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -33,7 +34,10 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Provider
 @Produces(APPLICATION_JSON)
 @Component
-public class WriterJsonErrorObject implements MessageBodyWriter<JsonErrorObject> {
+public class WriterJsonErrorObject 
+        implements 
+                MessageBodyWriter<JsonErrorObject>,
+                JAXRSAutoRegistrableComponent {
     
     private final JavaObjectToJsonConverter converter;
     

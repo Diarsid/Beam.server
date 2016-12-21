@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.presentation.web.json.dto.JsonPlacementAndDirectory;
 import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -34,7 +35,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Provider
 @Consumes(APPLICATION_JSON)
 public class ReaderJsonPlacementAndDirectory 
-        implements MessageBodyReader<JsonPlacementAndDirectory> {
+        implements 
+                MessageBodyReader<JsonPlacementAndDirectory>,
+                JAXRSAutoRegistrableComponent {
     
     private final JsonToJavaObjectConverter converter;
     

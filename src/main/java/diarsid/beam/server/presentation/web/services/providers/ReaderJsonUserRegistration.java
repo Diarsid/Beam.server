@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
 import diarsid.beam.server.presentation.web.json.util.JsonToJavaObjectConverter;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -34,7 +35,10 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Provider
 @Consumes(APPLICATION_JSON)
 @Component
-public class ReaderJsonUserRegistration implements MessageBodyReader<JsonUserRegistration>{
+public class ReaderJsonUserRegistration 
+        implements 
+                MessageBodyReader<JsonUserRegistration>, 
+                JAXRSAutoRegistrableComponent {
     
     private final JsonToJavaObjectConverter converter;
     

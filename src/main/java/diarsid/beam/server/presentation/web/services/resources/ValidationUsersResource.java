@@ -18,6 +18,7 @@ import diarsid.beam.server.domain.services.users.UsersService;
 import diarsid.beam.server.domain.services.validation.UsersValidationService;
 import diarsid.beam.server.domain.services.validation.ValidationResult;
 import diarsid.beam.server.presentation.web.json.dto.JsonPayload;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.FOUND;
@@ -33,7 +34,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 
 @Component
 @Path("/validation/users")
-public class ValidationUsersResource {
+public class ValidationUsersResource implements JAXRSAutoRegistrableComponent {
     
     private static final Logger logger;
     static {

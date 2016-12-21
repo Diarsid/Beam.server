@@ -24,6 +24,7 @@ import diarsid.beam.server.domain.services.jwtauth.JwtValidationResult;
 import diarsid.beam.server.domain.services.users.UsersService;
 import diarsid.beam.server.presentation.web.json.dto.JsonUserLogin;
 import diarsid.beam.server.presentation.web.json.dto.JsonUserRegistration;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 import diarsid.beam.server.presentation.web.services.filters.bindings.AuthenticationRequired;
 
 import static java.lang.Integer.valueOf;
@@ -43,7 +44,7 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 
 @Component
 @Path("/auth")
-public class AuthenticationResource {
+public class AuthenticationResource implements JAXRSAutoRegistrableComponent {
     
     private final static Logger logger;
     static {

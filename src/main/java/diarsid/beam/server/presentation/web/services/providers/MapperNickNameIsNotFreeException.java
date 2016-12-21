@@ -13,6 +13,7 @@ import javax.ws.rs.ext.Provider;
 import org.springframework.stereotype.Component;
 
 import diarsid.beam.server.domain.services.exceptions.NickNameIsNotFreeException;
+import diarsid.beam.server.presentation.web.services.JAXRSAutoRegistrableComponent;
 
 import static diarsid.beam.server.presentation.web.services.providers.JaxRsResponseComposer.jsonResponseWith;
 
@@ -24,7 +25,9 @@ import static diarsid.beam.server.presentation.web.services.providers.JaxRsRespo
 @Provider
 @Component
 public class MapperNickNameIsNotFreeException 
-        implements ExceptionMapper<NickNameIsNotFreeException> {
+        implements 
+                ExceptionMapper<NickNameIsNotFreeException>,
+                JAXRSAutoRegistrableComponent {
     
     public MapperNickNameIsNotFreeException() {
     }
